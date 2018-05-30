@@ -35,7 +35,7 @@ const acompose = (...fns) => async promise =>
  * 
  * with point-free style of functional pipe syntax like the following:
  * <pre><code>apipe(normalize, upperCase, insertGreetings)(somePromise);</code></pre>
-
+ * 
  * It is lazy and allows of reusing of promise handling chains.
  * 
  * You can run apipe with Promise instance (for true asynchronous execution) 
