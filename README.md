@@ -6,7 +6,7 @@ We have plans to add some new functional utilities from time to time.
 ## Installation
 Install it with NPM:
 
-`npm install fun-ctional`
+`npm install @constantiner/fun-ctional`
 
 ## Documentation
 At this moment the following utilities are available:
