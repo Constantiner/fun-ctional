@@ -1,7 +1,12 @@
-# fun-ctional
+# fun-ctional<!-- omit in toc -->
 A set of functional utilities (both synchronous and asynchronous) for JavaScript.
 
 We have plans to add some new functional utilities from time to time.
+
+- [Installation](#installation)
+- [Documentation](#documentation)
+	- [acompose](#acompose)
+	- [apipe](#apipe)
 
 ## Installation
 Install it with NPM:
@@ -24,6 +29,16 @@ with point-free style of functional compose syntax like the following:
 acompose(insertGreetings, upperCase, normalize)(somePromise);
 ```
 It is lazy and allows of reusing of promise handling chains.
+
+First you need to import it:
+
+```JavaScript
+import { acompose } from "@constantiner/fun-ctional";
+```
+Or:
+```JavaScript
+const { acompose } = require("@constantiner/fun-ctional");
+```
 
 You can run `acompose` with Promise instance (for true asynchronous execution) or with any other object to use as usual functional composition. It produces a Promise and can be used in async/await context:
 
@@ -50,6 +65,16 @@ with point-free style of functional pipe syntax like the following:
 apipe(normalize, upperCase, insertGreetings)(somePromise);
 ```
 It is lazy and allows of reusing of promise handling chains.
+
+First you need to import it:
+
+```JavaScript
+import { apipe } from "@constantiner/fun-ctional";
+```
+Or:
+```JavaScript
+const { apipe } = require("@constantiner/fun-ctional");
+```
 
 You can run `apipe` with Promise instance (for true asynchronous execution) or with any other object to use as in usual functional composition. It produces a Promise and can be used in async/await context:
 
