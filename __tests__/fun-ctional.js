@@ -72,6 +72,10 @@ describe("Tests for asynchronous compose utility", () => {
 		const result = await acompose(n => n + 1, n => n * n)(createAsyncPromise(4));
 		expect(result).toBe(17);
 	});
+	it("should compose a number properly with async promise and async promise in functions chain", async () => {
+		const result = await acompose(n => n + 1, createAsyncPromise, n => n * n)(createAsyncPromise(4));
+		expect(result).toBe(17);
+	});
 	it('should compose a number properly with "sync" compose', async () => {
 		const result = await acompose(n => n + 1, n => n * n)(createSyncPromise(4));
 		expect(result).toBe(17);
@@ -101,6 +105,15 @@ describe("Tests for asynchronous compose utility", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
+		}
+	});
+	it("should reject properly with rejection in one of the promise generating compose functions", async () => {
+		expect.assertions(2);
+		try {
+			await acompose(n => n + 1, n => createAsyncPromise(n, false), n => n * n)(createAsyncPromise(4));
+		} catch (e) {
+			expect(e).toBeInstanceOf(Error);
+			expect(e.message).toBe(getErrorMessage(16));
 		}
 	});
 	it("should reject properly with async promise and empty compose traditional way", () => {
@@ -182,6 +195,10 @@ describe("Tests for asynchronous pipe utility", () => {
 		const result = await apipe(n => n + 1, n => n * n)(createAsyncPromise(4));
 		expect(result).toBe(25);
 	});
+	it("should pipe a number properly with async promise and async promise in functions chain", async () => {
+		const result = await apipe(n => n + 1, createAsyncPromise, n => n * n)(createAsyncPromise(4));
+		expect(result).toBe(25);
+	});
 	it('should pipe a number properly with "sync" pipe', async () => {
 		const result = await apipe(n => n + 1, n => n * n)(createSyncPromise(4));
 		expect(result).toBe(25);
@@ -211,6 +228,15 @@ describe("Tests for asynchronous pipe utility", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
+		}
+	});
+	it("should reject properly with rejection in one of the promise generating pipe functions", async () => {
+		expect.assertions(2);
+		try {
+			await apipe(n => n + 1, n => createAsyncPromise(n, false), n => n * n)(createAsyncPromise(4));
+		} catch (e) {
+			expect(e).toBeInstanceOf(Error);
+			expect(e.message).toBe(getErrorMessage(5));
 		}
 	});
 	it("should reject properly with async promise and empty pipe traditional way", () => {
