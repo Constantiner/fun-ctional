@@ -14,7 +14,16 @@
 		"type": "git",
 		"url": "git+https://github.com/Constantiner/fun-ctional.git"
 	},
-	"keywords": ["JS", "JavaScript", "Functional", "FP", "Asynchronous", "Utility", "Utilities", "ES6"],
+	"keywords": [
+		"JS",
+		"JavaScript",
+		"Functional",
+		"FP",
+		"Asynchronous",
+		"Utility",
+		"Utilities",
+		"ES6"
+	],
 	"author": "Konstantin Kovalev <constantiner@gmail.com>",
 	"license": "MIT",
 	"bugs": {
@@ -22,10 +31,16 @@
 	},
 	"homepage": "https://github.com/Constantiner/fun-ctional#readme",
 	"jest": {
-		"testPathIgnorePatterns": ["/node_modules/", "/dist/"],
+		"testPathIgnorePatterns": [
+			"/node_modules/",
+			"/dist/",
+			"/__tests__/utils/"
+		],
 		"coverageDirectory": "./coverage/",
 		"collectCoverage": true,
-		"collectCoverageFrom": ["src/**"]
+		"collectCoverageFrom": [
+			"src/**"
+		]
 	},
 	"prettier": {
 		"printWidth": 120,
@@ -44,6 +59,7 @@
 		"eslint-config-prettier": "^2.9.0",
 		"gulp": "^3.9.1",
 		"gulp-babel": "^7.0.1",
+		"gulp-concat": "^2.6.1",
 		"gulp-header": "^2.0.5",
 		"gulp-rename": "^1.2.3",
 		"gulp-sourcemaps": "^2.6.4",

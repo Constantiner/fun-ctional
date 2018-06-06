@@ -40,6 +40,18 @@ Or:
 const { acompose } = require("@constantiner/fun-ctional");
 ```
 
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import { acompose } from "@constantiner/fun-ctional/acompose";
+```
+Or:
+```JavaScript
+const { acompose } = require("@constantiner/fun-ctional/acompose");
+```
+
+
+
 You can run `acompose` with Promise instance (for true asynchronous execution) or with any other object to use as usual functional composition. It produces a Promise and can be used in async/await context:
 
 ```JavaScript
@@ -75,6 +87,16 @@ Or:
 ```JavaScript
 const { apipe } = require("@constantiner/fun-ctional");
 ```
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import { apipe } from "@constantiner/fun-ctional/apipe";
+```
+Or:
+```JavaScript
+const { apipe } = require("@constantiner/fun-ctional/apipe");
+```
+
 
 You can run `apipe` with Promise instance (for true asynchronous execution) or with any other object to use as in usual functional composition. It produces a Promise and can be used in async/await context:
 
