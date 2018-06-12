@@ -13,6 +13,8 @@ Install it with NPM:
 
 `npm install @constantiner/fun-ctional`
 
+**Note**. The UMD version of package is ES5 compatible but you may need to use [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) with it.
+
 ## Documentation
 At this moment the following utilities are available:
 
