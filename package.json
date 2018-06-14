@@ -1,6 +1,6 @@
 {
 	"name": "@constantiner/fun-ctional",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "A set of functional utilities (both synchronous and asynchronous) for JavaScript",
 	"main": "dist/fun-ctional",
 	"scripts": {
