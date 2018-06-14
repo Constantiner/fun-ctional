@@ -23,11 +23,11 @@ const MAIN_FILE_NAME = "fun-ctional";
 const BROWSERS = [">0.25%", "not ie 11", "not op_mini all"];
 const BABEL_PLUGINS = ["transform-es2015-modules-umd"];
 
-gulp.task("clean", () => del(["*.js", "*.mjs", "*.map", "!gulpfile.js", "dist"]));
+gulp.task("clean", () => del(["*.js", "*.mjs", "*.map", "!gulpfile.js"]));
 
 const getSourceFile = () => gulp.src("src/**/*.js"),
 	getBanner = () => header(banner, { pkg }),
-	getDest = () => gulp.dest("./dist/");
+	getDest = () => gulp.dest(".");
 
 gulp.task("mainEs6module", () =>
 	getSourceFile()

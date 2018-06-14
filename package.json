@@ -1,14 +1,15 @@
 {
 	"name": "@constantiner/fun-ctional",
-	"version": "0.2.1",
+	"version": "0.3.0",
 	"description": "A set of functional utilities (both synchronous and asynchronous) for JavaScript",
-	"main": "dist/fun-ctional",
+	"main": "fun-ctional",
 	"scripts": {
 		"test": "jest",
 		"lint": "eslint '**/*.js'",
 		"build": "gulp",
 		"format": "prettier 'src/*.js' --write",
-		"prepublishOnly": "npm run lint && npm run test && npm run build"
+		"prepublishOnly": "npm run lint && npm run test && npm run build",
+		"clean": "gulp clean"
 	},
 	"repository": {
 		"type": "git",
