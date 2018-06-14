@@ -45,11 +45,11 @@ const { acompose } = require("@constantiner/fun-ctional");
 Or you can import it separately without the whole bundle:
 
 ```JavaScript
-import { acompose } from "@constantiner/fun-ctional/acompose";
+import { acompose } from "@constantiner/fun-ctional/dist/acompose";
 ```
 Or:
 ```JavaScript
-const { acompose } = require("@constantiner/fun-ctional/acompose");
+const { acompose } = require("@constantiner/fun-ctional/dist/acompose");
 ```
 
 
@@ -92,11 +92,11 @@ const { apipe } = require("@constantiner/fun-ctional");
 Or you can import it separately without the whole bundle:
 
 ```JavaScript
-import { apipe } from "@constantiner/fun-ctional/apipe";
+import { apipe } from "@constantiner/fun-ctional/dist/apipe";
 ```
 Or:
 ```JavaScript
-const { apipe } = require("@constantiner/fun-ctional/apipe");
+const { apipe } = require("@constantiner/fun-ctional/dist/apipe");
 ```
 
 
