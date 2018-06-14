@@ -3,3 +3,9 @@ node_modules
 coverage
 dist
 tmp
+
+#distributive files
+*.js
+*.mjs
+*.map
+!gulpfile.js
