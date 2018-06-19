@@ -45,7 +45,8 @@
 	},
 	"prettier": {
 		"printWidth": 120,
-		"useTabs": true
+		"useTabs": true,
+		"tabWidth": 4
 	},
 	"engines": {
 		"node": ">=7.6"
