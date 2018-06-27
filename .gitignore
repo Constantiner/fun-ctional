@@ -1,11 +1,11 @@
 .vscode
-node_modules
-coverage
-dist
-tmp
+/node_modules/
+/coverage/
+/dist/
+/tmp/
 
 #distributive files
-*.js
-*.mjs
-*.map
-!gulpfile.js
+/*.js
+/*.mjs
+/*.map
+!/gulpfile.js
