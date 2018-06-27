@@ -1,144 +1,125 @@
 const gulp = require("gulp");
 const rename = require("gulp-rename");
-const header = require("gulp-header");
 const pkg = require("./package.json");
-const banner = `/**
- * <%= pkg.name %> - <%= pkg.description %>
- * 
- * @author <%= pkg.author %>
- * @version v<%= pkg.version %>
- * @link <%= pkg.homepage %>
- * @license <%= pkg.license %>
- */
-
-`;
-const babel = require("gulp-babel");
+const babel = require("rollup-plugin-babel");
 const del = require("del");
 const sourcemaps = require("gulp-sourcemaps");
-const concat = require("gulp-concat");
 const uglify = require("gulp-uglify");
-const file = require("gulp-file");
-const flatmap = require("gulp-flatmap");
-const MAIN_FILE_NAME = "fun-ctional";
+const rollup = require("gulp-better-rollup");
 const BROWSERS = [">0.25%", "not ie 11", "not op_mini all"];
-const BABEL_PLUGINS = ["transform-es2015-modules-umd"];
+const SOURCES = "src/**/*.js";
+const ES6_BUNDLED_SOURCES = "*.mjs";
+const banner = `/**
+* ${pkg.name}
+* ${pkg.description}
+* 
+* @author ${pkg.author}
+* @version v${pkg.version}
+* @link ${pkg.homepage}
+* @license ${pkg.license}
+*/
 
-gulp.task("clean", () => del(["*.js", "*.mjs", "*.map", "!gulpfile.js"]));
+`;
 
-const getSourceFile = () => gulp.src("src/**/*.js"),
-	getBanner = () => header(banner, { pkg }),
+gulp.task("clean", () => del(["dist", "*.js", "*.mjs", "*.map", "!gulpfile.js"]));
+
+const getSourceFile = () => gulp.src(SOURCES),
+	getEs6SourceFile = () => gulp.src(ES6_BUNDLED_SOURCES),
 	getDest = () => gulp.dest(".");
-
-gulp.task("mainEs6module", () =>
-	getSourceFile()
-		.pipe(concat(`${MAIN_FILE_NAME}.mjs`))
-		.pipe(getBanner())
-		.pipe(getDest())
-);
 
 gulp.task("es6modules", () =>
 	getSourceFile()
-		.pipe(getBanner())
+		.pipe(
+			rollup(
+				{},
+				{
+					format: "es",
+					banner
+				}
+			)
+		)
 		.pipe(rename({ extname: ".mjs" }))
 		.pipe(getDest())
 );
 
-gulp.task("proceedMainEs5umd", ["emptyBannerFile"], () =>
-	gulp
-		.src(["tmp/banner.js", "src/**/*.js"])
+gulp.task("es5modules", ["es6modules"], () =>
+	getEs6SourceFile()
 		.pipe(sourcemaps.init())
 		.pipe(
-			babel({
-				presets: [
-					[
-						"env",
-						{
-							targets: {
-								browsers: BROWSERS
-							}
+			rollup(
+				{
+					onwarn(warning) {
+						if (warning.code === "THIS_IS_UNDEFINED") {
+							return;
 						}
-					]
-				],
-				plugins: BABEL_PLUGINS
-			})
-		)
-		.pipe(concat(`${MAIN_FILE_NAME}.js`))
-		.pipe(sourcemaps.write("."))
-		.pipe(getDest())
-);
-
-gulp.task("mainEs5umd", ["proceedMainEs5umd"], () => del(["tmp"]));
-
-gulp.task("mainEs5umdMinified", () =>
-	getSourceFile()
-		.pipe(sourcemaps.init())
-		.pipe(concat(`${MAIN_FILE_NAME}.min.js`))
-		.pipe(
-			babel({
-				presets: [
-					[
-						"env",
-						{
-							targets: {
-								browsers: BROWSERS
-							}
-						}
-					]
-				],
-				plugins: BABEL_PLUGINS
-			})
-		)
-		.pipe(uglify())
-		.pipe(sourcemaps.write("."))
-		.pipe(getDest())
-);
-
-gulp.task("proceedEs5umds", ["emptyBannerFile"], () =>
-	getSourceFile()
-		.pipe(
-			flatmap((stream, file) =>
-				gulp
-					.src(["tmp/banner.js", file.path])
-					.pipe(sourcemaps.init())
-					.pipe(
+						/* eslint-disable-next-line no-console */
+						console.error(warning.message);
+					},
+					plugins: [
 						babel({
+							babelrc: false,
 							presets: [
 								[
 									"env",
 									{
 										targets: {
 											browsers: BROWSERS
-										}
+										},
+										modules: false
 									}
 								]
 							],
-							plugins: BABEL_PLUGINS
+							plugins: ["external-helpers"]
 						})
-					)
-					.pipe(concat(file.relative))
-					.pipe(sourcemaps.write("."))
+					]
+				},
+				{
+					format: "umd",
+					banner
+				}
 			)
 		)
+		.pipe(rename({ extname: ".js" }))
+		.pipe(sourcemaps.write("."))
 		.pipe(getDest())
 );
 
-gulp.task("es5umdsMinified", () =>
-	getSourceFile()
+gulp.task("es5modulesMin", ["es6modules"], () =>
+	getEs6SourceFile()
 		.pipe(sourcemaps.init())
 		.pipe(
-			babel({
-				presets: [
-					[
-						"env",
-						{
-							targets: {
-								browsers: BROWSERS
-							}
+			rollup(
+				{
+					onwarn(warning) {
+						if (warning.code === "THIS_IS_UNDEFINED") {
+							return;
 						}
+						/* eslint-disable-next-line no-console */
+						console.error(warning.message);
+					},
+					plugins: [
+						babel({
+							babelrc: false,
+							presets: [
+								[
+									"env",
+									{
+										targets: {
+											browsers: BROWSERS
+										},
+										modules: false
+									}
+								]
+							],
+							plugins: ["external-helpers"]
+						})
 					]
-				],
-				plugins: BABEL_PLUGINS
-			})
+				},
+				{
+					format: "umd",
+					banner
+				}
+			)
 		)
 		.pipe(uglify())
 		.pipe(rename({ extname: ".min.js" }))
@@ -146,16 +127,6 @@ gulp.task("es5umdsMinified", () =>
 		.pipe(getDest())
 );
 
-gulp.task("es5umds", ["proceedEs5umds"], () => del(["tmp"]));
-
-gulp.task("emptyBannerFile", () =>
-	file("./tmp/banner.js", "", { src: true })
-		.pipe(getBanner())
-		.pipe(gulp.dest("."))
-);
-
-gulp.task("scripts", () =>
-	gulp.start("mainEs6module", "mainEs5umd", "mainEs5umdMinified", "es6modules", "es5umds", "es5umdsMinified")
-);
+gulp.task("scripts", () => gulp.start("es5modules", "es5modulesMin"));
 
 gulp.task("default", ["clean"], () => gulp.start("scripts"));

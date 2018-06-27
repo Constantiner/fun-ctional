@@ -1,4 +1,4 @@
-import { acompose } from "../src/acompose";
+import acompose from "../src/acompose";
 import { getErrorMessage, createAsyncPromise, createSyncPromise } from "./utils/utils";
 
 describe("Tests for asynchronous compose utility", () => {

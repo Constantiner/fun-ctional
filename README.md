@@ -15,6 +15,8 @@ Install it with NPM:
 
 **Note**. The UMD version of package is ES5 compatible but you may need to use [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) with it.
 
+**Note**. Build includes sourcemaps and minified versions of UMD files as well. You can find them in your `node_modules` folder.
+
 ## Documentation
 At this moment the following utilities are available:
 
@@ -45,11 +47,11 @@ const { acompose } = require("@constantiner/fun-ctional");
 Or you can import it separately without the whole bundle:
 
 ```JavaScript
-import { acompose } from "@constantiner/fun-ctional/acompose";
+import acompose from "@constantiner/fun-ctional/acompose";
 ```
 Or:
 ```JavaScript
-const { acompose } = require("@constantiner/fun-ctional/acompose");
+const acompose = require("@constantiner/fun-ctional/acompose");
 ```
 
 
@@ -92,11 +94,11 @@ const { apipe } = require("@constantiner/fun-ctional");
 Or you can import it separately without the whole bundle:
 
 ```JavaScript
-import { apipe } from "@constantiner/fun-ctional/apipe";
+import apipe from "@constantiner/fun-ctional/apipe";
 ```
 Or:
 ```JavaScript
-const { apipe } = require("@constantiner/fun-ctional/apipe");
+const apipe = require("@constantiner/fun-ctional/apipe");
 ```
 
 

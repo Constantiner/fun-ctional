@@ -23,7 +23,5 @@
  * @param {Promise} promise Is original promise (or anything else) as input value.
  * @returns A resulting Promise.
  */
-const acompose = (...fns) => async promise =>
+export default (...fns) => async promise =>
 	fns.reduceRight((promise, fn) => promise.then(fn), Promise.resolve(promise));
-
-export { acompose };

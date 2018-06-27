@@ -23,6 +23,4 @@
  * @param {Promise} promise Is original promise (or anything else) as input value.
  * @returns A resulting Promise.
  */
-const apipe = (...fns) => async promise => fns.reduce((promise, fn) => promise.then(fn), Promise.resolve(promise));
-
-export { apipe };
+export default (...fns) => async promise => fns.reduce((promise, fn) => promise.then(fn), Promise.resolve(promise));

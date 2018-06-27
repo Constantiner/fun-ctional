@@ -1,4 +1,4 @@
-import { apipe } from "../src/apipe";
+import apipe from "../src/apipe";
 import { getErrorMessage, createAsyncPromise, createSyncPromise } from "./utils/utils";
 
 describe("Tests for asynchronous pipe utility", () => {
