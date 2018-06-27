@@ -25,7 +25,39 @@ gulp.task("clean", () => del(["dist", "*.js", "*.mjs", "*.map", "!gulpfile.js"])
 
 const getSourceFile = () => gulp.src(SOURCES),
 	getEs6SourceFile = () => gulp.src(ES6_BUNDLED_SOURCES),
-	getDest = () => gulp.dest(".");
+	getDest = () => gulp.dest("."),
+	rollupUmd = rollup(
+		{
+			onwarn(warning) {
+				if (warning.code === "THIS_IS_UNDEFINED") {
+					return;
+				}
+				/* eslint-disable-next-line no-console */
+				console.error(warning.message);
+			},
+			plugins: [
+				babel({
+					babelrc: false,
+					presets: [
+						[
+							"env",
+							{
+								targets: {
+									browsers: BROWSERS
+								},
+								modules: false
+							}
+						]
+					],
+					plugins: ["external-helpers"]
+				})
+			]
+		},
+		{
+			format: "umd",
+			banner
+		}
+	);
 
 gulp.task("es6modules", () =>
 	getSourceFile()
@@ -45,40 +77,7 @@ gulp.task("es6modules", () =>
 gulp.task("es5modules", ["es6modules"], () =>
 	getEs6SourceFile()
 		.pipe(sourcemaps.init())
-		.pipe(
-			rollup(
-				{
-					onwarn(warning) {
-						if (warning.code === "THIS_IS_UNDEFINED") {
-							return;
-						}
-						/* eslint-disable-next-line no-console */
-						console.error(warning.message);
-					},
-					plugins: [
-						babel({
-							babelrc: false,
-							presets: [
-								[
-									"env",
-									{
-										targets: {
-											browsers: BROWSERS
-										},
-										modules: false
-									}
-								]
-							],
-							plugins: ["external-helpers"]
-						})
-					]
-				},
-				{
-					format: "umd",
-					banner
-				}
-			)
-		)
+		.pipe(rollupUmd)
 		.pipe(rename({ extname: ".js" }))
 		.pipe(sourcemaps.write("."))
 		.pipe(getDest())
@@ -87,40 +86,7 @@ gulp.task("es5modules", ["es6modules"], () =>
 gulp.task("es5modulesMin", ["es6modules"], () =>
 	getEs6SourceFile()
 		.pipe(sourcemaps.init())
-		.pipe(
-			rollup(
-				{
-					onwarn(warning) {
-						if (warning.code === "THIS_IS_UNDEFINED") {
-							return;
-						}
-						/* eslint-disable-next-line no-console */
-						console.error(warning.message);
-					},
-					plugins: [
-						babel({
-							babelrc: false,
-							presets: [
-								[
-									"env",
-									{
-										targets: {
-											browsers: BROWSERS
-										},
-										modules: false
-									}
-								]
-							],
-							plugins: ["external-helpers"]
-						})
-					]
-				},
-				{
-					format: "umd",
-					banner
-				}
-			)
-		)
+		.pipe(rollupUmd)
 		.pipe(uglify())
 		.pipe(rename({ extname: ".min.js" }))
 		.pipe(sourcemaps.write("."))
