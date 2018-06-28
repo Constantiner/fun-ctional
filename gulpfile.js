@@ -7,7 +7,7 @@ const sourcemaps = require("gulp-sourcemaps");
 const uglify = require("gulp-uglify");
 const rollup = require("gulp-better-rollup");
 const BROWSERS = [">0.25%", "not ie 11", "not op_mini all"];
-const SOURCES = "src/**/*.js";
+const SOURCES = "src/*.js";
 const ES6_BUNDLED_SOURCES = "*.mjs";
 const banner = `/**
 * ${pkg.name}
