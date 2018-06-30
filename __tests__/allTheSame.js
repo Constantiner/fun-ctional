@@ -18,9 +18,9 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const inputValue = 5;
 		const result = await allTheSame(square, increment, concatenateTestString)(inputValue);
 		expect(result).toEqual([25, 6, "5test"]);
-		mockFnExpectations(square, 25, inputValue);
-		mockFnExpectations(increment, 6, inputValue);
-		mockFnExpectations(concatenateTestString, "5test", inputValue);
+		mockFnExpectations(square, 1, 25, inputValue);
+		mockFnExpectations(increment, 1, 6, inputValue);
+		mockFnExpectations(concatenateTestString, 1, "5test", inputValue);
 	});
 	it("should work for functions without promises as array", async () => {
 		expect.assertions(7);
@@ -30,9 +30,9 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const inputValue = 5;
 		const result = await allTheSame([square, increment, concatenateTestString])(inputValue);
 		expect(result).toEqual([25, 6, "5test"]);
-		mockFnExpectations(square, 25, inputValue);
-		mockFnExpectations(increment, 6, inputValue);
-		mockFnExpectations(concatenateTestString, "5test", inputValue);
+		mockFnExpectations(square, 1, 25, inputValue);
+		mockFnExpectations(increment, 1, 6, inputValue);
+		mockFnExpectations(concatenateTestString, 1, "5test", inputValue);
 	});
 	it("should work without arguments", async () => {
 		expect.assertions(1);
@@ -67,7 +67,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const square = squareMock(jest);
 		const result = await allTheSame()(createAsyncPromise(square)(inputValue));
 		expect(result).toEqual([]);
-		mockFnExpectations(square, 25, inputValue);
+		mockFnExpectations(square, 1, 25, inputValue);
 	});
 	it("should work for functions with promises as parameters", async () => {
 		expect.assertions(7);
@@ -81,9 +81,9 @@ describe("Composable Promise.all with single input value for all handlers", () =
 			createAsyncPromise(concatenateTestString)
 		)(inputValue);
 		expect(result).toEqual([25, 6, "5test"]);
-		mockFnExpectations(square, 25, inputValue);
-		mockFnExpectations(increment, 6, inputValue);
-		mockFnExpectations(concatenateTestString, "5test", inputValue);
+		mockFnExpectations(square, 1, 25, inputValue);
+		mockFnExpectations(increment, 1, 6, inputValue);
+		mockFnExpectations(concatenateTestString, 1, "5test", inputValue);
 	});
 	it("should work for functions with promises as array", async () => {
 		expect.assertions(7);
@@ -97,9 +97,9 @@ describe("Composable Promise.all with single input value for all handlers", () =
 			concatenateTestString
 		])(inputValue);
 		expect(result).toEqual([25, 6, "5test"]);
-		mockFnExpectations(square, 25, inputValue);
-		mockFnExpectations(increment, 6, inputValue);
-		mockFnExpectations(concatenateTestString, "5test", inputValue);
+		mockFnExpectations(square, 1, 25, inputValue);
+		mockFnExpectations(increment, 1, 6, inputValue);
+		mockFnExpectations(concatenateTestString, 1, "5test", inputValue);
 	});
 	it("should work for functions with promises as parameters and promise as input value", async () => {
 		expect.assertions(9);
@@ -114,10 +114,10 @@ describe("Composable Promise.all with single input value for all handlers", () =
 			createAsyncPromise(concatenateTestString)
 		)(createAsyncPromise(square)(inputValue));
 		expect(result).toEqual([625, 26, "25test"]);
-		mockFnExpectations(square, 25, inputValue);
-		mockFnExpectations(squareInAll, 625, 25);
-		mockFnExpectations(increment, 26, 25);
-		mockFnExpectations(concatenateTestString, "25test", 25);
+		mockFnExpectations(square, 1, 25, inputValue);
+		mockFnExpectations(squareInAll, 1, 625, 25);
+		mockFnExpectations(increment, 1, 26, 25);
+		mockFnExpectations(concatenateTestString, 1, "25test", 25);
 	});
 	it("should work for functions with promises as array and promise as input value", async () => {
 		expect.assertions(9);
@@ -132,10 +132,10 @@ describe("Composable Promise.all with single input value for all handlers", () =
 			createAsyncPromise(concatenateTestString)
 		])(createAsyncPromise(square)(inputValue));
 		expect(result).toEqual([625, 26, "25test"]);
-		mockFnExpectations(square, 25, inputValue);
-		mockFnExpectations(squareInAll, 625, 25);
-		mockFnExpectations(increment, 26, 25);
-		mockFnExpectations(concatenateTestString, "25test", 25);
+		mockFnExpectations(square, 1, 25, inputValue);
+		mockFnExpectations(squareInAll, 1, 625, 25);
+		mockFnExpectations(increment, 1, 26, 25);
+		mockFnExpectations(concatenateTestString, 1, "25test", 25);
 	});
 	it("should work for functions with promises as set and promise as input value", async () => {
 		expect.assertions(9);
@@ -148,10 +148,10 @@ describe("Composable Promise.all with single input value for all handlers", () =
 			new Set([createSyncPromise(squareInAll), increment, createAsyncPromise(concatenateTestString)])
 		)(createAsyncPromise(square)(inputValue));
 		expect(result).toEqual([625, 26, "25test"]);
-		mockFnExpectations(square, 25, inputValue);
-		mockFnExpectations(squareInAll, 625, 25);
-		mockFnExpectations(increment, 26, 25);
-		mockFnExpectations(concatenateTestString, "25test", 25);
+		mockFnExpectations(square, 1, 25, inputValue);
+		mockFnExpectations(squareInAll, 1, 625, 25);
+		mockFnExpectations(increment, 1, 26, 25);
+		mockFnExpectations(concatenateTestString, 1, "25test", 25);
 	});
 	it("should return a promise", () => {
 		expect.assertions(10);
@@ -168,10 +168,10 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		expect(resultingPromise).toBeInstanceOf(Promise);
 		return resultingPromise.then(result => {
 			expect(result).toEqual([625, 26, "25test"]);
-			mockFnExpectations(square, 25, inputValue);
-			mockFnExpectations(squareInAll, 625, 25);
-			mockFnExpectations(increment, 26, 25);
-			mockFnExpectations(concatenateTestString, "25test", 25);
+			mockFnExpectations(square, 1, 25, inputValue);
+			mockFnExpectations(squareInAll, 1, 625, 25);
+			mockFnExpectations(increment, 1, 26, 25);
+			mockFnExpectations(concatenateTestString, 1, "25test", 25);
 		});
 	});
 	it("should reject for functions with promises as array and rejected promise as input value", async () => {
@@ -234,9 +234,9 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(square, 25, inputValue);
-			mockFnExpectations(squareInAll, 625, 25);
-			mockFnExpectations(increment, 26, 25);
+			mockFnExpectations(square, 1, 25, inputValue);
+			mockFnExpectations(squareInAll, 1, 625, 25);
+			mockFnExpectations(increment, 1, 26, 25);
 			expect(concatenateTestString).not.toBeCalled();
 		}
 	});
@@ -259,9 +259,9 @@ describe("Composable Promise.all with single input value for all handlers", () =
 			.catch(e => {
 				expect(e).toBeInstanceOf(TypeError);
 				expect(e.message).toBe("Cannot read property 'second' of undefined");
-				mockFnExpectations(square, 25, inputValue);
-				mockFnExpectations(squareInAll, 625, 25);
-				mockFnExpectations(increment, 26, 25);
+				mockFnExpectations(square, 1, 25, inputValue);
+				mockFnExpectations(squareInAll, 1, 625, 25);
+				mockFnExpectations(increment, 1, 26, 25);
 				expect(concatenateTestString).not.toBeCalled();
 				expect(thenHandler).not.toBeCalled();
 			});
@@ -284,10 +284,10 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(25));
-			mockFnExpectations(square, 25, inputValue);
-			mockFnExpectations(rejectedPromiseFunc, expect.any(Promise), 25);
+			mockFnExpectations(square, 1, 25, inputValue);
+			mockFnExpectations(rejectedPromiseFunc, 1, expect.any(Promise), 25);
 			expect(squareInAll).not.toBeCalled();
-			mockFnExpectations(increment, 26, 25);
+			mockFnExpectations(increment, 1, 26, 25);
 			expect(concatenateTestString).not.toBeCalled();
 		}
 	});
@@ -310,10 +310,10 @@ describe("Composable Promise.all with single input value for all handlers", () =
 			.catch(e => {
 				expect(e).toBeInstanceOf(Error);
 				expect(e.message).toBe(getErrorMessage(25));
-				mockFnExpectations(square, 25, inputValue);
-				mockFnExpectations(rejectedPromiseFunc, expect.any(Promise), 25);
+				mockFnExpectations(square, 1, 25, inputValue);
+				mockFnExpectations(rejectedPromiseFunc, 1, expect.any(Promise), 25);
 				expect(squareInAll).not.toBeCalled();
-				mockFnExpectations(increment, 26, 25);
+				mockFnExpectations(increment, 1, 26, 25);
 				expect(concatenateTestString).not.toBeCalled();
 				expect(thenHandler).not.toBeCalled();
 			});

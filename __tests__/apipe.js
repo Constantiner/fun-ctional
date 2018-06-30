@@ -43,7 +43,7 @@ describe("Tests for asynchronous pipe utility", () => {
 		const aPromise = createAsyncPromise(square)(aNumber);
 		const result = await apipe()(aPromise);
 		expect(result).toBe(16);
-		mockFnExpectations(square, 16, aNumber);
+		mockFnExpectations(square, 1, 16, aNumber);
 	});
 	it('should resolve a "sync" promise with empty pipe', async () => {
 		expect.assertions(3);
@@ -52,7 +52,7 @@ describe("Tests for asynchronous pipe utility", () => {
 		const aPromise = createSyncPromise(square)(aNumber);
 		const result = await apipe()(aPromise);
 		expect(result).toBe(16);
-		mockFnExpectations(square, 16, aNumber);
+		mockFnExpectations(square, 1, 16, aNumber);
 	});
 	it("should return a promise with number and empty pipe", () => {
 		expect.assertions(2);
@@ -71,7 +71,7 @@ describe("Tests for asynchronous pipe utility", () => {
 		expect(result).toBeInstanceOf(Promise);
 		return result.then(result => {
 			expect(result).toBe(16);
-			mockFnExpectations(square, 16, inputValue);
+			mockFnExpectations(square, 1, 16, inputValue);
 		});
 	});
 	it("should return a promise with number and pipe functions", () => {
@@ -83,8 +83,8 @@ describe("Tests for asynchronous pipe utility", () => {
 		expect(result).toBeInstanceOf(Promise);
 		return result.then(result => {
 			expect(result).toBe(17);
-			mockFnExpectations(square, 16, inputValue);
-			mockFnExpectations(increment, 17, 16);
+			mockFnExpectations(square, 1, 16, inputValue);
+			mockFnExpectations(increment, 1, 17, 16);
 		});
 	});
 	it("should return a promise with promise and pipe functions", () => {
@@ -97,9 +97,9 @@ describe("Tests for asynchronous pipe utility", () => {
 		expect(result).toBeInstanceOf(Promise);
 		return result.then(result => {
 			expect(result).toBe(26);
-			mockFnExpectations(increment, 5, inputValue);
-			mockFnExpectations(square, 25, 5);
-			mockFnExpectations(incrementInCompose, 26, 25);
+			mockFnExpectations(increment, 1, 5, inputValue);
+			mockFnExpectations(square, 1, 25, 5);
+			mockFnExpectations(incrementInCompose, 1, 26, 25);
 		});
 	});
 	it("should pipe a number properly", async () => {
@@ -109,8 +109,8 @@ describe("Tests for asynchronous pipe utility", () => {
 		const increment = incrementMock(jest);
 		const result = await apipe(square, increment)(inputValue);
 		expect(result).toBe(17);
-		mockFnExpectations(square, 16, inputValue);
-		mockFnExpectations(increment, 17, 16);
+		mockFnExpectations(square, 1, 16, inputValue);
+		mockFnExpectations(increment, 1, 17, 16);
 	});
 	it("should pipe a number properly with async promise", async () => {
 		expect.assertions(7);
@@ -120,9 +120,9 @@ describe("Tests for asynchronous pipe utility", () => {
 		const incrementInCompose = incrementMock(jest);
 		const result = await apipe(square, incrementInCompose)(createAsyncPromise(increment)(inputValue));
 		expect(result).toBe(26);
-		mockFnExpectations(increment, 5, inputValue);
-		mockFnExpectations(square, 25, 5);
-		mockFnExpectations(incrementInCompose, 26, 25);
+		mockFnExpectations(increment, 1, 5, inputValue);
+		mockFnExpectations(square, 1, 25, 5);
+		mockFnExpectations(incrementInCompose, 1, 26, 25);
 	});
 	it("should pipe a number properly with async promise and async promise in functions chain", async () => {
 		expect.assertions(9);
@@ -135,10 +135,10 @@ describe("Tests for asynchronous pipe utility", () => {
 			new Set([square, createAsyncPromise(incrementInPromiseInCompose), incrementInCompose])
 		)(createAsyncPromise(increment)(inputValue));
 		expect(result).toBe(27);
-		mockFnExpectations(increment, 5, inputValue);
-		mockFnExpectations(square, 25, 5);
-		mockFnExpectations(incrementInPromiseInCompose, 26, 25);
-		mockFnExpectations(incrementInCompose, 27, 26);
+		mockFnExpectations(increment, 1, 5, inputValue);
+		mockFnExpectations(square, 1, 25, 5);
+		mockFnExpectations(incrementInPromiseInCompose, 1, 26, 25);
+		mockFnExpectations(incrementInCompose, 1, 27, 26);
 	});
 	it('should pipe a number properly with "sync" pipe', async () => {
 		expect.assertions(7);
@@ -148,9 +148,9 @@ describe("Tests for asynchronous pipe utility", () => {
 		const incrementInCompose = incrementMock(jest);
 		const result = await apipe(square, incrementInCompose)(createSyncPromise(increment)(inputValue));
 		expect(result).toBe(26);
-		mockFnExpectations(increment, 5, inputValue);
-		mockFnExpectations(square, 25, 5);
-		mockFnExpectations(incrementInCompose, 26, 25);
+		mockFnExpectations(increment, 1, 5, inputValue);
+		mockFnExpectations(square, 1, 25, 5);
+		mockFnExpectations(incrementInCompose, 1, 26, 25);
 	});
 	it("should reject properly with async promise and pipe functions", async () => {
 		expect.assertions(5);
@@ -189,8 +189,8 @@ describe("Tests for asynchronous pipe utility", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(increment, 5, inputValue);
-			mockFnArgumentsExpectations(undefinedErrorFn, 5);
+			mockFnExpectations(increment, 1, 5, inputValue);
+			mockFnArgumentsExpectations(undefinedErrorFn, 1, 5);
 			expect(incrementInCompose).not.toHaveBeenCalled();
 		}
 	});
@@ -208,8 +208,8 @@ describe("Tests for asynchronous pipe utility", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(25));
-			mockFnExpectations(increment, 5, inputValue);
-			mockFnExpectations(square, 25, 5);
+			mockFnExpectations(increment, 1, 5, inputValue);
+			mockFnExpectations(square, 1, 25, 5);
 			expect(incrementInPromiseInCompose).not.toHaveBeenCalled();
 			expect(incrementInCompose).not.toHaveBeenCalled();
 		}
@@ -240,8 +240,8 @@ describe("Tests for asynchronous pipe utility", () => {
 			.catch(e => {
 				expect(e).toBeInstanceOf(TypeError);
 				expect(e.message).toBe("Cannot read property 'second' of undefined");
-				mockFnExpectations(increment, 5, inputValue);
-				mockFnArgumentsExpectations(undefinedErrorFn, 5);
+				mockFnExpectations(increment, 1, 5, inputValue);
+				mockFnArgumentsExpectations(undefinedErrorFn, 1, 5);
 				expect(incrementInCompose).not.toHaveBeenCalled();
 				expect(thenHandler).not.toBeCalled();
 			});

@@ -1,4 +1,4 @@
-import getFunctions from "./util/getFunctions";
+import getFunctions from "./util/extractArguments";
 
 /**
  * Composable version of Promise.all().

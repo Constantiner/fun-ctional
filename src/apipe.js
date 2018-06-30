@@ -1,4 +1,4 @@
-import getFunctions from "./util/getFunctions";
+import getFunctions from "./util/extractArguments";
 
 /**
  * Asynchronous pipe function (apipe stays for async-pipe).
