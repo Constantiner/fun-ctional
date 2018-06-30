@@ -215,27 +215,35 @@ describe("Tests for asynchronous pipe utility", () => {
 		}
 	});
 	it("should reject properly with async promise and empty pipe traditional way", () => {
-		expect.assertions(3);
+		expect.assertions(4);
 		const inputValue = 4;
 		const increment = incrementMock(jest);
-		return apipe()(createAsyncPromise(increment)(inputValue, false)).catch(e => {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(inputValue));
-			expect(increment).not.toHaveBeenCalled();
-		});
+		const thenHandler = getMockFn(jest)(n => n, "thenHandler");
+		return apipe()(createAsyncPromise(increment)(inputValue, false))
+			.then(thenHandler)
+			.catch(e => {
+				expect(e).toBeInstanceOf(Error);
+				expect(e.message).toBe(getErrorMessage(inputValue));
+				expect(increment).not.toHaveBeenCalled();
+				expect(thenHandler).not.toBeCalled();
+			});
 	});
 	it("should reject properly with rejection in one of the pipe functions traditional way", () => {
-		expect.assertions(6);
+		expect.assertions(7);
 		const inputValue = 4;
 		const increment = incrementMock(jest);
 		const incrementInCompose = incrementMock(jest);
 		const undefinedErrorFn = getMockFn(jest)(n => n.first.second * n);
-		return apipe(undefinedErrorFn, incrementInCompose)(createAsyncPromise(increment)(inputValue)).catch(e => {
-			expect(e).toBeInstanceOf(TypeError);
-			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(increment, 5, inputValue);
-			mockFnArgumentsExpectations(undefinedErrorFn, 5);
-			expect(incrementInCompose).not.toHaveBeenCalled();
-		});
+		const thenHandler = getMockFn(jest)(n => n, "thenHandler");
+		return apipe(undefinedErrorFn, incrementInCompose)(createAsyncPromise(increment)(inputValue))
+			.then(thenHandler)
+			.catch(e => {
+				expect(e).toBeInstanceOf(TypeError);
+				expect(e.message).toBe("Cannot read property 'second' of undefined");
+				mockFnExpectations(increment, 5, inputValue);
+				mockFnArgumentsExpectations(undefinedErrorFn, 5);
+				expect(incrementInCompose).not.toHaveBeenCalled();
+				expect(thenHandler).not.toBeCalled();
+			});
 	});
 });
