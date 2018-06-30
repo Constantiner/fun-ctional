@@ -7,6 +7,7 @@ We have plans to add some new functional utilities from time to time.
 - [Documentation](#documentation)
 	- [acompose](#acompose)
 	- [apipe](#apipe)
+	- [allTheSame](#allthesame)
 
 ## Installation
 Install it with NPM:
@@ -114,3 +115,65 @@ It also allows to handle errors like for traditional Promise but only in the tai
 apipe(normalize, upperCase, insertGreetings)(somePromise).catch(e => console.error(e));
 ```
 
+### allTheSame
+
+Composable version of Promise.all().
+
+It gets some value or promise as input, pass it to the functions list It gets some value or promise as input, pass it to the functions list.
+
+It allows to use Promise.all() point-free way:
+
+```JavaScript
+const [ first, second ] = await allTheSame(squareRoot, getDataFromServer)(somePromise);
+```
+
+Or:
+
+```JavaScript
+const [ first, second ] = await allTheSame(squareRoot, getDataFromServer)(25);
+```
+
+Or some more traditional way:
+
+```JavaScript
+allTheSame(squareRoot, getDataFromServer)(somePromise)
+	.then(([ first, second ]) => [ second, first ]);
+```
+
+It first resolves a promise passed and then pass resolution value to all the functions.
+
+Input value is not restricted to promise but can be any value to pass as input to functions.
+
+It also allows to handle errors like for traditional Promise:
+
+```JavaScript
+allTheSame(squareRoot, getDataFromServer)(somePromise).catch(e => console.error(e));
+```
+
+or the same with async/await.
+
+Нou can use it with [`acompose`](#acompose) or [`apipe`](#apipe):
+
+```JavaScript
+const usersHtml = await acompose(getHtmlRepresentation, getUserNames, allTheSame(logIds, getUserList), getUserIds)(somePromise);
+```
+
+You can import it the following way:
+
+```JavaScript
+import { allTheSame } from "@constantiner/fun-ctional";
+```
+Or:
+```JavaScript
+const { allTheSame } = require("@constantiner/fun-ctional");
+```
+
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import allTheSame from "@constantiner/fun-ctional/allTheSame";
+```
+Or:
+```JavaScript
+const allTheSame = require("@constantiner/fun-ctional/allTheSame");
+```
