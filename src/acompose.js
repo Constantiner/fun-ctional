@@ -1,4 +1,5 @@
-import getFunctions from "./util/get-functions";
+import getFunctions from "./util/getFunctions";
+
 /**
  * Asynchronous compose function (acompose stays for async-compose).
  *

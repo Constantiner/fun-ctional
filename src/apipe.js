@@ -1,4 +1,5 @@
-import getFunctions from "./util/get-functions";
+import getFunctions from "./util/getFunctions";
+
 /**
  * Asynchronous pipe function (apipe stays for async-pipe).
  *

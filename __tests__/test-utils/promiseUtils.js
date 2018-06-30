@@ -1,4 +1,5 @@
-import { getError } from "./error-utils";
+import { getError } from "./errorUtils";
+
 const createAsyncPromise = (mapFn = n => n) => (inputValue, successful = true) =>
 	new Promise((resolve, reject) =>
 		setTimeout(() => (successful ? resolve(mapFn(inputValue)) : reject(getError(inputValue))), 100)

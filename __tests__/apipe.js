@@ -1,13 +1,13 @@
 import apipe from "../src/apipe";
-import { createAsyncPromise, createSyncPromise } from "./test-utils/promise-utils";
-import { getErrorMessage } from "./test-utils/error-utils";
+import { getErrorMessage } from "./test-utils/errorUtils";
 import {
-	squareMock,
-	incrementMock,
-	mockFnExpectations,
 	getMockFn,
-	mockFnArgumentsExpectations
-} from "./test-utils/jest-mock-fns";
+	incrementMock,
+	mockFnArgumentsExpectations,
+	mockFnExpectations,
+	squareMock
+} from "./test-utils/jestMockFns";
+import { createAsyncPromise, createSyncPromise } from "./test-utils/promiseUtils";
 
 describe("Tests for asynchronous pipe utility", () => {
 	it("should resolve a number with empty pipe", async () => {

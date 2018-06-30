@@ -1,13 +1,13 @@
-import allTheSame from "../src/all-the-same";
-import { getErrorMessage } from "./test-utils/error-utils";
+import allTheSame from "../src/allTheSame";
+import { getErrorMessage } from "./test-utils/errorUtils";
 import {
 	concatenateTestStringMock,
+	getMockFn,
 	incrementMock,
 	mockFnExpectations,
-	squareMock,
-	getMockFn
-} from "./test-utils/jest-mock-fns";
-import { createAsyncPromise, createSyncPromise } from "./test-utils/promise-utils";
+	squareMock
+} from "./test-utils/jestMockFns";
+import { createAsyncPromise, createSyncPromise } from "./test-utils/promiseUtils";
 
 describe("Composable Promise.all with single input value for all handlers", () => {
 	it("should work for functions without promises as parameters", async () => {

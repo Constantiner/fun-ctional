@@ -1,4 +1,4 @@
-import isIterable from "../../src/util/is-iterable";
+import isIterable from "../../src/util/isIterable";
 
 const testGenerator = function*() {
 	yield 1;

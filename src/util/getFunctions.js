@@ -1,8 +1,8 @@
-import isIterable from "./is-iterable";
+import isIterable from "./isIterable";
 /**
  * Returns an array of functions.
  *
- * @param {array} fns Are input array (just arguments of some other function).
+ * @param {array} fns are input array (just arguments of some other function).
  * If if consists of one element and this element is an iterable returns array from it.
  * @returns {array} Resulting array of functions.
  */

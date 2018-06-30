@@ -1,5 +1,6 @@
 import acompose from "./acompose";
+import allTheSame from "./allTheSame";
 import apipe from "./apipe";
-import allTheSame from "./all-the-same";
 
 export { acompose, apipe, allTheSame };
+
