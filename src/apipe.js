@@ -1,3 +1,4 @@
+import getFunctions from "./util/get-functions";
 /**
  * Asynchronous pipe function (apipe stays for async-pipe).
  *
@@ -19,8 +20,8 @@
  *
  * <pre><code>apipe(normalize, upperCase, insertGreetings)(somePromise).catch(e => console.error(e));</code></pre>
  *
- * @param {function} fns Are functions to pipe chains of promises.
- * @param {Promise} promise Is original promise (or anything else) as input value.
- * @returns A resulting Promise.
+ * @param {...function|Iterable.<*>} fns Are functions to pipe chains of promises.
+ * @returns {(promise : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
  */
-export default (...fns) => async promise => fns.reduce((promise, fn) => promise.then(fn), Promise.resolve(promise));
+export default (...fns) => async promise =>
+	getFunctions(fns).reduce((promise, fn) => promise.then(fn), Promise.resolve(promise));

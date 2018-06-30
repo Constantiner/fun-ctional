@@ -1,3 +1,4 @@
+import getFunctions from "./util/get-functions";
 /**
  * Asynchronous compose function (acompose stays for async-compose).
  *
@@ -19,9 +20,8 @@
  *
  * <pre><code>acompose(insertGreetings, upperCase, normalize)(somePromise).catch(e => console.error(e));</code></pre>
  *
- * @param {function} fns Are functions to compose chains of promises.
- * @param {Promise} promise Is original promise (or anything else) as input value.
- * @returns A resulting Promise.
+ * @param {...function|Iterable.<*>} fns Are functions to compose chains of promises.
+ * @returns {(promise : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
  */
 export default (...fns) => async promise =>
-	fns.reduceRight((promise, fn) => promise.then(fn), Promise.resolve(promise));
+	getFunctions(fns).reduceRight((promise, fn) => promise.then(fn), Promise.resolve(promise));
