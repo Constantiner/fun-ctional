@@ -1,4 +1,4 @@
-import getFunctions from "./util/extractArguments";
+import extractArguments from "./util/extractArguments";
 
 /**
  * Composable version of Promise.all().
@@ -25,5 +25,5 @@ import getFunctions from "./util/extractArguments";
  */
 export default (...fns) => async value => {
 	const val = await Promise.resolve(value);
-	return Promise.all(getFunctions(fns).map(fn => Promise.resolve(val).then(fn)));
+	return Promise.all(extractArguments(fns).map(fn => Promise.resolve(val).then(fn)));
 };
