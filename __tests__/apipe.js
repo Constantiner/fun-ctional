@@ -158,7 +158,7 @@ describe("Tests for asynchronous pipe utility", () => {
 		const squareInCompose = squareMock(jest);
 		const square = squareMock(jest);
 		try {
-			await apipe(squareInCompose, increment)(createAsyncPromise(square)(4, false));
+			await apipe(squareInCompose, increment)(createAsyncPromise(square, false)(4));
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(4));
@@ -171,7 +171,7 @@ describe("Tests for asynchronous pipe utility", () => {
 		expect.assertions(3);
 		const increment = incrementMock(jest);
 		try {
-			await apipe()(createAsyncPromise(increment)(4, false));
+			await apipe()(createAsyncPromise(increment, false)(4));
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(4));
@@ -202,7 +202,7 @@ describe("Tests for asynchronous pipe utility", () => {
 		const incrementInPromiseInCompose = incrementMock(jest);
 		const square = squareMock(jest);
 		try {
-			await apipe(square, n => createAsyncPromise(incrementInPromiseInCompose)(n, false), incrementInCompose)(
+			await apipe(square, createAsyncPromise(incrementInPromiseInCompose, false), incrementInCompose)(
 				createAsyncPromise(increment)(inputValue)
 			);
 		} catch (e) {
@@ -219,7 +219,7 @@ describe("Tests for asynchronous pipe utility", () => {
 		const inputValue = 4;
 		const increment = incrementMock(jest);
 		const thenHandler = getMockFn(jest)(n => n, "thenHandler");
-		return apipe()(createAsyncPromise(increment)(inputValue, false))
+		return apipe()(createAsyncPromise(increment, false)(inputValue))
 			.then(thenHandler)
 			.catch(e => {
 				expect(e).toBeInstanceOf(Error);

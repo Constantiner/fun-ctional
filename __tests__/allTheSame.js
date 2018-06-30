@@ -54,7 +54,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const inputValue = 5;
 		const square = squareMock(jest);
 		try {
-			await allTheSame()(createAsyncPromise(square)(inputValue, false));
+			await allTheSame()(createAsyncPromise(square, false)(inputValue));
 		} catch (e) {
 			expect(square).not.toBeCalled();
 			expect(e).toBeInstanceOf(Error);
@@ -183,7 +183,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const inputValue = 5;
 		try {
 			await allTheSame([createSyncPromise(squareInAll), increment, createAsyncPromise(concatenateTestString)])(
-				createAsyncPromise(square)(inputValue, false)
+				createAsyncPromise(square, false)(inputValue)
 			);
 		} catch (e) {
 			expect(squareInAll).not.toBeCalled();
@@ -203,7 +203,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const thenHandler = getMockFn(jest)(n => n, "thenHandler");
 		const inputValue = 5;
 		return allTheSame(createSyncPromise(squareInAll), increment, createAsyncPromise(concatenateTestString))(
-			createAsyncPromise(square)(inputValue, false)
+			createAsyncPromise(square, false)(inputValue)
 		)
 			.then(thenHandler)
 			.catch(e => {
@@ -271,10 +271,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const square = squareMock(jest, "square");
 		const squareInAll = squareMock(jest, "squareInAll");
 		const increment = incrementMock(jest, "increment");
-		const rejectedPromiseFunc = getMockFn(jest)(
-			n => createSyncPromise(squareInAll)(n, false),
-			"rejectedPromiseFunc"
-		);
+		const rejectedPromiseFunc = getMockFn(jest)(createSyncPromise(squareInAll, false), "rejectedPromiseFunc");
 		const concatenateTestString = concatenateTestStringMock(jest, "concatenateTestString");
 		const inputValue = 5;
 		try {
@@ -296,10 +293,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const square = squareMock(jest, "square");
 		const squareInAll = squareMock(jest, "squareInAll");
 		const increment = incrementMock(jest, "increment");
-		const rejectedPromiseFunc = getMockFn(jest)(
-			n => createSyncPromise(squareInAll)(n, false),
-			"rejectedPromiseFunc"
-		);
+		const rejectedPromiseFunc = getMockFn(jest)(createSyncPromise(squareInAll, false), "rejectedPromiseFunc");
 		const concatenateTestString = concatenateTestStringMock(jest, "concatenateTestString");
 		const thenHandler = getMockFn(jest)(n => n, "thenHandler");
 		const inputValue = 5;

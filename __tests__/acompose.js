@@ -158,7 +158,7 @@ describe("Tests for asynchronous compose utility", () => {
 		const squareInCompose = squareMock(jest);
 		const square = squareMock(jest);
 		try {
-			await acompose([increment, squareInCompose])(createAsyncPromise(square)(4, false));
+			await acompose([increment, squareInCompose])(createAsyncPromise(square, false)(4));
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(4));
@@ -171,7 +171,7 @@ describe("Tests for asynchronous compose utility", () => {
 		expect.assertions(3);
 		const increment = incrementMock(jest);
 		try {
-			await acompose()(createAsyncPromise(increment)(4, false));
+			await acompose()(createAsyncPromise(increment, false)(4));
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(4));
@@ -203,7 +203,7 @@ describe("Tests for asynchronous compose utility", () => {
 		const square = squareMock(jest);
 		try {
 			await acompose(
-				new Set([incrementInCompose, n => createAsyncPromise(incrementInPromiseInCompose)(n, false), square])
+				new Set([incrementInCompose, createAsyncPromise(incrementInPromiseInCompose, false), square])
 			)(createAsyncPromise(increment)(inputValue));
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
@@ -219,7 +219,7 @@ describe("Tests for asynchronous compose utility", () => {
 		const inputValue = 4;
 		const increment = incrementMock(jest);
 		const thenHandler = getMockFn(jest)(n => n, "thenHandler");
-		return acompose()(createAsyncPromise(increment)(inputValue, false))
+		return acompose()(createAsyncPromise(increment, false)(inputValue))
 			.then(thenHandler)
 			.catch(e => {
 				expect(e).toBeInstanceOf(Error);
