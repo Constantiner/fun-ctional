@@ -22,15 +22,13 @@ describe("getFunctions tests", () => {
 	});
 	it("should return array from first parameter as array", () => {
 		const firstParam = [n => n, n => n + 5];
-		const input = [firstParam];
-		const result = extractArguments(input);
+		const result = extractArguments([firstParam]);
 		expect(result).toEqual(firstParam);
 	});
 	it("should return array from first parameter as iterable", () => {
 		const firstParamInitValue = [n => n, n => n + 5];
 		const firstParam = new Set(firstParamInitValue);
-		const input = [firstParam];
-		const result = extractArguments(input);
+		const result = extractArguments([firstParam]);
 		expect(result).toEqual(firstParamInitValue);
 	});
 });
