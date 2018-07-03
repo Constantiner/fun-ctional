@@ -1,12 +1,14 @@
 # fun-ctional<!-- omit in toc -->
-A set of functional utilities (both synchronous and asynchronous) for JavaScript.
 
-We have plans to add some new functional utilities from time to time.
+With `fun-ctional` library you can use most of the familiar functional techniques (like functional composition) in asynchronous world with shining Promises.
+
+It allows to mix synchronous and asynchronous functions to produce reusable composable functions and compatible with all good old utilities from functional libraries like [Lodash](https://lodash.com/). The only difference they always return a promise.
 
 - [Installation](#installation)
 - [Documentation](#documentation)
 	- [acompose](#acompose)
 	- [apipe](#apipe)
+	- [allFromList](#allfromlist)
 	- [allTheSame](#allthesame)
 
 ## Installation
@@ -114,6 +116,68 @@ It also allows to handle errors like for traditional Promise but only in the tai
 ```JavaScript
 apipe(normalize, upperCase, insertGreetings)(somePromise).catch(e => console.error(e));
 ```
+
+### allFromList
+
+Composable version of Promise.all() or asynchronous map over iterable.
+
+It gets an iterable of values or promises as input, resolves them, maps over map function and returns a promise which resolves to an array of values.
+
+It allows asynchronous mapping point-free way and can be used with asynchronous compose functions.
+
+It uses Promise.all() under the hood.
+
+```JavaScript
+const [ first, second, third ] = await allFromList(getDataFromServer)([somePromise1, someValue2, somePromise3]);
+```
+Or
+```JavaScript
+const [ first, second, third ] = await allFromList(getDataFromServer)(somePromise1, someValue2, somePromise3);
+```
+
+Or even more traditional way:
+
+```JavaScript
+allFromList(getDataFromServer)([somePromise1, someValue2, somePromise3])
+	.then(values => console.log(values));
+```
+It first resolves a promises passed and then pass resolutions value to the mapping function.
+
+Input values is not restricted to promises but can be any value to pass as input to functions.
+
+It also allows to handle errors like for traditional Promise:
+
+```JavaScript
+allFromList(getDataFromServer)(somePromise1, someValue2, somePromise3).catch(e => console.error(e));
+```
+Or you can use `try/catch` in `async/await` constructions.
+
+Нou can use it with [`acompose`](#acompose) or [`apipe`](#apipe):
+
+```JavaScript
+const usersHtml = await acompose(getHtmlRepresentation, getUserNames, allFromList(getUser), getUserIds)(somePromise);
+```
+
+You can import it the following way:
+
+```JavaScript
+import { allFromList } from "@constantiner/fun-ctional";
+```
+Or:
+```JavaScript
+const { allFromList } = require("@constantiner/fun-ctional");
+```
+
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import allFromList from "@constantiner/fun-ctional/allFromList";
+```
+Or:
+```JavaScript
+const allFromList = require("@constantiner/fun-ctional/allFromList");
+```
+
 
 ### allTheSame
 

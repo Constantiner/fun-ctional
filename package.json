@@ -1,7 +1,7 @@
 {
 	"name": "@constantiner/fun-ctional",
 	"version": "0.4.0",
-	"description": "A set of functional utilities (both synchronous and asynchronous) for JavaScript",
+	"description": "The library brings most of the familiar functional techniques (like functional composition) in asynchronous world with shining Promises",
 	"main": "fun-ctional",
 	"scripts": {
 		"test": "npx jest",
@@ -24,7 +24,8 @@
 		"Asynchronous",
 		"Utility",
 		"Utilities",
-		"ES6"
+		"ES6",
+		"Promise"
 	],
 	"author": "Konstantin Kovalev <constantiner@gmail.com>",
 	"license": "MIT",
