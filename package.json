@@ -1,7 +1,7 @@
 {
 	"name": "@constantiner/fun-ctional",
 	"version": "0.4.0",
-	"description": "The library brings most of the familiar functional techniques (like functional composition) in asynchronous world with shining Promises",
+	"description": "The library brings most of the familiar functional techniques (like functional composition) to asynchronous world with shining Promises",
 	"main": "fun-ctional",
 	"scripts": {
 		"test": "npx jest",
