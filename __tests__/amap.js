@@ -1,4 +1,4 @@
-import allFromList from "../src/allFromList";
+import amap from "../src/amap";
 import { getErrorMessage } from "./test-utils/errorUtils";
 import {
 	getMockFn,
@@ -9,13 +9,13 @@ import {
 } from "./test-utils/jestMockFns";
 import { createAsyncPromise, createSyncPromise } from "./test-utils/promiseUtils";
 
-describe("allFromList tests", () => {
+describe("amap tests", () => {
 	it("should work for base case", async () => {
 		expect.assertions(6);
 		const input1 = 4;
 		const input2 = 5;
 		const square = squareMock(jest, "square");
-		const result = await allFromList(square)(input1, input2);
+		const result = await amap(square)(input1, input2);
 		expect(result).toEqual([16, 25]);
 		expect(square).toHaveBeenCalledTimes(2);
 		mockFnExpectations(square, 1, 16, input1);
@@ -26,7 +26,7 @@ describe("allFromList tests", () => {
 		const input1 = 4;
 		const input2 = 5;
 		const square = squareMock(jest, "square");
-		const result = await allFromList(square)(new Set([input1, input2]));
+		const result = await amap(square)(new Set([input1, input2]));
 		expect(result).toEqual([16, 25]);
 		expect(square).toHaveBeenCalledTimes(2);
 		mockFnExpectations(square, 1, 16, input1);
@@ -38,7 +38,7 @@ describe("allFromList tests", () => {
 		const input2 = 5;
 		const square = squareMock(jest, "square");
 		const increment = incrementMock(jest, "increment");
-		const result = await allFromList(square)(new Set([input1, createAsyncPromise(increment)(input2)]));
+		const result = await amap(square)(new Set([input1, createAsyncPromise(increment)(input2)]));
 		expect(result).toEqual([16, 36]);
 		expect(square).toHaveBeenCalledTimes(2);
 		mockFnExpectations(increment, 1, 6, input2);
@@ -52,7 +52,7 @@ describe("allFromList tests", () => {
 		const square = squareMock(jest, "square");
 		const squareInPromise = squareMock(jest, "squareInPromise");
 		const increment = incrementMock(jest, "increment");
-		const result = await allFromList(square)(
+		const result = await amap(square)(
 			createAsyncPromise(squareInPromise)(input1),
 			createSyncPromise(increment)(input2)
 		);
@@ -71,7 +71,7 @@ describe("allFromList tests", () => {
 		const squareInPromise = squareMock(jest, "squareInPromise");
 		const increment = incrementMock(jest, "increment");
 		try {
-			await allFromList(square)([
+			await amap(square)([
 				createAsyncPromise(squareInPromise, false)(input1),
 				createSyncPromise(increment)(input2)
 			]);
@@ -92,7 +92,7 @@ describe("allFromList tests", () => {
 		const squareInPromise = squareMock(jest, "squareInPromise");
 		const getObjFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjFromInt");
 		try {
-			await allFromList(dangerousFn)(
+			await amap(dangerousFn)(
 				createAsyncPromise(squareInPromise)(input1),
 				createSyncPromise(getObjFromInt)(input2)
 			);
@@ -111,7 +111,7 @@ describe("allFromList tests", () => {
 		const input1 = 4;
 		const input2 = 5;
 		const square = squareMock(jest, "square");
-		const result = await allFromList(createAsyncPromise(square))(new Set([input1, input2]));
+		const result = await amap(createAsyncPromise(square))(new Set([input1, input2]));
 		expect(result).toEqual([16, 25]);
 		expect(square).toHaveBeenCalledTimes(2);
 		mockFnExpectations(square, 1, 16, input1);
@@ -123,7 +123,7 @@ describe("allFromList tests", () => {
 		const input2 = 5;
 		const square = squareMock(jest, "square");
 		try {
-			await allFromList(createAsyncPromise(square, false))(new Set([input1, input2]));
+			await amap(createAsyncPromise(square, false))(new Set([input1, input2]));
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(input1));
@@ -136,7 +136,7 @@ describe("allFromList tests", () => {
 		const input2 = 5;
 		const square = squareMock(jest, "square");
 		const promiseMapFn = incrementMock(jest, "promiseMapFn");
-		return allFromList(createAsyncPromise(square, false))(new Set([input1, input2]))
+		return amap(createAsyncPromise(square, false))(new Set([input1, input2]))
 			.then(promiseMapFn)
 			.catch(e => {
 				expect(e).toBeInstanceOf(Error);

@@ -43,7 +43,8 @@
 		"collectCoverage": true,
 		"collectCoverageFrom": [
 			"src/**",
-			"!src/fun-ctional.js"
+			"!src/fun-ctional.js",
+			"!src/allFromList.js"
 		]
 	},
 	"prettier": {
