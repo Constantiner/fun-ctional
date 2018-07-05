@@ -122,7 +122,7 @@ apipe(normalize, upperCase, insertGreetings)(somePromise).catch(e => console.err
 
 An asynchronous version of map over an iterable (amap stays for async-map).
 
-It gets an iterable of values (or promises) as input, resolves them, maps over map function and returns a promise which resolves to an array of values.
+It gets an iterable of values (or promises) as input (or a promise to resolve to iterable), resolves them, maps over map function and returns a promise which resolves to an array of values.
 
 It allows asynchronous mapping point-free way and can be used with asynchronous compose functions.
 
@@ -130,10 +130,6 @@ It uses Promise.all() under the hood.
 
 ```JavaScript
 const [ first, second, third ] = await amap(getDataFromServer)([somePromise1, someValue2, somePromise3]);
-```
-Or
-```JavaScript
-const [ first, second, third ] = await amap(getDataFromServer)(somePromise1, someValue2, somePromise3);
 ```
 
 Or even more traditional way:
@@ -144,12 +140,12 @@ amap(getDataFromServer)([somePromise1, someValue2, somePromise3])
 ```
 It first resolves a promises passed and then pass resolutions value to the mapping function.
 
-Input values is not restricted to promises but can be any value to pass as input to functions.
+Input iterable's values are not restricted to promises but can be any value to pass as input to functions.
 
 It also allows to handle errors like for traditional Promise:
 
 ```JavaScript
-amap(getDataFromServer)(somePromise1, someValue2, somePromise3).catch(e => console.error(e));
+amap(getDataFromServer)([somePromise1, someValue2, somePromise3]).catch(e => console.error(e));
 ```
 Or you can use `try/catch` in `async/await` constructions.
 
@@ -185,7 +181,7 @@ Composable version of Promise.all() or asynchronous map over iterable.
 
 It is just an alias of [`amap`](#amap) function.
 
-It gets an iterable of values or promises as input, resolves them, maps over map function and returns a promise which resolves to an array of values.
+It gets an iterable of values (or promises) as input (or a promise to resolve to iterable), resolves them, maps over map function and returns a promise which resolves to an array of values.
 
 It allows asynchronous mapping point-free way and can be used with asynchronous compose functions.
 
@@ -193,10 +189,6 @@ It uses Promise.all() under the hood.
 
 ```JavaScript
 const [ first, second, third ] = await allFromList(getDataFromServer)([somePromise1, someValue2, somePromise3]);
-```
-Or
-```JavaScript
-const [ first, second, third ] = await allFromList(getDataFromServer)(somePromise1, someValue2, somePromise3);
 ```
 
 Or even more traditional way:
@@ -207,12 +199,12 @@ allFromList(getDataFromServer)([somePromise1, someValue2, somePromise3])
 ```
 It first resolves a promises passed and then pass resolutions value to the mapping function.
 
-Input values is not restricted to promises but can be any value to pass as input to functions.
+Input iterable's values are not restricted to promises but can be any value to pass as input to functions.
 
 It also allows to handle errors like for traditional Promise:
 
 ```JavaScript
-allFromList(getDataFromServer)(somePromise1, someValue2, somePromise3).catch(e => console.error(e));
+allFromList(getDataFromServer)([somePromise1, someValue2, somePromise3]).catch(e => console.error(e));
 ```
 Or you can use `try/catch` in `async/await` constructions.
 

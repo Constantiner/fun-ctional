@@ -5,8 +5,8 @@ import amap from "./amap";
  * 
  * It is just an alias of amap function.
  *
- * It gets an iterable of values or promises as input, resolves them, maps over map function
- * and returns a promise which resolves to an array of values.
+ * It gets an iterable of values (or promises) as input (or promise to resolve to iterable),
+ * resolves them, maps over map function and returns a promise which resolves to an array of values.
  *
  * It allows asynchronous mapping point-free way and can be used with asynchronous compose functions.
  *
@@ -16,7 +16,7 @@ import amap from "./amap";
  *
  * It first resolves a promises passed and then pass resolutions value to the mapping function.
  *
- * Input values is not restricted to promises but can be any value to pass as input to functions.
+ * Input iterable's values are not restricted to promises but can be any value to pass as input to functions.
  *
  * It also allows to handle errors like for traditional Promise:
  *
