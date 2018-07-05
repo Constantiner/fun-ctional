@@ -1,4 +1,4 @@
-import { extractArguments } from "./util/extractArguments";
+import { extractResolvedArguments } from "./util/extractArguments";
 
 /**
  * An asynchronous version of map over an iterable (amap stays for async-map).
@@ -27,4 +27,4 @@ import { extractArguments } from "./util/extractArguments";
  * and returns a Promise.
  */
 export default mapFn => async (...values) =>
-	Promise.all((await extractArguments(values)).map(val => Promise.resolve(val).then(mapFn)));
+	Promise.all((await extractResolvedArguments(values)).map(val => Promise.resolve(val).then(mapFn)));
