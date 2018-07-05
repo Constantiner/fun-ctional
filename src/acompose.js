@@ -1,4 +1,4 @@
-import extractArguments from "./util/extractArguments";
+import { extractResolvedArguments } from "./util/extractArguments";
 
 /**
  * Asynchronous compose function (acompose stays for async-compose).
@@ -25,4 +25,4 @@ import extractArguments from "./util/extractArguments";
  * @returns {(promise : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
  */
 export default (...fns) => async promise =>
-	extractArguments(fns).reduceRight((promise, fn) => promise.then(fn), Promise.resolve(promise));
+	extractResolvedArguments(fns).reduceRight((promise, fn) => promise.then(fn), Promise.resolve(promise));
