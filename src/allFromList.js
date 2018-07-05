@@ -25,7 +25,7 @@ import amap from "./amap";
  * @param {function} mapFn Is mapping function which can produce a promise (but not restricted to this).
  * Function can return promises or may just perform some mapping.
  * So you can use it in synchronous code taking in mind it returns promise so can't be resolved immediately.
- * @returns {(promise : ...Promise|...any|Iterable.<*>) => Promise} A function which expects any values as input (resolving to Promise)
+ * @returns {(iterable : Promise|Iterable.<*>) => Promise} A function which expects any values as input (resolving to Promise)
  * and returns a Promise.
  */
 export default amap;
