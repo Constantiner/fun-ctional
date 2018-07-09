@@ -1,16 +1,16 @@
-import acatch from "../src/acatch";
+import withCatch from "../src/withCatch";
 import { getError } from "./test-utils/errorUtils";
 import { getMockFn, incrementMock, mockFnExpectations, squareMock } from "./test-utils/jestMockFns";
 import { createAsyncPromise, createSyncPromise } from "./test-utils/promiseUtils";
 
-describe("acatch tests", () => {
+describe("withCatch tests", () => {
 	it("should work for case without rejects", async () => {
 		expect.assertions(6);
 		const input = 7;
 		const square = squareMock(jest, "square");
 		const fallbackFn = getMockFn(jest)(() => input * 4, "fallbackFn");
 		const catchFn = getMockFn(jest)(() => input * 17, "catchFn");
-		const result = await acatch(square, fallbackFn)(input).catch(catchFn);
+		const result = await withCatch(square, fallbackFn)(input).catch(catchFn);
 		expect(result).toBe(49);
 		mockFnExpectations(square, 1, 49, input);
 		expect(square).toHaveBeenCalledTimes(1);
@@ -24,7 +24,7 @@ describe("acatch tests", () => {
 		const increment = incrementMock(jest, "increment");
 		const fallbackFn = getMockFn(jest)(() => input * 4, "fallbackFn");
 		const catchFn = getMockFn(jest)(() => input * 17, "catchFn");
-		const result = await acatch(square, fallbackFn)(createSyncPromise(increment)(input)).catch(catchFn);
+		const result = await withCatch(square, fallbackFn)(createSyncPromise(increment)(input)).catch(catchFn);
 		expect(result).toBe(64);
 		mockFnExpectations(square, 1, 64, 8);
 		expect(square).toHaveBeenCalledTimes(1);
@@ -40,7 +40,7 @@ describe("acatch tests", () => {
 		const increment = incrementMock(jest, "increment");
 		const fallbackFn = getMockFn(jest)(() => input * 4, "fallbackFn");
 		const catchFn = getMockFn(jest)(() => input * 17, "catchFn");
-		const result = await acatch(square, fallbackFn)(createAsyncPromise(increment, false)(input)).catch(catchFn);
+		const result = await withCatch(square, fallbackFn)(createAsyncPromise(increment, false)(input)).catch(catchFn);
 		expect(result).toBe(28);
 		expect(increment).not.toBeCalled();
 		expect(square).not.toBeCalled();
@@ -55,7 +55,7 @@ describe("acatch tests", () => {
 		const increment = incrementMock(jest, "increment");
 		const fallbackFn = getMockFn(jest)(() => input * 4, "fallbackFn");
 		const catchFn = getMockFn(jest)(() => input * 17, "catchFn");
-		const result = await acatch(createAsyncPromise(square), fallbackFn)(createSyncPromise(increment)(input)).catch(
+		const result = await withCatch(createAsyncPromise(square), fallbackFn)(createSyncPromise(increment)(input)).catch(
 			catchFn
 		);
 		expect(result).toBe(64);
@@ -66,14 +66,14 @@ describe("acatch tests", () => {
 		expect(fallbackFn).not.toBeCalled();
 		expect(catchFn).not.toBeCalled();
 	});
-	it("should work for reject in promise in acatch param", async () => {
+	it("should work for reject in promise in withCatch param", async () => {
 		expect.assertions(8);
 		const input = 7;
 		const square = squareMock(jest, "square");
 		const increment = incrementMock(jest, "increment");
 		const fallbackFn = getMockFn(jest)(() => input * 4, "fallbackFn");
 		const catchFn = getMockFn(jest)(() => input * 17, "catchFn");
-		const result = await acatch(createAsyncPromise(square, false), fallbackFn)(
+		const result = await withCatch(createAsyncPromise(square, false), fallbackFn)(
 			createSyncPromise(increment)(input)
 		).catch(catchFn);
 		expect(result).toBe(28);
@@ -83,14 +83,14 @@ describe("acatch tests", () => {
 		mockFnExpectations(fallbackFn, 1, 28, getError(8));
 		expect(catchFn).not.toBeCalled();
 	});
-	it("should work for reject in promise in acatch param and promise in failback", async () => {
+	it("should work for reject in promise in withCatch param and promise in failback", async () => {
 		expect.assertions(8);
 		const input = 7;
 		const square = squareMock(jest, "square");
 		const increment = incrementMock(jest, "increment");
 		const fallbackFn = getMockFn(jest)(() => input * 4, "fallbackFn");
 		const catchFn = getMockFn(jest)(() => input * 17, "catchFn");
-		const result = await acatch(createAsyncPromise(square, false), createAsyncPromise(fallbackFn))(
+		const result = await withCatch(createAsyncPromise(square, false), createAsyncPromise(fallbackFn))(
 			createSyncPromise(increment)(input)
 		).catch(catchFn);
 		expect(result).toBe(28);
@@ -107,7 +107,7 @@ describe("acatch tests", () => {
 		const increment = incrementMock(jest, "increment");
 		const fallbackFn = getMockFn(jest)(() => input * 4, "fallbackFn");
 		const catchFn = getMockFn(jest)(() => input * 17, "catchFn");
-		const result = await acatch(createAsyncPromise(square, false), createAsyncPromise(fallbackFn, false))(
+		const result = await withCatch(createAsyncPromise(square, false), createAsyncPromise(fallbackFn, false))(
 			createSyncPromise(increment)(input)
 		).catch(catchFn);
 		expect(result).toBe(119);
