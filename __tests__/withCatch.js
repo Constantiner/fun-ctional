@@ -67,7 +67,7 @@ describe("withCatch tests", () => {
 		expect(catchFn).not.toBeCalled();
 	});
 	it("should work for reject in promise in withCatch param", async () => {
-		expect.assertions(8);
+		expect.assertions(9);
 		const input = 7;
 		const square = squareMock(jest, "square");
 		const increment = incrementMock(jest, "increment");
@@ -81,10 +81,11 @@ describe("withCatch tests", () => {
 		expect(increment).toHaveBeenCalledTimes(1);
 		expect(square).not.toBeCalled();
 		mockFnExpectations(fallbackFn, 1, 28, getError(8));
+		expect(fallbackFn).toHaveBeenCalledTimes(1);
 		expect(catchFn).not.toBeCalled();
 	});
-	it("should work for reject in promise in withCatch param and promise in failback", async () => {
-		expect.assertions(8);
+	it("should work for reject in promise in withCatch param and promise in fallback", async () => {
+		expect.assertions(9);
 		const input = 7;
 		const square = squareMock(jest, "square");
 		const increment = incrementMock(jest, "increment");
@@ -98,9 +99,10 @@ describe("withCatch tests", () => {
 		expect(increment).toHaveBeenCalledTimes(1);
 		expect(square).not.toBeCalled();
 		mockFnExpectations(fallbackFn, 1, 28, getError(8));
+		expect(fallbackFn).toHaveBeenCalledTimes(1);
 		expect(catchFn).not.toBeCalled();
 	});
-	it("should reject for rejection in failback function", async () => {
+	it("should reject for rejection in fallback function", async () => {
 		expect.assertions(9);
 		const input = 7;
 		const square = squareMock(jest, "square");
