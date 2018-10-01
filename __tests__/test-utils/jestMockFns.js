@@ -1,5 +1,3 @@
-import { access } from "fs";
-
 const getMockFn = jest => (fn, name) => jest.fn(fn).mockName(name);
 const squareMock = (jest, name) => getMockFn(jest)(n => n * n, name);
 const identityMock = (jest, name) => getMockFn(jest)(n => n, name);

@@ -1,11 +1,7 @@
 import areduce from "../src/areduce";
 import { createAsyncPromise, createSyncPromise } from "./test-utils/promiseUtils";
 import {
-	getMockFn,
-	incrementMock,
-	mockFnArgumentsExpectations,
 	mockFnExpectations,
-	squareMock,
 	identityMock,
 	sumReduceFnMock,
 	deductionReduceFnMock,
@@ -208,7 +204,7 @@ describe("areduce tests", () => {
 		}
 	});
 	it("should reject for mixed list of promises and not as input and with non symmetrical operation and promised initial value and fail in last input", async () => {
-		expect.assertions(7);
+		expect.assertions(10);
 		const concatenationFn = concatenationReduceFnMock(jest, "sumFn");
 		const identityArg1 = identityMock(jest, "identityArg1");
 		const identityArg3 = identityMock(jest, "identityArg3");
@@ -217,7 +213,7 @@ describe("areduce tests", () => {
 		const arg1 = createAsyncPromise(identityArg1)(arg1Value);
 		const arg2 = 2;
 		const arg3Value = 3;
-		const arg3 = createSyncPromise(identityArg3, false)(arg3Value);
+		const arg3 = createAsyncPromise(identityArg3, false)(arg3Value);
 		const initialAccValue = 10;
 		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
 		const input = new Set([arg1, arg2, arg3]);
@@ -228,11 +224,12 @@ describe("areduce tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(arg3Value));
-			expect(identityArg1).not.toBeCalled();
+			mockFnExpectations(identityArg1, 1, arg1Value, arg1Value);
+			expect(identityArg1).toHaveBeenCalledTimes(1);
+			mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
+			expect(identityAcc).toHaveBeenCalledTimes(1);
+			expect(concatenationFn).toHaveBeenCalledTimes(2);
 			expect(identityArg3).not.toBeCalled();
-			expect(identityAcc).not.toBeCalled();
-			expect(identityAcc).not.toBeCalled();
-			expect(concatenationFn).not.toBeCalled();
 		}
 	});
 	it("should work for mixed list of promises and not as input and with non symmetrical operation and promised initial value with promise in reduce function", async () => {

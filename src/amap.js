@@ -26,5 +26,5 @@ import { extractArrayFromArgument } from "./util/extractArguments";
  * @returns {(iterable : Promise|Iterable.<*>) => Promise} A function which expects any values as input (resolving to Promise)
  * and returns a Promise.
  */
-export default mapFn => async (iterable) =>
+export default mapFn => async iterable =>
 	Promise.all((await extractArrayFromArgument(iterable)).map(val => Promise.resolve(val).then(mapFn)));
