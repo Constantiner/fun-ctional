@@ -175,7 +175,7 @@ describe("areduce tests", () => {
 		mockFnExpectations(concatenationFn, 3, expectedResult, "1012", arg3Value, 2);
 	});
 	it("should reject for mixed list of promises and not as input and with non symmetrical operation and promised initial value and fail in first input", async () => {
-		expect.assertions(10);
+		expect.assertions(7);
 		const concatenationFn = concatenationReduceFnMock(jest, "sumFn");
 		const identityArg1 = identityMock(jest, "identityArg1");
 		const identityArg3 = identityMock(jest, "identityArg3");
@@ -195,11 +195,9 @@ describe("areduce tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(arg1Value));
-			expect(identityArg1).not.toBeCalled();
-			mockFnExpectations(identityArg3, 1, arg3Value, arg3Value);
-			expect(identityArg3).toHaveBeenCalledTimes(1);
 			mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
 			expect(identityAcc).toHaveBeenCalledTimes(1);
+			expect(identityArg1).not.toBeCalled();
 			expect(concatenationFn).not.toBeCalled();
 		}
 	});
