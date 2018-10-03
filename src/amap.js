@@ -1,4 +1,4 @@
-import { extractArrayFromArgument } from "./util/extractArguments";
+import extractArrayFromArgument from "./util/extractArrayFromArgument";
 
 /**
  * An asynchronous version of map over an iterable (amap stays for async-map).

@@ -1,4 +1,4 @@
-import { extractResolvedArguments } from "./util/extractArguments";
+import extractResolvedArguments from "./util/extractResolvedArguments";
 
 /**
  * Asynchronous compose function (acompose stays for async-compose).

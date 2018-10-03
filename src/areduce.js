@@ -1,4 +1,4 @@
-import { extractArrayFromArgument } from "./util/extractArguments";
+import extractArrayFromArgument from "./util/extractArrayFromArgument";
 import { getReducerArgs } from "./util/reducer";
 
 /**

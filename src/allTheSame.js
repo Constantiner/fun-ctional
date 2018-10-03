@@ -1,4 +1,4 @@
-import { extractResolvedArguments } from "./util/extractArguments";
+import extractResolvedArguments from "./util/extractResolvedArguments";
 
 /**
  * Composable version of Promise.all().
