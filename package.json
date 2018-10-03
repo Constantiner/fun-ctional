@@ -57,24 +57,24 @@
 		"npm": ">=5.2.0"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.0.0",
+		"@babel/plugin-external-helpers": "^7.0.0",
+		"@babel/preset-env": "^7.0.0",
 		"@types/gulp": "^4.0.5",
 		"@types/jest": "^23.3.2",
 		"babel-core": "^6.26.3",
-		"babel-plugin-external-helpers": "^6.22.0",
-		"babel-preset-env": "^1.7.0",
 		"babel-preset-import-export": "^1.0.2",
 		"del": "^3.0.0",
 		"eslint": "^4.19.1",
 		"eslint-config-prettier": "^2.10.0",
 		"gulp": "^3.9.1",
-		"gulp-babel": "^7.0.1",
 		"gulp-better-rollup": "^3.3.0",
 		"gulp-rename": "^1.4.0",
 		"gulp-sourcemaps": "^2.6.4",
 		"gulp-uglify": "^3.0.1",
 		"jest": "^23.6.0",
 		"prettier": "^1.14.3",
-		"rollup-plugin-babel": "^3.0.7"
+		"rollup-plugin-babel": "^4.0.1"
 	},
 	"dependencies": {}
 }

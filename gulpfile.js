@@ -40,7 +40,7 @@ const getSourceFile = () => gulp.src(SOURCES),
 					babelrc: false,
 					presets: [
 						[
-							"env",
+							"@babel/preset-env",
 							{
 								targets: {
 									browsers: BROWSERS
@@ -49,7 +49,7 @@ const getSourceFile = () => gulp.src(SOURCES),
 							}
 						]
 					],
-					plugins: ["external-helpers"]
+					plugins: ["@babel/plugin-external-helpers"]
 				})
 			]
 		},

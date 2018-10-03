@@ -1,3 +1,5 @@
 {
-	"presets": ["import-export"]
+	"presets": [
+		"import-export"
+	]
 }
