@@ -14,6 +14,7 @@ It allows to mix synchronous and asynchronous functions to produce reusable comp
 	- [allFromList](#allfromlist)
 	- [allTheSame](#allthesame)
 	- [acatch](#acatch)
+	- [withCatch](#withcatch)
 
 ## Installation
 Install it with NPM:
@@ -482,4 +483,62 @@ Or:
 
 ```JavaScript
 const acatch = require("@constantiner/fun-ctional/acatch");
+```
+
+### withCatch
+
+Composable version of `promise.then(mapFn).catch(catchFn)`.
+
+It gets a value (a promise or not), resolves it and handles as `promise.then(mapFn).catch(catchFn)` returning resulting promise.
+
+It allows to handle errors within [`acompose`](#acompose) or [`apipe`](#apipe) asynchronous composition chains to restore broken state etc.
+
+A sample with [`acompose`](#acompose):
+
+```JavaScript
+const resultOrFallback = await acompose(withCatch(canFailFn, handleAndRecoverFn), canFailTooFn)(someInput);
+```
+
+Standalone usage:
+
+```JavaScript
+const resultOrFallback = await withCatch(canFailFn, handleAndRecoverFn)(requestDataAndReturnPromise());
+```
+
+Here `canFailFn` is replacement for standard Promise's `then` method (which can reject) and `handleAndRecoverFn` for Promise's `catch`.
+
+It is the same as the following:
+
+```JavaScript
+requestDataAndReturnPromise().then(canFailFn).catch(handleAndRecoverFn).then(resultOrFallback => console.log(resultOrFallback));
+```
+
+Or even more complex example:
+
+```JavaScript
+const resultOrFallback = await withCatch(acompose(handlerFn2, handlerFn1), handleAndRecoverFn)(requestDataAndReturnPromise());
+```
+
+You can import it the following way:
+
+```JavaScript
+import { withCatch } from "@constantiner/fun-ctional";
+```
+
+Or:
+
+```JavaScript
+const { withCatch } = require("@constantiner/fun-ctional");
+```
+
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import withCatch from "@constantiner/fun-ctional/withCatch";
+```
+
+Or:
+
+```JavaScript
+const withCatch = require("@constantiner/fun-ctional/withCatch");
 ```
