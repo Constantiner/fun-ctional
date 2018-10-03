@@ -13,6 +13,7 @@ It allows to mix synchronous and asynchronous functions to produce reusable comp
 	- [areduceRight](#areduceright)
 	- [allFromList](#allfromlist)
 	- [allTheSame](#allthesame)
+	- [acatch](#acatch)
 
 ## Installation
 Install it with NPM:
@@ -30,14 +31,17 @@ At this moment the following utilities are available:
 Asynchronous compose function (`acompose` stays for async-compose).
 
 The main purpose is to replace a Promise handling code like this:
+
 ```JavaScript
 somePromise.then(normalize).then(upperCase).then(insertGreetings);
 ```
 
 with point-free style of functional compose syntax like the following:
+
 ```JavaScript
 acompose(insertGreetings, upperCase, normalize)(somePromise);
 ```
+
 It is lazy and allows of reusing of promise handling chains.
 
 First you need to import it:
@@ -45,7 +49,9 @@ First you need to import it:
 ```JavaScript
 import { acompose } from "@constantiner/fun-ctional";
 ```
+
 Or:
+
 ```JavaScript
 const { acompose } = require("@constantiner/fun-ctional");
 ```
@@ -55,7 +61,9 @@ Or you can import it separately without the whole bundle:
 ```JavaScript
 import acompose from "@constantiner/fun-ctional/acompose";
 ```
+
 Or:
+
 ```JavaScript
 const acompose = require("@constantiner/fun-ctional/acompose");
 ```
@@ -78,14 +86,17 @@ acompose(insertGreetings, upperCase, normalize)(somePromise).catch(e => console.
 Asynchronous pipe function (`apipe` stays for async-pipe).
 
 The main purpose is to replace a Promise handling code like this:
+
 ```JavaScript
 somePromise.then(normalize).then(upperCase).then(insertGreetings);
 ```
 
 with point-free style of functional pipe syntax like the following:
+
 ```JavaScript
 apipe(normalize, upperCase, insertGreetings)(somePromise);
 ```
+
 It is lazy and allows of reusing of promise handling chains.
 
 First you need to import it:
@@ -93,16 +104,21 @@ First you need to import it:
 ```JavaScript
 import { apipe } from "@constantiner/fun-ctional";
 ```
+
 Or:
+
 ```JavaScript
 const { apipe } = require("@constantiner/fun-ctional");
 ```
+
 Or you can import it separately without the whole bundle:
 
 ```JavaScript
 import apipe from "@constantiner/fun-ctional/apipe";
 ```
+
 Or:
+
 ```JavaScript
 const apipe = require("@constantiner/fun-ctional/apipe");
 ```
@@ -140,6 +156,7 @@ Or even more traditional way:
 amap(getDataFromServer)([somePromise1, someValue2, somePromise3])
 	.then(values => console.log(values));
 ```
+
 It first resolves a promises passed and then pass resolutions value to the mapping function.
 
 Input iterable's values are not restricted to promises but can be any value to pass as input to functions.
@@ -149,6 +166,7 @@ It also allows to handle errors like for traditional Promise:
 ```JavaScript
 amap(getDataFromServer)([somePromise1, someValue2, somePromise3]).catch(e => console.error(e));
 ```
+
 Or you can use `try/catch` in `async/await` constructions.
 
 Нou can use it with [`acompose`](#acompose) or [`apipe`](#apipe):
@@ -162,7 +180,9 @@ You can import it the following way:
 ```JavaScript
 import { amap } from "@constantiner/fun-ctional";
 ```
+
 Or:
+
 ```JavaScript
 const { amap } = require("@constantiner/fun-ctional");
 ```
@@ -172,7 +192,9 @@ Or you can import it separately without the whole bundle:
 ```JavaScript
 import amap from "@constantiner/fun-ctional/amap";
 ```
+
 Or:
+
 ```JavaScript
 const amap = require("@constantiner/fun-ctional/amap");
 ```
@@ -209,7 +231,9 @@ You can import it the following way:
 ```JavaScript
 import { areduce } from "@constantiner/fun-ctional";
 ```
+
 Or:
+
 ```JavaScript
 const { areduce } = require("@constantiner/fun-ctional");
 ```
@@ -219,7 +243,9 @@ Or you can import it separately without the whole bundle:
 ```JavaScript
 import areduce from "@constantiner/fun-ctional/areduce";
 ```
+
 Or:
+
 ```JavaScript
 const areduce = require("@constantiner/fun-ctional/areduce");
 ```
@@ -256,7 +282,9 @@ You can import it the following way:
 ```JavaScript
 import { areduceRight } from "@constantiner/fun-ctional";
 ```
+
 Or:
+
 ```JavaScript
 const { areduceRight } = require("@constantiner/fun-ctional");
 ```
@@ -266,7 +294,9 @@ Or you can import it separately without the whole bundle:
 ```JavaScript
 import areduceRight from "@constantiner/fun-ctional/areduceRight";
 ```
+
 Or:
+
 ```JavaScript
 const areduceRight = require("@constantiner/fun-ctional/areduceRight");
 ```
@@ -293,6 +323,7 @@ Or even more traditional way:
 allFromList(getDataFromServer)([somePromise1, someValue2, somePromise3])
 	.then(values => console.log(values));
 ```
+
 It first resolves a promises passed and then pass resolutions value to the mapping function.
 
 Input iterable's values are not restricted to promises but can be any value to pass as input to functions.
@@ -302,6 +333,7 @@ It also allows to handle errors like for traditional Promise:
 ```JavaScript
 allFromList(getDataFromServer)([somePromise1, someValue2, somePromise3]).catch(e => console.error(e));
 ```
+
 Or you can use `try/catch` in `async/await` constructions.
 
 Нou can use it with [`acompose`](#acompose) or [`apipe`](#apipe):
@@ -315,7 +347,9 @@ You can import it the following way:
 ```JavaScript
 import { allFromList } from "@constantiner/fun-ctional";
 ```
+
 Or:
+
 ```JavaScript
 const { allFromList } = require("@constantiner/fun-ctional");
 ```
@@ -325,7 +359,9 @@ Or you can import it separately without the whole bundle:
 ```JavaScript
 import allFromList from "@constantiner/fun-ctional/allFromList";
 ```
+
 Or:
+
 ```JavaScript
 const allFromList = require("@constantiner/fun-ctional/allFromList");
 ```
@@ -379,7 +415,9 @@ You can import it the following way:
 ```JavaScript
 import { allTheSame } from "@constantiner/fun-ctional";
 ```
+
 Or:
+
 ```JavaScript
 const { allTheSame } = require("@constantiner/fun-ctional");
 ```
@@ -389,7 +427,59 @@ Or you can import it separately without the whole bundle:
 ```JavaScript
 import allTheSame from "@constantiner/fun-ctional/allTheSame";
 ```
+
 Or:
+
 ```JavaScript
 const allTheSame = require("@constantiner/fun-ctional/allTheSame");
+```
+
+### acatch
+
+Composable version of `catch` method for promises.
+
+It gets a value (a promise or not), resolves it and if resulting promise was rejected, calls catch function passed.
+
+It allows to handle errors within [`acompose`](#acompose) or [`apipe`](#apipe) asynchronous composition chains to restore broken state etc.
+
+A sample with [`acompose`](#acompose):
+
+```JavaScript
+const resultOrFallback = await acompose(acatch(handleAndRecoverFn), canFailFn)(someInput);
+```
+
+Standalone usage:
+
+```JavaScript
+const resultOrFallback = await acatch(handleAndRecoverFn)(requestDataAndReturnPromise());
+```
+
+It is the same as the following:
+
+```JavaScript
+requestDataAndReturnPromise().catch(handleAndRecoverFn).then(resultOrFallback => console.log(resultOrFallback));
+```
+
+You can import it the following way:
+
+```JavaScript
+import { acatch } from "@constantiner/fun-ctional";
+```
+
+Or:
+
+```JavaScript
+const { acatch } = require("@constantiner/fun-ctional");
+```
+
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import acatch from "@constantiner/fun-ctional/acatch";
+```
+
+Or:
+
+```JavaScript
+const acatch = require("@constantiner/fun-ctional/acatch");
 ```
