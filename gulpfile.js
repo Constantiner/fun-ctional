@@ -48,8 +48,7 @@ const getSourceFile = () => gulp.src(SOURCES),
 								modules: false
 							}
 						]
-					],
-					plugins: ["@babel/plugin-external-helpers"]
+					]
 				})
 			]
 		},
