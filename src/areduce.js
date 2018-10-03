@@ -10,8 +10,6 @@ import { getReducerArgs } from "./util/reducer";
  * 
  * Initial value of reducer also could be a promise.
  * 
- * It allows to handle errors within acompose or apipe asynchronous composition chains to restore broken state etc.
- * 
  * A sample usage is:
  *
  * <pre><code>const sum = async (currentSum, invoiceId) => {

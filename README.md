@@ -9,6 +9,8 @@ It allows to mix synchronous and asynchronous functions to produce reusable comp
 	- [acompose](#acompose)
 	- [apipe](#apipe)
 	- [amap](#amap)
+	- [areduce](#areduce)
+	- [areduceRight](#areduceright)
 	- [allFromList](#allfromlist)
 	- [allTheSame](#allthesame)
 
@@ -173,6 +175,100 @@ import amap from "@constantiner/fun-ctional/amap";
 Or:
 ```JavaScript
 const amap = require("@constantiner/fun-ctional/amap");
+```
+
+### areduce
+
+Asynchronous composable version of `reduce` method for iterables ("a" stays for "asynchronous").
+
+It gets a list of values (or list of promises, or promise to resolve to list) and performs standard `reduce` on them.
+
+Reduce function may be asynchronous to return a promise (to fetch some data etc). Initial value of reducer also could be a promise.
+
+A sample usage is:
+
+```JavaScript
+const sum = async (currentSum, invoiceId) => {
+	const { total:invoiceTotal } = await fetchInvoiceById(invoiceId);
+	return currentSum + invoiceTotal;
+};
+
+const paymentTotal = await areduce(sum, 0)(fetchInvoiceIds(userId));
+```
+
+Or the same with [`acompose`](#acompose):
+
+```JavaScript
+const paymentTotal = await acompose(areduce(sum, 0), fetchInvoiceIds)(userId);
+```
+
+It takes a standard callback Function to execute on each element in the array, taking four standard arguments (accumulator, currentValue, currentIndex, array) and returns a function to accept input value (so it is composable).
+
+You can import it the following way:
+
+```JavaScript
+import { areduce } from "@constantiner/fun-ctional";
+```
+Or:
+```JavaScript
+const { areduce } = require("@constantiner/fun-ctional");
+```
+
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import areduce from "@constantiner/fun-ctional/areduce";
+```
+Or:
+```JavaScript
+const areduce = require("@constantiner/fun-ctional/areduce");
+```
+
+### areduceRight
+
+Asynchronous composable version of `reduce` method for iterables ("a" stays for "asynchronous").
+
+It gets a list of values (or list of promises, or promise to resolve to list) and performs standard `reduce` on them.
+
+Reduce function may be asynchronous to return a promise (to fetch some data etc). Initial value of reducer also could be a promise.
+
+A sample usage is:
+
+```JavaScript
+const sum = async (currentSum, invoiceId) => {
+	const { total:invoiceTotal } = await fetchInvoiceById(invoiceId);
+	return currentSum + invoiceTotal;
+};
+
+const paymentTotal = await areduceRight(sum, 0)(fetchInvoiceIds(userId));
+```
+
+Or the same with [`acompose`](#acompose):
+
+```JavaScript
+const paymentTotal = await acompose(areduceRight(sum, 0), fetchInvoiceIds)(userId);
+```
+
+It takes a standard callback Function to execute on each element in the array, taking four standard arguments (accumulator, currentValue, currentIndex, array) and returns a function to accept input value (so it is composable).
+
+You can import it the following way:
+
+```JavaScript
+import { areduceRight } from "@constantiner/fun-ctional";
+```
+Or:
+```JavaScript
+const { areduceRight } = require("@constantiner/fun-ctional");
+```
+
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import areduceRight from "@constantiner/fun-ctional/areduceRight";
+```
+Or:
+```JavaScript
+const areduceRight = require("@constantiner/fun-ctional/areduceRight");
 ```
 
 ### allFromList
