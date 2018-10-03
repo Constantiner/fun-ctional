@@ -1,6 +1,6 @@
 {
 	"name": "@constantiner/fun-ctional",
-	"version": "0.5.0",
+	"version": "0.5.1",
 	"description": "The library brings most of the familiar functional techniques (like functional composition) to asynchronous world with shining Promises",
 	"main": "fun-ctional",
 	"scripts": {
