@@ -1,5 +1,5 @@
-const reducer = reduceFn => (acc, current, index) =>
-	Promise.all([acc, current]).then(([acc, current]) => reduceFn(acc, current, index));
+const reducer = reduceFn => (acc, current, index, array) =>
+	Promise.all([acc, current]).then(([acc, current]) => reduceFn(acc, current, index, array));
 
 const getReducerArgs = args => {
 	const effectiveReduceFn = reducer(args[0]);

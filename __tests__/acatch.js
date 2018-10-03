@@ -14,7 +14,7 @@ describe("acatch tests", () => {
 		expect(catchFn).not.toBeCalled();
 		expect(catchInCatchBlockFn).not.toBeCalled();
 	});
-	it("should work for case with promise on input", async () => {
+	it("should work for case with promise on input without reject", async () => {
 		expect.assertions(6);
 		const input = 7;
 		const increment = incrementMock(jest, "increment");
