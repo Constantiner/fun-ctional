@@ -1,6 +1,6 @@
 import acatch from "../src/acatch";
 import { getError } from "./test-utils/errorUtils";
-import { getMockFn, incrementMock, mockFnExpectations, squareMock } from "./test-utils/jestMockFns";
+import { getMockFn, incrementMock, mockFnExpectations } from "./test-utils/jestMockFns";
 import { createAsyncPromise, createSyncPromise } from "./test-utils/promiseUtils";
 
 describe("acatch tests", () => {
