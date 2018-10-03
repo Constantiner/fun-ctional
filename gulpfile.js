@@ -56,28 +56,34 @@ const getSourceFile = () => gulp.src(SOURCES),
 			format: "umd",
 			banner
 		}
-	);
-
-gulp.task("es6modules", () =>
-	getSourceFile()
-		.pipe(
-			rollup(
-				{},
-				{
-					format: "es",
-					banner
-				}
+	),
+	proceedEs6Modules = () =>
+		getSourceFile()
+			.pipe(
+				rollup(
+					{},
+					{
+						format: "es",
+						banner
+					}
+				)
 			)
-		)
-		.pipe(rename({ extname: ".mjs" }))
-		.pipe(getDest())
-);
+			.pipe(getDest())
+			.pipe(rename({ extname: `.mjs` }))
+			.pipe(getDest());
+
+gulp.task("es6modules", () => proceedEs6Modules());
 
 gulp.task("es5modules", ["es6modules"], () =>
 	getEs6SourceFile()
 		.pipe(sourcemaps.init())
 		.pipe(rollupUmd)
-		.pipe(rename({ extname: ".js" }))
+		.pipe(
+			rename({
+				extname: ".js",
+				suffix: "-umd"
+			})
+		)
 		.pipe(sourcemaps.write("."))
 		.pipe(getDest())
 );
@@ -87,7 +93,12 @@ gulp.task("es5modulesMin", ["es6modules"], () =>
 		.pipe(sourcemaps.init())
 		.pipe(rollupUmd)
 		.pipe(uglify())
-		.pipe(rename({ extname: ".min.js" }))
+		.pipe(
+			rename({
+				extname: ".min.js",
+				suffix: "-umd"
+			})
+		)
 		.pipe(sourcemaps.write("."))
 		.pipe(getDest())
 );

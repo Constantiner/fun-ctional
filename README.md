@@ -21,7 +21,7 @@ Install it with NPM:
 
 `npm install @constantiner/fun-ctional`
 
-**Note**. The UMD version of package is ES5 compatible but you may need to use [`babel-polyfill`](https://babeljs.io/docs/usage/polyfill/) with it.
+**Note**. The UMD version of package is ES5 compatible but you may need to use [`@babel/polyfill`](https://babeljs.io/docs/en/babel-polyfill/) or even [`@babel/runtime`](https://babeljs.io/docs/en/babel-runtime) with it.
 
 **Note**. Build includes sourcemaps and minified versions of UMD files as well. You can find them in your `node_modules` folder.
 
@@ -54,7 +54,7 @@ import { acompose } from "@constantiner/fun-ctional";
 Or:
 
 ```JavaScript
-const { acompose } = require("@constantiner/fun-ctional");
+const { acompose } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
@@ -66,7 +66,7 @@ import acompose from "@constantiner/fun-ctional/acompose";
 Or:
 
 ```JavaScript
-const acompose = require("@constantiner/fun-ctional/acompose");
+const acompose = require("@constantiner/fun-ctional/acompose-umd");
 ```
 
 
@@ -109,7 +109,7 @@ import { apipe } from "@constantiner/fun-ctional";
 Or:
 
 ```JavaScript
-const { apipe } = require("@constantiner/fun-ctional");
+const { apipe } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
@@ -121,7 +121,7 @@ import apipe from "@constantiner/fun-ctional/apipe";
 Or:
 
 ```JavaScript
-const apipe = require("@constantiner/fun-ctional/apipe");
+const apipe = require("@constantiner/fun-ctional/apipe-umd");
 ```
 
 
@@ -185,7 +185,7 @@ import { amap } from "@constantiner/fun-ctional";
 Or:
 
 ```JavaScript
-const { amap } = require("@constantiner/fun-ctional");
+const { amap } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
@@ -197,7 +197,7 @@ import amap from "@constantiner/fun-ctional/amap";
 Or:
 
 ```JavaScript
-const amap = require("@constantiner/fun-ctional/amap");
+const amap = require("@constantiner/fun-ctional/amap-umd");
 ```
 
 ### areduce
@@ -236,7 +236,7 @@ import { areduce } from "@constantiner/fun-ctional";
 Or:
 
 ```JavaScript
-const { areduce } = require("@constantiner/fun-ctional");
+const { areduce } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
@@ -248,7 +248,7 @@ import areduce from "@constantiner/fun-ctional/areduce";
 Or:
 
 ```JavaScript
-const areduce = require("@constantiner/fun-ctional/areduce");
+const areduce = require("@constantiner/fun-ctional/areduce-umd");
 ```
 
 ### areduceRight
@@ -287,7 +287,7 @@ import { areduceRight } from "@constantiner/fun-ctional";
 Or:
 
 ```JavaScript
-const { areduceRight } = require("@constantiner/fun-ctional");
+const { areduceRight } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
@@ -299,7 +299,7 @@ import areduceRight from "@constantiner/fun-ctional/areduceRight";
 Or:
 
 ```JavaScript
-const areduceRight = require("@constantiner/fun-ctional/areduceRight");
+const areduceRight = require("@constantiner/fun-ctional/areduceRight-umd");
 ```
 
 ### allFromList
@@ -352,7 +352,7 @@ import { allFromList } from "@constantiner/fun-ctional";
 Or:
 
 ```JavaScript
-const { allFromList } = require("@constantiner/fun-ctional");
+const { allFromList } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
@@ -364,7 +364,7 @@ import allFromList from "@constantiner/fun-ctional/allFromList";
 Or:
 
 ```JavaScript
-const allFromList = require("@constantiner/fun-ctional/allFromList");
+const allFromList = require("@constantiner/fun-ctional/allFromList-umd");
 ```
 
 
@@ -420,7 +420,7 @@ import { allTheSame } from "@constantiner/fun-ctional";
 Or:
 
 ```JavaScript
-const { allTheSame } = require("@constantiner/fun-ctional");
+const { allTheSame } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
@@ -432,7 +432,7 @@ import allTheSame from "@constantiner/fun-ctional/allTheSame";
 Or:
 
 ```JavaScript
-const allTheSame = require("@constantiner/fun-ctional/allTheSame");
+const allTheSame = require("@constantiner/fun-ctional/allTheSame-umd");
 ```
 
 ### acatch
@@ -470,7 +470,7 @@ import { acatch } from "@constantiner/fun-ctional";
 Or:
 
 ```JavaScript
-const { acatch } = require("@constantiner/fun-ctional");
+const { acatch } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
@@ -482,7 +482,7 @@ import acatch from "@constantiner/fun-ctional/acatch";
 Or:
 
 ```JavaScript
-const acatch = require("@constantiner/fun-ctional/acatch");
+const acatch = require("@constantiner/fun-ctional/acatch-umd");
 ```
 
 ### withCatch
@@ -528,7 +528,7 @@ import { withCatch } from "@constantiner/fun-ctional";
 Or:
 
 ```JavaScript
-const { withCatch } = require("@constantiner/fun-ctional");
+const { withCatch } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
@@ -540,5 +540,5 @@ import withCatch from "@constantiner/fun-ctional/withCatch";
 Or:
 
 ```JavaScript
-const withCatch = require("@constantiner/fun-ctional/withCatch");
+const withCatch = require("@constantiner/fun-ctional/withCatch-umd");
 ```
