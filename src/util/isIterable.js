@@ -4,4 +4,4 @@
  * @param {any} obj is target to check.
  * @returns {boolean} Result of checking.
  */
-export default obj => (obj || obj === "") && typeof obj[Symbol.iterator] === "function";
+export default obj => Array.isArray(obj) || ((obj || obj === "") && typeof obj[Symbol.iterator] === "function");

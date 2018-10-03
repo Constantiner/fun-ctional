@@ -1,4 +1,4 @@
-import { extractArguments, extractArrayFromArgument, extractResolvedArguments } from "../../src/util/extractArguments";
+import { extractArrayFromArgument, extractResolvedArguments } from "../../src/util/extractArguments";
 import { createSyncPromise } from "../test-utils/promiseUtils";
 
 describe("extractArrayFromArgument tests", () => {
@@ -22,48 +22,6 @@ describe("extractArrayFromArgument tests", () => {
 		expect.assertions(1);
 		const result = await extractArrayFromArgument(1);
 		expect(result).toEqual([]);
-	});
-});
-describe("extractArguments tests", () => {
-	it("should always return a promise", () => {
-		const result = extractArguments([1, 2, 3]);
-		expect(result).toBeInstanceOf(Promise);
-	});
-	it("should resolve promise with array", async () => {
-		expect.assertions(1);
-		const input = [1, 2, 3];
-		const result = await extractArguments([createSyncPromise(n => n)(input)]);
-		expect(result).toEqual(input);
-	});
-	it("should accept iterable", async () => {
-		expect.assertions(1);
-		const input = [1, 2, 3];
-		const result = await extractArguments([new Set(input)]);
-		expect(result).toEqual(input);
-	});
-	it("should accept arguments list", async () => {
-		expect.assertions(1);
-		const input = [1, 2, 3];
-		const result = await extractArguments(input);
-		expect(result).toEqual(input);
-	});
-	it("should accept single non iterable", async () => {
-		expect.assertions(1);
-		const input = [1];
-		const result = await extractArguments(input);
-		expect(result).toEqual(input);
-	});
-	it("should accept single string and split it", async () => {
-		expect.assertions(1);
-		const input = "test";
-		const result = await extractArguments([input]);
-		expect(result).toEqual(["t", "e", "s", "t"]);
-	});
-	it("should accept promises list", async () => {
-		expect.assertions(1);
-		const input = [createSyncPromise(n => n)(1), createSyncPromise(n => n)(2), createSyncPromise(n => n)(3)];
-		const result = await extractArguments(input);
-		expect(result).toEqual(input);
 	});
 });
 
