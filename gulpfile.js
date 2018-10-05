@@ -74,8 +74,8 @@ const getSourceFile = () => gulp.src(SOURCES),
 
 gulp.task("es6modules", () => proceedEs6Modules());
 
-gulp.task("es5modules", ["es6modules"], () =>
-	getEs6SourceFile()
+gulp.task("es5modules", () =>
+	getSourceFile()
 		.pipe(sourcemaps.init())
 		.pipe(rollupUmd)
 		.pipe(
@@ -88,8 +88,8 @@ gulp.task("es5modules", ["es6modules"], () =>
 		.pipe(getDest())
 );
 
-gulp.task("es5modulesMin", ["es6modules"], () =>
-	getEs6SourceFile()
+gulp.task("es5modulesMin", () =>
+	getSourceFile()
 		.pipe(sourcemaps.init())
 		.pipe(rollupUmd)
 		.pipe(uglify())
@@ -103,6 +103,6 @@ gulp.task("es5modulesMin", ["es6modules"], () =>
 		.pipe(getDest())
 );
 
-gulp.task("scripts", () => gulp.start("es5modules", "es5modulesMin"));
+gulp.task("scripts", gulp.series("es5modulesMin", "es5modules", "es6modules"));
 
-gulp.task("default", ["clean"], () => gulp.start("scripts"));
+gulp.task("default", gulp.series("clean", "scripts"));
