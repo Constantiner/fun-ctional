@@ -8,7 +8,6 @@ const uglify = require("gulp-uglify");
 const rollup = require("gulp-better-rollup");
 const BROWSERS = [">0.25%", "not ie 11", "not op_mini all"];
 const SOURCES = "src/*.js";
-const ES6_BUNDLED_SOURCES = "*.mjs";
 const banner = `/**
 * ${pkg.name}
 * ${pkg.description}
@@ -24,7 +23,6 @@ const banner = `/**
 gulp.task("clean", () => del(["dist", "*.js", "*.mjs", "*.map", "!gulpfile.js"]));
 
 const getSourceFile = () => gulp.src(SOURCES),
-	getEs6SourceFile = () => gulp.src(ES6_BUNDLED_SOURCES),
 	getDest = () => gulp.dest("."),
 	rollupUmd = rollup(
 		{
