@@ -160,6 +160,8 @@ amap(getDataFromServer)([somePromise1, someValue2, somePromise3])
 
 It first resolves a promises passed and then pass resolutions value to the mapping function.
 
+Mapping function is called with three parameters: `currentValue`, `currentIndex`, `array` which are plain resolved values (not promises).
+
 Input iterable's values are not restricted to promises but can be any value to pass as input to functions.
 
 It also allows to handle errors like for traditional Promise:
@@ -225,7 +227,7 @@ Or the same with [`acompose`](#acompose):
 const paymentTotal = await acompose(areduce(sum, 0), fetchInvoiceIds)(userId);
 ```
 
-It takes a standard callback Function to execute on each element in the array, taking four standard arguments (accumulator, currentValue, currentIndex, array) and returns a function to accept input value (so it is composable).
+It takes a standard callback Function to execute on each element in the array, taking four standard arguments (`accumulator`, `currentValue`, `currentIndex`, `array`) and returns a function to accept input value (so it is composable).
 
 You can import it the following way:
 
@@ -276,7 +278,7 @@ Or the same with [`acompose`](#acompose):
 const paymentTotal = await acompose(areduceRight(sum, 0), fetchInvoiceIds)(userId);
 ```
 
-It takes a standard callback Function to execute on each element in the array, taking four standard arguments (accumulator, currentValue, currentIndex, array) and returns a function to accept input value (so it is composable).
+It takes a standard callback Function to execute on each element in the array, taking four standard arguments (`accumulator`, `currentValue`, `currentIndex`, `array`) and returns a function to accept input value (so it is composable).
 
 You can import it the following way:
 
@@ -326,6 +328,8 @@ allFromList(getDataFromServer)([somePromise1, someValue2, somePromise3])
 ```
 
 It first resolves a promises passed and then pass resolutions value to the mapping function.
+
+Mapping function is called with three parameters: `currentValue`, `currentIndex`, `array` which are plain resolved values (not promises).
 
 Input iterable's values are not restricted to promises but can be any value to pass as input to functions.
 

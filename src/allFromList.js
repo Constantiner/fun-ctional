@@ -23,8 +23,9 @@ import amap from "./amap";
  * <pre><code>allFromList(getDataFromServer)(somePromise1, someValue2, somePromise3).catch(e => console.error(e));</code></pre>
  *
  * @param {function} mapFn Is mapping function which can produce a promise (but not restricted to this).
- * Function can return promises or may just perform some mapping.
+ * Function can return a promise (asynchronous mapping) or may just perform some synchronous mapping.
  * So you can use it in synchronous code taking in mind it returns promise so can't be resolved immediately.
+ * It has three parameters (currentValue, currentIndex, array) which are resolved (not promises).
  * @returns {(iterable : Promise|Iterable.<*>) => Promise} A function which expects any values as input (resolving to Promise)
  * and returns a Promise.
  */
