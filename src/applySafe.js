@@ -7,15 +7,15 @@
  *
  * A sample with acompose:
  *
- * <pre><code>const resultOrFallback = await acompose(withCatch(canFailFn, handleAndRecoverFn), canFailTooFn)(someInput);</code></pre>
+ * <pre><code>const resultOrFallback = await acompose(applySafe(canFailFn, handleAndRecoverFn), canFailTooFn)(someInput);</code></pre>
  *
  * Standalone usage:
  *
- * <pre><code>const resultOrFallback = await withCatch(canFailFn, handleAndRecoverFn)(requestDataAndReturnPromise());</code></pre>
+ * <pre><code>const resultOrFallback = await applySafe(canFailFn, handleAndRecoverFn)(requestDataAndReturnPromise());</code></pre>
  *
  * Or even:
  *
- * <pre><code>const resultOrFallback = await withCatch(acompose(handlerFn2, handlerFn1), handleAndRecoverFn)(requestDataAndReturnPromise());</code></pre>
+ * <pre><code>const resultOrFallback = await applySafe(acompose(handlerFn2, handlerFn1), handleAndRecoverFn)(requestDataAndReturnPromise());</code></pre>
  *
  * It is the same as the following:
  *

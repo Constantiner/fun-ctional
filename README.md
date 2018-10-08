@@ -13,7 +13,7 @@ It allows to mix synchronous and asynchronous functions to produce reusable comp
 	- [areduceRight](#areduceright)
 	- [applyFns](#applyfns)
 	- [acatch](#acatch)
-	- [withCatch](#withcatch)
+	- [applySafe](#applysafe)
 
 ## Installation
 Install it with NPM:
@@ -420,7 +420,7 @@ Or:
 const acatch = require("@constantiner/fun-ctional/acatch-umd");
 ```
 
-### withCatch
+### applySafe
 
 Composable version of `promise.then(mapFn).catch(catchFn)`.
 
@@ -431,13 +431,13 @@ It allows to handle errors within [`acompose`](#acompose) or [`apipe`](#apipe) a
 A sample with [`acompose`](#acompose):
 
 ```JavaScript
-const resultOrFallback = await acompose(withCatch(canFailFn, handleAndRecoverFn), canFailTooFn)(someInput);
+const resultOrFallback = await acompose(applySafe(canFailFn, handleAndRecoverFn), canFailTooFn)(someInput);
 ```
 
 Standalone usage:
 
 ```JavaScript
-const resultOrFallback = await withCatch(canFailFn, handleAndRecoverFn)(requestDataAndReturnPromise());
+const resultOrFallback = await applySafe(canFailFn, handleAndRecoverFn)(requestDataAndReturnPromise());
 ```
 
 Here `canFailFn` is replacement for standard Promise's `then` method (which can reject) and `handleAndRecoverFn` for Promise's `catch`.
@@ -451,29 +451,29 @@ requestDataAndReturnPromise().then(canFailFn).catch(handleAndRecoverFn).then(res
 Or even more complex example:
 
 ```JavaScript
-const resultOrFallback = await withCatch(acompose(handlerFn2, handlerFn1), handleAndRecoverFn)(requestDataAndReturnPromise());
+const resultOrFallback = await applySafe(acompose(handlerFn2, handlerFn1), handleAndRecoverFn)(requestDataAndReturnPromise());
 ```
 
 You can import it the following way:
 
 ```JavaScript
-import { withCatch } from "@constantiner/fun-ctional";
+import { applySafe } from "@constantiner/fun-ctional";
 ```
 
 Or:
 
 ```JavaScript
-const { withCatch } = require("@constantiner/fun-ctional-umd");
+const { applySafe } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
 
 ```JavaScript
-import withCatch from "@constantiner/fun-ctional/withCatch";
+import applySafe from "@constantiner/fun-ctional/applySafe";
 ```
 
 Or:
 
 ```JavaScript
-const withCatch = require("@constantiner/fun-ctional/withCatch-umd");
+const applySafe = require("@constantiner/fun-ctional/applySafe-umd");
 ```
