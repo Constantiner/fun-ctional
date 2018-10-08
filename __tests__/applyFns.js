@@ -1,4 +1,4 @@
-import allTheSame from "../src/allTheSame";
+import applyFns from "../src/applyFns";
 import { getErrorMessage } from "./test-utils/errorUtils";
 import {
 	concatenateTestStringMock,
@@ -16,7 +16,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		const result = await allTheSame(square, increment, concatenateTestString)(inputValue);
+		const result = await applyFns(square, increment, concatenateTestString)(inputValue);
 		expect(result).toEqual([25, 6, "5test"]);
 		mockFnExpectations(square, 1, 25, inputValue);
 		mockFnExpectations(increment, 1, 6, inputValue);
@@ -28,7 +28,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		const result = await allTheSame([square, increment, concatenateTestString])(inputValue);
+		const result = await applyFns([square, increment, concatenateTestString])(inputValue);
 		expect(result).toEqual([25, 6, "5test"]);
 		mockFnExpectations(square, 1, 25, inputValue);
 		mockFnExpectations(increment, 1, 6, inputValue);
@@ -37,13 +37,13 @@ describe("Composable Promise.all with single input value for all handlers", () =
 	it("should work without arguments", async () => {
 		expect.assertions(1);
 		const inputValue = 5;
-		const result = await allTheSame()(inputValue);
+		const result = await applyFns()(inputValue);
 		expect(result).toEqual([]);
 	});
 	it("should return a promise without arguments", () => {
 		expect.assertions(2);
 		const inputValue = 5;
-		const resultingPromise = allTheSame()(inputValue);
+		const resultingPromise = applyFns()(inputValue);
 		expect(resultingPromise).toBeInstanceOf(Promise);
 		return resultingPromise.then(result => {
 			expect(result).toEqual([]);
@@ -54,7 +54,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const inputValue = 5;
 		const square = squareMock(jest);
 		try {
-			await allTheSame()(createAsyncPromise(square, false)(inputValue));
+			await applyFns()(createAsyncPromise(square, false)(inputValue));
 		} catch (e) {
 			expect(square).not.toBeCalled();
 			expect(e).toBeInstanceOf(Error);
@@ -65,7 +65,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		expect.assertions(3);
 		const inputValue = 5;
 		const square = squareMock(jest);
-		const result = await allTheSame()(createAsyncPromise(square)(inputValue));
+		const result = await applyFns()(createAsyncPromise(square)(inputValue));
 		expect(result).toEqual([]);
 		mockFnExpectations(square, 1, 25, inputValue);
 	});
@@ -75,7 +75,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		const result = await allTheSame(
+		const result = await applyFns(
 			createSyncPromise(square),
 			increment,
 			createAsyncPromise(concatenateTestString)
@@ -91,7 +91,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		const result = await allTheSame([
+		const result = await applyFns([
 			createAsyncPromise(square),
 			createSyncPromise(increment),
 			concatenateTestString
@@ -108,7 +108,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		const result = await allTheSame(
+		const result = await applyFns(
 			createSyncPromise(squareInAll),
 			increment,
 			createAsyncPromise(concatenateTestString)
@@ -126,7 +126,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		const result = await allTheSame([
+		const result = await applyFns([
 			createSyncPromise(squareInAll),
 			increment,
 			createAsyncPromise(concatenateTestString)
@@ -144,7 +144,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		const result = await allTheSame(
+		const result = await applyFns(
 			new Set([createSyncPromise(squareInAll), increment, createAsyncPromise(concatenateTestString)])
 		)(createAsyncPromise(square)(inputValue));
 		expect(result).toEqual([625, 26, "25test"]);
@@ -160,7 +160,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		const resultingPromise = allTheSame(
+		const resultingPromise = applyFns(
 			createSyncPromise(squareInAll),
 			increment,
 			createAsyncPromise(concatenateTestString)
@@ -182,7 +182,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
 		try {
-			await allTheSame([createSyncPromise(squareInAll), increment, createAsyncPromise(concatenateTestString)])(
+			await applyFns([createSyncPromise(squareInAll), increment, createAsyncPromise(concatenateTestString)])(
 				createAsyncPromise(square, false)(inputValue)
 			);
 		} catch (e) {
@@ -202,7 +202,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const thenHandler = getMockFn(jest)(n => n, "thenHandler");
 		const inputValue = 5;
-		return allTheSame(createSyncPromise(squareInAll), increment, createAsyncPromise(concatenateTestString))(
+		return applyFns(createSyncPromise(squareInAll), increment, createAsyncPromise(concatenateTestString))(
 			createAsyncPromise(square, false)(inputValue)
 		)
 			.then(thenHandler)
@@ -225,7 +225,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const undefinedErrorFn = getMockFn(jest)(n => n.first.second * n);
 		const inputValue = 5;
 		try {
-			await allTheSame([
+			await applyFns([
 				createSyncPromise(squareInAll),
 				increment,
 				undefinedErrorFn,
@@ -249,7 +249,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const undefinedErrorFn = getMockFn(jest)(n => n.first.second * n);
 		const thenHandler = getMockFn(jest)(n => n, "thenHandler");
 		const inputValue = 5;
-		return allTheSame(
+		return applyFns(
 			createSyncPromise(squareInAll),
 			increment,
 			undefinedErrorFn,
@@ -275,7 +275,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const concatenateTestString = concatenateTestStringMock(jest, "concatenateTestString");
 		const inputValue = 5;
 		try {
-			await allTheSame(new Set([createAsyncPromise(concatenateTestString), rejectedPromiseFunc, increment]))(
+			await applyFns(new Set([createAsyncPromise(concatenateTestString), rejectedPromiseFunc, increment]))(
 				createAsyncPromise(square)(inputValue)
 			);
 		} catch (e) {
@@ -297,7 +297,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const concatenateTestString = concatenateTestStringMock(jest, "concatenateTestString");
 		const thenHandler = getMockFn(jest)(n => n, "thenHandler");
 		const inputValue = 5;
-		return allTheSame(new Set([createAsyncPromise(concatenateTestString), rejectedPromiseFunc, increment]))(
+		return applyFns(new Set([createAsyncPromise(concatenateTestString), rejectedPromiseFunc, increment]))(
 			createAsyncPromise(square)(inputValue)
 		)
 			.then(thenHandler)

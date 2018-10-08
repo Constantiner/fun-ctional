@@ -11,7 +11,7 @@ It allows to mix synchronous and asynchronous functions to produce reusable comp
 	- [amap](#amap)
 	- [areduce](#areduce)
 	- [areduceRight](#areduceright)
-	- [allTheSame](#allthesame)
+	- [applyFns](#applyfns)
 	- [acatch](#acatch)
 	- [withCatch](#withcatch)
 
@@ -303,28 +303,28 @@ Or:
 const areduceRight = require("@constantiner/fun-ctional/areduceRight-umd");
 ```
 
-### allTheSame
+### applyFns
 
-Composable version of Promise.all().
+A kind of composable version of Promise.all().
 
 It gets some value or promise as input, pass it to the functions list It gets some value or promise as input, pass it to the functions list.
 
 It allows to use Promise.all() point-free way:
 
 ```JavaScript
-const [ first, second ] = await allTheSame(squareRoot, getDataFromServer)(somePromise);
+const [ first, second ] = await applyFns(squareRoot, getDataFromServer)(somePromise);
 ```
 
 Or:
 
 ```JavaScript
-const [ first, second ] = await allTheSame(squareRoot, getDataFromServer)(25);
+const [ first, second ] = await applyFns(squareRoot, getDataFromServer)(25);
 ```
 
 Or some more traditional way:
 
 ```JavaScript
-allTheSame(squareRoot, getDataFromServer)(somePromise)
+applyFns(squareRoot, getDataFromServer)(somePromise)
 	.then(([ first, second ]) => [ second, first ]);
 ```
 
@@ -335,7 +335,7 @@ Input value is not restricted to promise but can be any value to pass as input t
 It also allows to handle errors like for traditional Promise:
 
 ```JavaScript
-allTheSame(squareRoot, getDataFromServer)(somePromise).catch(e => console.error(e));
+applyFns(squareRoot, getDataFromServer)(somePromise).catch(e => console.error(e));
 ```
 
 or the same with async/await.
@@ -343,31 +343,31 @@ or the same with async/await.
 Нou can use it with [`acompose`](#acompose) or [`apipe`](#apipe):
 
 ```JavaScript
-const usersHtml = await acompose(getHtmlRepresentation, getUserNames, allTheSame(logIds, getUserList), getUserIds)(somePromise);
+const usersHtml = await acompose(getHtmlRepresentation, getUserNames, applyFns(logIds, getUserList), getUserIds)(somePromise);
 ```
 
 You can import it the following way:
 
 ```JavaScript
-import { allTheSame } from "@constantiner/fun-ctional";
+import { applyFns } from "@constantiner/fun-ctional";
 ```
 
 Or:
 
 ```JavaScript
-const { allTheSame } = require("@constantiner/fun-ctional-umd");
+const { applyFns } = require("@constantiner/fun-ctional-umd");
 ```
 
 Or you can import it separately without the whole bundle:
 
 ```JavaScript
-import allTheSame from "@constantiner/fun-ctional/allTheSame";
+import applyFns from "@constantiner/fun-ctional/applyFns";
 ```
 
 Or:
 
 ```JavaScript
-const allTheSame = require("@constantiner/fun-ctional/allTheSame-umd");
+const applyFns = require("@constantiner/fun-ctional/applyFns-umd");
 ```
 
 ### acatch

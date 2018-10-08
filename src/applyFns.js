@@ -1,14 +1,14 @@
 import extractResolvedArguments from "./util/extractResolvedArguments";
 
 /**
- * Composable version of Promise.all().
+ * A kind of composable version of Promise.all().
  *
  * It gets some value or promise as input, pass it to the functions list
  * and produces the array of results after resolving all the functions which can return promises as well.
  *
  * It allows to use Promise.all() point-free way.
  *
- * <pre><code>const [ first, second ] = await allTheSame(squareRoot, getDataFromServer)(somePromise);</code></pre>
+ * <pre><code>const [ first, second ] = await applyFns(squareRoot, getDataFromServer)(somePromise);</code></pre>
  *
  * It first resolves a promise passed and then pass resolution value to all the functions.
  *
@@ -16,7 +16,7 @@ import extractResolvedArguments from "./util/extractResolvedArguments";
  *
  * It also allows to handle errors like for traditional Promise:
  *
- * <pre><code>allTheSame(squareRoot, getDataFromServer)(somePromise).catch(e => console.error(e));</code></pre>
+ * <pre><code>applyFns(squareRoot, getDataFromServer)(somePromise).catch(e => console.error(e));</code></pre>
  *
  * @param {...function|Iterable.<*>} fns Are functions to handle input value in parallel.
  * Functions can return promises or may just perform some mapping.
