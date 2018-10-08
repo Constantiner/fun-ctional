@@ -9,7 +9,7 @@ import {
 } from "./test-utils/jestMockFns";
 import { createAsyncPromise, createSyncPromise } from "./test-utils/promiseUtils";
 
-describe("Composable Promise.all with single input value for all handlers", () => {
+describe("A kind of composable Promise.all with single input value for all handlers", () => {
 	it("should work for functions without promises as parameters", async () => {
 		expect.assertions(7);
 		const square = squareMock(jest);
@@ -55,6 +55,7 @@ describe("Composable Promise.all with single input value for all handlers", () =
 		const square = squareMock(jest);
 		try {
 			await applyFns()(createAsyncPromise(square, false)(inputValue));
+			expect(true).toBe(false);
 		} catch (e) {
 			expect(square).not.toBeCalled();
 			expect(e).toBeInstanceOf(Error);

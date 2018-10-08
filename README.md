@@ -307,7 +307,7 @@ const areduceRight = require("@constantiner/fun-ctional/areduceRight-umd");
 
 A kind of composable version of Promise.all().
 
-It gets some value or promise as input, pass it to the functions list It gets some value or promise as input, pass it to the functions list.
+It gets some value or promise as input, pass it to the functions list and produces the array of results after resolving all the functions which can return promises as well.
 
 It allows to use Promise.all() point-free way:
 
@@ -340,10 +340,10 @@ applyFns(squareRoot, getDataFromServer)(somePromise).catch(e => console.error(e)
 
 or the same with async/await.
 
-Нou can use it with [`acompose`](#acompose) or [`apipe`](#apipe):
+You can use it with [`acompose`](#acompose) or [`apipe`](#apipe):
 
 ```JavaScript
-const usersHtml = await acompose(getHtmlRepresentation, getUserNames, applyFns(logIds, getUserList), getUserIds)(somePromise);
+const userHtml = await acompose(getHtmlRepresentation, getFullName, applyFns(getFirstNameById, getLastNameById), getUserId)(somePromise);
 ```
 
 You can import it the following way:
