@@ -12,6 +12,8 @@ It allows to mix synchronous and asynchronous functions to produce reusable comp
 	- [amapSeq](#amapseq)
 	- [areduce](#areduce)
 	- [areduceRight](#areduceright)
+	- [afilter](#afilter)
+	- [afilterSeq](#afilterseq)
 	- [applyFns](#applyfns)
 	- [acatch](#acatch)
 	- [applySafe](#applysafe)
@@ -371,6 +373,140 @@ Or:
 
 ```JavaScript
 const areduceRight = require("@constantiner/fun-ctional/areduceRight-umd");
+```
+
+### afilter
+
+An asynchronous version of filter over an iterable (afilter stays for async-filter).
+
+It gets an iterable of values (or promises) as input (or a promise to resolve to iterable), resolves them, filters over filter function (which returns boolean where true means current value will be included in resulting array) and returns a promise which resolves to an array of values (filtered input iterable).
+
+It allows asynchronous filtering point-free way and can be used with asynchronous compose functions.
+
+It uses `Promise.all()` under the hood. So if filtering function is asynchronous (returns a promise) all promises are being generated at once and then resolved with `Promise.all()`. So if any of promises will produce error (promise rejection) all the other promises will be invoked anyway. The advantage of this method of invoking promises it will finish earlier than sequential filter (because of `Promise.all()`) but it may perform some fetches or even state modifications even in case of fail on some previous filtering steps.
+
+See [`afilterSeq`](#afilterseq) for sequential implementation.
+
+```JavaScript
+const [ first, third ] = await afilter(fetchPermissions)([somePromise1, someValue2, somePromise3]);
+```
+
+Or even more traditional way:
+
+```JavaScript
+afilter(fetchPermissions)([somePromise1, someValue2, somePromise3])
+	.then(values => console.log(values));
+```
+
+It first resolves a promises passed and then pass resolutions value to the filtering function.
+
+Filtering function is called with three parameters: `currentValue`, `currentIndex`, `array` which are plain resolved values (not promises) and expects `Boolean` as return value (or a promise resolved to `Boolean`).
+
+Input iterable's values are not restricted to promises but can be any value to pass as input to functions.
+
+It also allows to handle errors like for traditional Promise:
+
+```JavaScript
+afilter(fetchPermissions)([somePromise1, someValue2, somePromise3]).catch(e => console.error(e));
+```
+
+Or you can use `try/catch` in `async/await` constructions.
+
+Нou can use it with [`acompose`](#acompose) or [`apipe`](#apipe):
+
+```JavaScript
+const usersHtml = await acompose(getHtmlRepresentation, getUserNames, afilter(fetchPermissions), getUserIds)(somePromise);
+```
+
+You can import it the following way:
+
+```JavaScript
+import { afilter } from "@constantiner/fun-ctional";
+```
+
+Or:
+
+```JavaScript
+const { afilter } = require("@constantiner/fun-ctional-umd");
+```
+
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import afilter from "@constantiner/fun-ctional/afilter";
+```
+
+Or:
+
+```JavaScript
+const afilter = require("@constantiner/fun-ctional/afilter-umd");
+```
+
+### afilterSeq
+
+An asynchronous version of filter over an iterable (afilterSeq stays for async-filter).
+
+It gets an iterable of values (or promises) as input (or a promise to resolve to iterable), resolves them, filters over filter function (which returns boolean where true means current value will be included in resulting array) and returns a promise which resolves to an array of values (filtered input iterable).
+
+It allows asynchronous filtering point-free way and can be used with asynchronous compose functions.
+
+The difference from regular [`afilter`](#afilter) is if filter function is asynchronous (returns a promise) every new invocation of filter function performs sequentially after resolving previous promise. So if any of promises produces error (promise rejection) `afilterSeq` will not produce new promises and they won't be invoked.
+
+See [`afilter`](#afilter) for parallel implementation.
+
+```JavaScript
+const [ first, third ] = await afilterSeq(fetchPermissions)([somePromise1, someValue2, somePromise3]);
+```
+
+Or even more traditional way:
+
+```JavaScript
+afilterSeq(fetchPermissions)([somePromise1, someValue2, somePromise3])
+	.then(values => console.log(values));
+```
+
+It first resolves a promises passed and then pass resolutions value to the filtering function.
+
+Filtering function is called with three parameters: `currentValue`, `currentIndex`, `array` which are plain resolved values (not promises) and expects `Boolean` as return value (or a promise resolved to `Boolean`).
+
+Input iterable's values are not restricted to promises but can be any value to pass as input to functions.
+
+It also allows to handle errors like for traditional Promise:
+
+```JavaScript
+afilterSeq(fetchPermissions)([somePromise1, someValue2, somePromise3]).catch(e => console.error(e));
+```
+
+Or you can use `try/catch` in `async/await` constructions.
+
+Нou can use it with [`acompose`](#acompose) or [`apipe`](#apipe):
+
+```JavaScript
+const usersHtml = await acompose(getHtmlRepresentation, getUserNames, afilterSeq(fetchPermissions), getUserIds)(somePromise);
+```
+
+You can import it the following way:
+
+```JavaScript
+import { afilterSeq } from "@constantiner/fun-ctional";
+```
+
+Or:
+
+```JavaScript
+const { afilterSeq } = require("@constantiner/fun-ctional-umd");
+```
+
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import afilterSeq from "@constantiner/fun-ctional/afilterSeq";
+```
+
+Or:
+
+```JavaScript
+const afilterSeq = require("@constantiner/fun-ctional/afilterSeq-umd");
 ```
 
 ### applyFns
