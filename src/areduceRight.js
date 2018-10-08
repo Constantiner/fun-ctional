@@ -1,5 +1,4 @@
-import extractArrayFromArgument from "./util/extractArrayFromArgument";
-import { getReducerArgs } from "./util/reducer";
+import { getReducerArgs, resolveArrayFromInput } from "./util/reducer";
 
 /**
  * Asynchronous composable version of reduceRight method for iterables ("a" stays for "asynchronous").
@@ -29,4 +28,4 @@ import { getReducerArgs } from "./util/reducer";
  * (or promise resolved to iterable) and returns a Promise.
  */
 export default (...args) => async iterable =>
-	Array.prototype.reduceRight.apply(await extractArrayFromArgument(iterable), getReducerArgs(args));
+	Array.prototype.reduceRight.apply(await resolveArrayFromInput(iterable), getReducerArgs(args));
