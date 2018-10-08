@@ -1,4 +1,4 @@
-import extractArrayFromArgument from "./util/extractArrayFromArgument";
+import amapGeneric from "./util/amapGeneric";
 
 /**
  * An asynchronous version of map over an iterable (amap stays for async-map).
@@ -27,8 +27,4 @@ import extractArrayFromArgument from "./util/extractArrayFromArgument";
  * @returns {(iterable : Promise|Iterable.<*>) => Promise} A function which expects any values as input (resolving to Promise)
  * and returns a Promise.
  */
-export default mapFn => async iterable => {
-	const sourceArray = await extractArrayFromArgument(iterable);
-	const array = await Promise.all(sourceArray);
-	return Promise.all(array.map(mapFn));
-};
+export default amapGeneric();
