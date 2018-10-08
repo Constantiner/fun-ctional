@@ -144,7 +144,9 @@ It gets an iterable of values (or promises) as input (or a promise to resolve to
 
 It allows asynchronous mapping point-free way and can be used with asynchronous compose functions.
 
-It uses Promise.all() under the hood.
+It uses `Promise.all()` under the hood. So if mapping function is asynchronous (returns a promise) all promises are being generated at once and then resolved with `Promise.all()`. So if any of promises will produce error (promise rejection) all the other promises will be invoked. The advantage of this method of invoking promises it will finish earlier than sequential map (because of `Promise.all()`) but it may perform some fetches or even state modifications even in case of fail on some previous mapping steps.
+
+See [`amapSeq`](#amapseq) for sequential implementation.
 
 ```JavaScript
 const [ first, second, third ] = await amap(getDataFromServer)([somePromise1, someValue2, somePromise3]);
@@ -199,6 +201,73 @@ Or:
 
 ```JavaScript
 const amap = require("@constantiner/fun-ctional/amap-umd");
+```
+
+### amapSeq
+
+An asynchronous version of map over an iterable (amapSeq stays for async-map).
+
+It gets an iterable of values (or promises) as input (or a promise to resolve to iterable), resolves them, maps over map function and returns a promise which resolves to an array of values.
+
+It allows asynchronous mapping point-free way and can be used with asynchronous compose functions.
+
+The difference from regular [`amap`](#amap) is if map function is asynchronous (returns a promise) every new invocation of map function performs sequentially after resolving previous promise. So if any of promises produces error (promise rejection) `amapSeq` will not produce new promises and they won't be invoked.
+
+See [`amap`](#amap) for parallel implementation.
+
+```JavaScript
+const [ first, second, third ] = await amapSeq(getDataFromServer)([somePromise1, someValue2, somePromise3]);
+```
+
+Or even more traditional way:
+
+```JavaScript
+amapSeq(getDataFromServer)([somePromise1, someValue2, somePromise3])
+	.then(values => console.log(values));
+```
+
+It first resolves a promises passed and then pass resolutions value to the mapping function.
+
+Mapping function is called with three parameters: `currentValue`, `currentIndex`, `array` which are plain resolved values (not promises).
+
+Input iterable's values are not restricted to promises but can be any value to pass as input to functions.
+
+It also allows to handle errors like for traditional Promise:
+
+```JavaScript
+amapSeq(getDataFromServer)([somePromise1, someValue2, somePromise3]).catch(e => console.error(e));
+```
+
+Or you can use `try/catch` in `async/await` constructions.
+
+Нou can use it with [`acompose`](#acompose) or [`apipe`](#apipe):
+
+```JavaScript
+const usersHtml = await acompose(getHtmlRepresentation, getUserNames, amapSeq(getUser), getUserIds)(somePromise);
+```
+
+You can import it the following way:
+
+```JavaScript
+import { amapSeq } from "@constantiner/fun-ctional";
+```
+
+Or:
+
+```JavaScript
+const { amapSeq } = require("@constantiner/fun-ctional-umd");
+```
+
+Or you can import it separately without the whole bundle:
+
+```JavaScript
+import amapSeq from "@constantiner/fun-ctional/amapSeq";
+```
+
+Or:
+
+```JavaScript
+const amapSeq = require("@constantiner/fun-ctional/amapSeq-umd");
 ```
 
 ### areduce

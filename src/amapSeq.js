@@ -8,7 +8,9 @@ import amapGeneric from "./util/amapGeneric";
  *
  * It allows asynchronous mapping point-free way and can be used with asynchronous compose functions.
  *
- * It uses Promise.all() under the hood.
+ * The difference from regular amap is if map function is asynchronous (returns a promise) 
+ * every new invocation of map function performs sequentially after resolving previous promise.
+ * So if any of promises produces error (promise rejection) amapSeq will not produce new promises and they won't be invoked.
  *
  * <pre><code>const [ first, second, third ] = await amap(getDataFromServer)([somePromise1, someValue2, somePromise3]);</code></pre>
  *
