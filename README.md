@@ -448,6 +448,8 @@ It gets a value (a promise or not), resolves it and if resulting promise was rej
 
 It allows to handle errors within [`acompose`](#acompose) or [`apipe`](#apipe) asynchronous composition chains to restore broken state etc.
 
+See [`applySafe`](#applysafe) for an option to invoke catch handler along with some mapping function.
+
 A sample with [`acompose`](#acompose):
 
 ```JavaScript
@@ -497,6 +499,8 @@ Composable version of `promise.then(mapFn).catch(catchFn)`.
 It gets a value (a promise or not), resolves it and handles as `promise.then(mapFn).catch(catchFn)` returning resulting promise.
 
 It allows to handle errors within [`acompose`](#acompose) or [`apipe`](#apipe) asynchronous composition chains to restore broken state etc.
+
+See [`acatch`](#acatch) for composable invocation of catch handler separately.
 
 A sample with [`acompose`](#acompose):
 
