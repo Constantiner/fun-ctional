@@ -1,8 +1,8 @@
 # fun-ctional<!-- omit in toc -->
 
-With `fun-ctional` library you can use most of the familiar functional techniques (like functional composition) in asynchronous world with shining Promises.
+With `fun-ctional` library it is possible to use most of the familiar functional techniques (like functional composition) in asynchronous world with shining Promises.
 
-It allows to mix synchronous and asynchronous functions to produce reusable composable functions and compatible with all good old utilities from functional libraries like [Lodash](https://lodash.com/). The only difference they always return a promise.
+It allows to mix synchronous and asynchronous functions to produce reusable composable functions which compatible with all good old utilities from functional libraries like [Lodash](https://lodash.com/) in terms of ability to use any synchronous functions. The only difference is that functions from `fun-ctional` library always return promises.
 
 - [Installation](#installation)
 - [Documentation](#documentation)
