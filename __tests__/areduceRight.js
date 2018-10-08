@@ -164,6 +164,7 @@ describe("areduceRight tests", () => {
 		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
 		const inputValue = [arg1, arg2, arg3];
 		const input = new Set(inputValue);
+		const inputValueResolved = [arg1Value, arg2, arg3Value];
 
 		const result = await areduceRight(concatenationFn, initialAcc)(input);
 
@@ -176,9 +177,9 @@ describe("areduceRight tests", () => {
 		mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
 		expect(identityAcc).toHaveBeenCalledTimes(1);
 		expect(concatenationFn).toHaveBeenCalledTimes(3);
-		mockFnExpectations(concatenationFn, 1, "101", initialAccValue, arg3Value, 2, inputValue);
-		mockFnExpectations(concatenationFn, 2, "1012", "101", arg2, 1, inputValue);
-		mockFnExpectations(concatenationFn, 3, expectedResult, "1012", arg1Value, 0, inputValue);
+		mockFnExpectations(concatenationFn, 1, "101", initialAccValue, arg3Value, 2, inputValueResolved);
+		mockFnExpectations(concatenationFn, 2, "1012", "101", arg2, 1, inputValueResolved);
+		mockFnExpectations(concatenationFn, 3, expectedResult, "1012", arg1Value, 0, inputValueResolved);
 	});
 	it("should reject for mixed list of promises and not as input and with non symmetrical operation and promised initial value and fail in first input", async () => {
 		expect.assertions(7);
@@ -232,7 +233,7 @@ describe("areduceRight tests", () => {
 			expect(identityArg3).toHaveBeenCalledTimes(1);
 			mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
 			expect(identityAcc).toHaveBeenCalledTimes(1);
-			expect(concatenationFn).toHaveBeenCalledTimes(2);
+			expect(concatenationFn).not.toBeCalled();
 			expect(identityArg1).not.toBeCalled();
 		}
 	});
@@ -252,6 +253,7 @@ describe("areduceRight tests", () => {
 		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
 		const inputValue = [arg1, arg2, arg3];
 		const input = new Set(inputValue);
+		const inputValueResolved = [arg1Value, arg2, arg3Value];
 
 		const result = await areduceRight(asyncConcatenationFn, initialAcc)(input);
 
@@ -264,9 +266,9 @@ describe("areduceRight tests", () => {
 		mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
 		expect(identityAcc).toHaveBeenCalledTimes(1);
 		expect(concatenationFn).toHaveBeenCalledTimes(3);
-		mockFnExpectations(concatenationFn, 1, "101", initialAccValue, arg3Value, 2, inputValue);
-		mockFnExpectations(concatenationFn, 2, "1012", "101", arg2, 1, inputValue);
-		mockFnExpectations(concatenationFn, 3, expectedResult, "1012", arg1Value, 0, inputValue);
+		mockFnExpectations(concatenationFn, 1, "101", initialAccValue, arg3Value, 2, inputValueResolved);
+		mockFnExpectations(concatenationFn, 2, "1012", "101", arg2, 1, inputValueResolved);
+		mockFnExpectations(concatenationFn, 3, expectedResult, "1012", arg1Value, 0, inputValueResolved);
 	});
 	it("should work for mixed list of promises and not as input and with non symmetrical operation", async () => {
 		expect.assertions(12);
@@ -280,6 +282,7 @@ describe("areduceRight tests", () => {
 		const arg3 = createAsyncPromise(identityArg3)(arg3Value);
 		const inputValue = [arg1, arg2, arg3];
 		const input = new Set(inputValue);
+		const inputValueResolved = [arg1Value, arg2, arg3Value];
 
 		const result = await areduceRight(concatenationFn)(input);
 
@@ -290,8 +293,8 @@ describe("areduceRight tests", () => {
 		mockFnExpectations(identityArg1, 1, arg1Value, arg1Value);
 		expect(identityArg1).toHaveBeenCalledTimes(1);
 		expect(concatenationFn).toHaveBeenCalledTimes(2);
-		mockFnExpectations(concatenationFn, 1, "12", arg3Value, arg2, 1, inputValue);
-		mockFnExpectations(concatenationFn, 2, expectedResult, "12", arg1Value, 0, inputValue);
+		mockFnExpectations(concatenationFn, 1, "12", arg3Value, arg2, 1, inputValueResolved);
+		mockFnExpectations(concatenationFn, 2, expectedResult, "12", arg1Value, 0, inputValueResolved);
 	});
 	it("should work for mixed list of promises and not as input and with non symmetrical operation with promise in reduce function", async () => {
 		expect.assertions(12);
@@ -306,6 +309,7 @@ describe("areduceRight tests", () => {
 		const arg3 = createAsyncPromise(identityArg3)(arg3Value);
 		const inputValue = [arg1, arg2, arg3];
 		const input = new Set(inputValue);
+		const inputValueResolved = [arg1Value, arg2, arg3Value];
 
 		const result = await areduceRight(asyncConcatenationFn)(input);
 
@@ -316,7 +320,7 @@ describe("areduceRight tests", () => {
 		mockFnExpectations(identityArg1, 1, arg1Value, arg1Value);
 		expect(identityArg1).toHaveBeenCalledTimes(1);
 		expect(concatenationFn).toHaveBeenCalledTimes(2);
-		mockFnExpectations(concatenationFn, 1, "12", arg3Value, arg2, 1, inputValue);
-		mockFnExpectations(concatenationFn, 2, expectedResult, "12", arg1Value, 0, inputValue);
+		mockFnExpectations(concatenationFn, 1, "12", arg3Value, arg2, 1, inputValueResolved);
+		mockFnExpectations(concatenationFn, 2, expectedResult, "12", arg1Value, 0, inputValueResolved);
 	});
 });

@@ -1,5 +1,9 @@
+import extractArrayFromArgument from "./extractArrayFromArgument";
+
+const resolveArrayFromInput = async iterable => Promise.all(await extractArrayFromArgument(iterable));
+
 const reducer = reduceFn => (acc, current, index, array) =>
-	Promise.all([acc, current]).then(([acc, current]) => reduceFn(acc, current, index, array));
+	Promise.resolve(acc).then(acc => reduceFn(acc, current, index, array));
 
 const getReducerArgs = args => {
 	const effectiveReduceFn = reducer(args[0]);
@@ -8,4 +12,4 @@ const getReducerArgs = args => {
 	return effectiveArgs;
 };
 
-export { getReducerArgs };
+export { getReducerArgs, resolveArrayFromInput };
