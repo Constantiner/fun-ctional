@@ -1,3 +1,5 @@
+import acompose from "../src/acompose";
+import apipe from "../src/apipe";
 import applySafe from "../src/applySafe";
 import { getError } from "./test-utils/errorUtils";
 import { getMockFn, incrementMock, mockFnExpectations, squareMock } from "./test-utils/jestMockFns";
@@ -55,9 +57,9 @@ describe("applySafe tests", () => {
 		const increment = incrementMock(jest, "increment");
 		const fallbackFn = getMockFn(jest)(() => input * 4, "fallbackFn");
 		const catchFn = getMockFn(jest)(() => input * 17, "catchFn");
-		const result = await applySafe(createAsyncPromise(square), fallbackFn)(createSyncPromise(increment)(input)).catch(
-			catchFn
-		);
+		const result = await applySafe(createAsyncPromise(square), fallbackFn)(
+			createSyncPromise(increment)(input)
+		).catch(catchFn);
 		expect(result).toBe(64);
 		mockFnExpectations(square, 1, 64, 8);
 		expect(square).toHaveBeenCalledTimes(1);
@@ -119,5 +121,261 @@ describe("applySafe tests", () => {
 		expect(fallbackFn).not.toBeCalled();
 		mockFnExpectations(catchFn, 1, 119, getError(getError(8)));
 		expect(catchFn).toHaveBeenCalledTimes(1);
+	});
+});
+describe("applySafe in acompose tests", () => {
+	it("should work for case without rejects", async () => {
+		expect.assertions(12);
+		const input = 7;
+		const increment1 = incrementMock(jest, "increment1");
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await acompose(applySafe(increment3, catchFn), increment2, increment1)(input).catch(
+			catchInCatchBlockFn
+		);
+		expect(result).toBe(10);
+		expect(catchFn).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment1, 1, 8, input);
+		expect(increment2).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment2, 1, 9, 8);
+		expect(increment3).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment3, 1, 10, 9);
+	});
+	it("should work for case with reject in acompose chain", async () => {
+		expect.assertions(10);
+		const input = 7;
+		const increment1 = incrementMock(jest, "increment1");
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const increment2Promise = createAsyncPromise(increment2, false);
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await acompose(applySafe(increment3, catchFn), increment2Promise, increment1)(input).catch(
+			catchInCatchBlockFn
+		);
+		expect(result).toBe(28);
+		expect(catchFn).toHaveBeenCalledTimes(1);
+		mockFnExpectations(catchFn, 1, 28, getError(input + 1));
+		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment2).not.toBeCalled();
+		expect(increment3).not.toBeCalled();
+		expect(increment1).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment1, 1, 8, input);
+	});
+	it("should work for case with reject in acompose chain", async () => {
+		expect.assertions(8);
+		const input = 7;
+		const increment1 = incrementMock(jest, "increment1");
+		const increment1Promise = createAsyncPromise(increment1, false);
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await acompose(applySafe(increment3, catchFn), increment2, increment1Promise)(input).catch(
+			catchInCatchBlockFn
+		);
+		expect(result).toBe(28);
+		expect(catchFn).toHaveBeenCalledTimes(1);
+		mockFnExpectations(catchFn, 1, 28, getError(input));
+		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).not.toBeCalled();
+		expect(increment2).not.toBeCalled();
+		expect(increment3).not.toBeCalled();
+	});
+	it("should work for case with reject in input", async () => {
+		expect.assertions(8);
+		const input = 7;
+		const inputIncrement = incrementMock(jest, "inputIncrement");
+		const inputIncrementPromise = createAsyncPromise(inputIncrement, false);
+		const increment1 = incrementMock(jest, "increment1");
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await acompose(applySafe(increment3, catchFn), increment2, increment1)(
+			inputIncrementPromise(input)
+		).catch(catchInCatchBlockFn);
+		expect(result).toBe(28);
+		expect(catchFn).toHaveBeenCalledTimes(1);
+		mockFnExpectations(catchFn, 1, 28, getError(input));
+		expect(increment1).not.toBeCalled();
+		expect(increment2).not.toBeCalled();
+		expect(increment3).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toBeCalled();
+	});
+	it("should work for case with reject in acompose chain and applySafe in middle", async () => {
+		expect.assertions(10);
+		const input = 7;
+		const increment1 = incrementMock(jest, "increment1");
+		const increment1Promise = createAsyncPromise(increment1, false);
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await acompose(increment2, applySafe(increment3, catchFn), increment1Promise)(input).catch(
+			catchInCatchBlockFn
+		);
+		expect(result).toBe(29);
+		expect(catchFn).toHaveBeenCalledTimes(1);
+		mockFnExpectations(catchFn, 1, 28, getError(input));
+		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).not.toBeCalled();
+		expect(increment2).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment2, 1, 29, 28);
+		expect(increment3).not.toBeCalled();
+	});
+	it("should work for case with rejection in applySafe", async () => {
+		expect.assertions(12);
+		const input = 7;
+		const increment1 = incrementMock(jest, "increment1");
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const increment3Promise = createAsyncPromise(increment3, false);
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await acompose(applySafe(increment3Promise, catchFn), increment2, increment1)(input).catch(
+			catchInCatchBlockFn
+		);
+		expect(result).toBe(28);
+		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment1, 1, 8, input);
+		expect(increment2).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment2, 1, 9, 8);
+		expect(increment3).not.toBeCalled();
+		expect(catchFn).toHaveBeenCalledTimes(1);
+		mockFnExpectations(catchFn, 1, 28, getError(9));
+	});
+});
+describe("applySafe in apipe tests", () => {
+	it("should work for case without rejects", async () => {
+		expect.assertions(12);
+		const input = 7;
+		const increment1 = incrementMock(jest, "increment1");
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await apipe(increment1, increment2, applySafe(increment3, catchFn))(input).catch(
+			catchInCatchBlockFn
+		);
+		expect(result).toBe(10);
+		expect(catchFn).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment1, 1, 8, input);
+		expect(increment2).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment2, 1, 9, 8);
+		expect(increment3).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment3, 1, 10, 9);
+	});
+	it("should work for case with reject in apipe chain", async () => {
+		expect.assertions(10);
+		const input = 7;
+		const increment1 = incrementMock(jest, "increment1");
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const increment2Promise = createAsyncPromise(increment2, false);
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await apipe(increment1, increment2Promise, applySafe(increment3, catchFn))(input).catch(
+			catchInCatchBlockFn
+		);
+		expect(result).toBe(28);
+		expect(catchFn).toHaveBeenCalledTimes(1);
+		mockFnExpectations(catchFn, 1, 28, getError(input + 1));
+		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment2).not.toBeCalled();
+		expect(increment3).not.toBeCalled();
+		expect(increment1).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment1, 1, 8, input);
+	});
+	it("should work for case with reject in apipe chain", async () => {
+		expect.assertions(8);
+		const input = 7;
+		const increment1 = incrementMock(jest, "increment1");
+		const increment1Promise = createAsyncPromise(increment1, false);
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await apipe(increment1Promise, increment2, applySafe(increment3, catchFn))(input).catch(
+			catchInCatchBlockFn
+		);
+		expect(result).toBe(28);
+		expect(catchFn).toHaveBeenCalledTimes(1);
+		mockFnExpectations(catchFn, 1, 28, getError(input));
+		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).not.toBeCalled();
+		expect(increment2).not.toBeCalled();
+		expect(increment3).not.toBeCalled();
+	});
+	it("should work for case with reject in input", async () => {
+		expect.assertions(8);
+		const input = 7;
+		const inputIncrement = incrementMock(jest, "inputIncrement");
+		const inputIncrementPromise = createAsyncPromise(inputIncrement, false);
+		const increment1 = incrementMock(jest, "increment1");
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await apipe(increment1, increment2, applySafe(increment3, catchFn))(
+			inputIncrementPromise(input)
+		).catch(catchInCatchBlockFn);
+		expect(result).toBe(28);
+		expect(catchFn).toHaveBeenCalledTimes(1);
+		mockFnExpectations(catchFn, 1, 28, getError(input));
+		expect(increment1).not.toBeCalled();
+		expect(increment2).not.toBeCalled();
+		expect(increment3).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toBeCalled();
+	});
+	it("should work for case with reject in apipe chain and applySafe in middle", async () => {
+		expect.assertions(10);
+		const input = 7;
+		const increment1 = incrementMock(jest, "increment1");
+		const increment1Promise = createAsyncPromise(increment1, false);
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await apipe(increment1Promise, applySafe(increment3, catchFn), increment2)(input).catch(
+			catchInCatchBlockFn
+		);
+		expect(result).toBe(29);
+		expect(catchFn).toHaveBeenCalledTimes(1);
+		mockFnExpectations(catchFn, 1, 28, getError(input));
+		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).not.toBeCalled();
+		expect(increment2).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment2, 1, 29, 28);
+		expect(increment3).not.toBeCalled();
+	});
+	it("should work for case with rejection in applySafe", async () => {
+		expect.assertions(12);
+		const input = 7;
+		const increment1 = incrementMock(jest, "increment1");
+		const increment2 = incrementMock(jest, "increment2");
+		const increment3 = incrementMock(jest, "increment3");
+		const increment3Promise = createAsyncPromise(increment3, false);
+		const catchFn = getMockFn(jest)(() => input * 4, "catchFn");
+		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
+		const result = await apipe(increment1, increment2, applySafe(increment3Promise, catchFn))(input).catch(
+			catchInCatchBlockFn
+		);
+		expect(result).toBe(28);
+		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment1, 1, 8, input);
+		expect(increment2).toHaveBeenCalledTimes(1);
+		mockFnExpectations(increment2, 1, 9, 8);
+		expect(increment3).not.toBeCalled();
+		expect(catchFn).toHaveBeenCalledTimes(1);
+		mockFnExpectations(catchFn, 1, 28, getError(9));
 	});
 });
