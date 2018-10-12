@@ -1,4 +1,4 @@
-const customPromiseHandlingSupportSupport = Symbol("Custom Promise Handling Support");
+const customPromiseHandlingSupportSupport = Symbol.for("Custom Promise Handling Support");
 
 const addCustomPromiseHandlingSupport = (fn, customVersion) => (
 	(fn[customPromiseHandlingSupportSupport] = customVersion), fn
