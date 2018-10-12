@@ -23,7 +23,7 @@ Install it with NPM:
 
 `npm install @constantiner/fun-ctional`
 
-**Note**. The UMD version of package is ES5 compatible but you may need to use [`@babel/polyfill`](https://babeljs.io/docs/en/babel-polyfill/) or even [`@babel/runtime`](https://babeljs.io/docs/en/babel-runtime) with it.
+**Note**. The UMD version of package is ES5 compatible but you may need to use [`@babel/polyfill`](https://babeljs.io/docs/en/babel-polyfill/) (for `Symbol` support) or even [`@babel/runtime`](https://babeljs.io/docs/en/babel-runtime) (`async`/`await` support) with it.
 
 **Note**. Build includes sourcemaps and minified versions of UMD files as well. You can find them in your `node_modules` folder.
 
