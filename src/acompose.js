@@ -1,3 +1,4 @@
+import { supportsCustomPromiseHandling } from "./util/customPromiseHandlingSupport";
 import extractResolvedArguments from "./util/extractResolvedArguments";
 
 /**
@@ -25,4 +26,10 @@ import extractResolvedArguments from "./util/extractResolvedArguments";
  * @returns {(promise : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
  */
 export default (...fns) => async promise =>
-	extractResolvedArguments(fns).reduceRight((promise, fn) => promise.then(fn), Promise.resolve(promise));
+	extractResolvedArguments(fns).reduceRight((promise, fn) => {
+		const promiseHandler = supportsCustomPromiseHandling(fn);
+		if (promiseHandler) {
+			return promiseHandler(promise);
+		}
+		return promise.then(fn);
+	}, Promise.resolve(promise));

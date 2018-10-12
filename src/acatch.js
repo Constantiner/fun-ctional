@@ -1,3 +1,5 @@
+import { addCustomPromiseHandlingSupport } from "./util/customPromiseHandlingSupport";
+
 /**
  * Composable version of catch method for promises.
  *
@@ -20,4 +22,7 @@
  * @param {function} catchFn Is function to handle Promise's rejection.
  * @returns {any => Promise} A function which expects any value as input (Promise or not) and returns a Promise.
  */
-export default catchFn => value => Promise.resolve(value).catch(catchFn);
+export default catchFn => {
+	const handler = value => Promise.resolve(value).catch(catchFn);
+	return addCustomPromiseHandlingSupport(handler, promise => promise.catch(catchFn));
+};

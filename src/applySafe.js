@@ -1,3 +1,5 @@
+import { addCustomPromiseHandlingSupport } from "./util/customPromiseHandlingSupport";
+
 /**
  * Composable version of promise.then(mapFn).catch(catchFn).
  *
@@ -25,7 +27,10 @@
  * @param {function} catchFn Is function to handle Promise's rejection (catch).
  * @returns {any => Promise} A function which expects any value as input (Promise or not) and returns a Promise.
  */
-export default (mapFn, catchFn) => value =>
-	Promise.resolve(value)
-		.then(mapFn)
-		.catch(catchFn);
+export default (mapFn, catchFn) => {
+	const handler = value =>
+		Promise.resolve(value)
+			.then(mapFn)
+			.catch(catchFn);
+	return addCustomPromiseHandlingSupport(handler, promise => promise.then(mapFn).catch(catchFn));
+};
