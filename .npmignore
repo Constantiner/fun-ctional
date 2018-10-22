@@ -6,3 +6,4 @@ package-lock.json
 coverage
 .*
 gulpfile.js
+babel.config.js
