@@ -7,3 +7,4 @@
 /*.mjs
 /*.map
 !/gulpfile.js
+!/babel.config.js

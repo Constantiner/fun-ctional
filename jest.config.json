@@ -1,0 +1,13 @@
+{
+	"collectCoverageFrom": ["<rootDir>/src/**/*.js", "!<rootDir>/src/fun-ctional.js"],
+	"coverageDirectory": "<rootDir>/coverage/",
+	"collectCoverage": true,
+	"resolver": "jest-pnp-resolver",
+	"testMatch": ["<rootDir>/__tests__/**/*.js"],
+	"testEnvironment": "node",
+	"transform": {
+		"^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest"
+	},
+	"transformIgnorePatterns": ["node_modules/(?!@constantiner)/"],
+	"testPathIgnorePatterns": ["<rootDir>/node_modules/", "<rootDir>/__tests__/test-utils/"]
+}
