@@ -76,11 +76,9 @@ describe("A kind of composable Promise.all with single input value for all handl
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		const result = await applyFns(
-			createSyncPromise(square),
-			increment,
-			createAsyncPromise(concatenateTestString)
-		)(inputValue);
+		const result = await applyFns(createSyncPromise(square), increment, createAsyncPromise(concatenateTestString))(
+			inputValue
+		);
 		expect(result).toEqual([25, 6, "5test"]);
 		mockFnExpectations(square, 1, 25, inputValue);
 		mockFnExpectations(increment, 1, 6, inputValue);

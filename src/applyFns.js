@@ -24,6 +24,6 @@ import extractResolvedArguments from "./util/extractResolvedArguments";
  * @returns {(value : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
  */
 export default (...fns) => async value => {
-	const val = await Promise.resolve(value);
-	return Promise.all(extractResolvedArguments(fns).map(fn => fn(val)));
+	const resolvedValue = await Promise.resolve(value);
+	return Promise.all(extractResolvedArguments(fns).map(fn => fn(resolvedValue)));
 };

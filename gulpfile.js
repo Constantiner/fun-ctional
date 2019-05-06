@@ -23,7 +23,7 @@ const banner = `/**
 gulp.task("clean", () => del(["dist", "*.js", "*.mjs", "*.map", "!gulpfile.js", "!babel.config.js"]));
 
 const getSourceFile = () => gulp.src(SOURCES),
-	getDest = () => gulp.dest("."),
+	getDestination = () => gulp.dest("."),
 	rollupUmd = rollup(
 		{
 			onwarn(warning) {
@@ -66,9 +66,9 @@ const getSourceFile = () => gulp.src(SOURCES),
 					}
 				)
 			)
-			.pipe(getDest())
+			.pipe(getDestination())
 			.pipe(rename({ extname: `.mjs` }))
-			.pipe(getDest());
+			.pipe(getDestination());
 
 gulp.task("es6modules", () => proceedEs6Modules());
 
@@ -83,7 +83,7 @@ gulp.task("es5modules", () =>
 			})
 		)
 		.pipe(sourcemaps.write("."))
-		.pipe(getDest())
+		.pipe(getDestination())
 );
 
 gulp.task("es5modulesMin", () =>
@@ -98,7 +98,7 @@ gulp.task("es5modulesMin", () =>
 			})
 		)
 		.pipe(sourcemaps.write("."))
-		.pipe(getDest())
+		.pipe(getDestination())
 );
 
 gulp.task("scripts", gulp.series("es5modulesMin", "es5modules", "es6modules"));

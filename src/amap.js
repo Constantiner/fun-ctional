@@ -9,7 +9,7 @@ import amapGeneric from "./util/amapGeneric";
  * It allows asynchronous mapping point-free way and can be used with asynchronous compose functions.
  *
  * It uses Promise.all() under the hood.
- * So if mapping function is asynchronous (returns a promise) all promises are being generated at once 
+ * So if mapping function is asynchronous (returns a promise) all promises are being generated at once
  * and then resolved with Promise.all().
  * So if any of promises will produce error (promise rejection) all the other promises will be invoked.
  * The advantage of this method of invoking promises it will finish earlier than sequential map (because of Promise.all())

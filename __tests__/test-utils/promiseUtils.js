@@ -1,16 +1,19 @@
 import { getError } from "./errorUtils";
 
 const createAsyncPromise = (
-	mapFn = (...mapFnArgs) => (mapFnArgs.length === 1 ? mapFnArgs[0] : mapFnArgs),
+	mapFn = (...mapFnArguments) => (mapFnArguments.length === 1 ? mapFnArguments[0] : mapFnArguments),
 	successful = true
-) => (...inputValueArgs) =>
+) => (...inputValueArguments) =>
 	new Promise((resolve, reject) =>
-		setTimeout(() => (successful ? resolve(mapFn(...inputValueArgs)) : reject(getError(...inputValueArgs))), 100)
+		setTimeout(
+			() => (successful ? resolve(mapFn(...inputValueArguments)) : reject(getError(...inputValueArguments))),
+			100
+		)
 	);
 const createSyncPromise = (
-	mapFn = (...mapFnArgs) => (mapFnArgs.length === 1 ? mapFnArgs[0] : mapFnArgs),
+	mapFn = (...mapFnArguments) => (mapFnArguments.length === 1 ? mapFnArguments[0] : mapFnArguments),
 	successful = true
-) => async (...inputValueArgs) =>
-	successful ? mapFn(...inputValueArgs) : Promise.reject(getError(...inputValueArgs));
+) => async (...inputValueArguments) =>
+	successful ? mapFn(...inputValueArguments) : Promise.reject(getError(...inputValueArguments));
 
 export { createAsyncPromise, createSyncPromise };

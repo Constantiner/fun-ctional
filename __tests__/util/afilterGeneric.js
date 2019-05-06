@@ -156,17 +156,17 @@ describe("afilterGeneric tests", () => {
 		const input2 = 5;
 		const dangerousFilterFn = getMockFn(jest)(n => n.first.second * n.first.second > 10, "dangerousFn");
 		const squareInPromise = squareMock(jest, "squareInPromise");
-		const getObjFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjFromInt");
+		const getObjectFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjectFromInt");
 		try {
 			await afilterGeneric(true)(dangerousFilterFn)([
 				createAsyncPromise(squareInPromise)(input1),
-				createSyncPromise(getObjFromInt)(input2)
+				createSyncPromise(getObjectFromInt)(input2)
 			]);
 			expect(true).toBe(false);
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(getObjFromInt, 1, { first: { second: input2 } }, input2);
+			mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
 			mockFnExpectations(squareInPromise, 1, 16, input1);
 			expect(dangerousFilterFn).toHaveBeenCalledTimes(1);
 			mockFnArgumentsExpectations(dangerousFilterFn, 1, 16, 0, [16, { first: { second: input2 } }]);
@@ -178,17 +178,17 @@ describe("afilterGeneric tests", () => {
 		const input2 = 5;
 		const dangerousFilterFn = getMockFn(jest)(n => n.first.second * n.first.second > 10, "dangerousFn");
 		const squareInPromise = squareMock(jest, "squareInPromise");
-		const getObjFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjFromInt");
+		const getObjectFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjectFromInt");
 		try {
 			await afilterGeneric()(dangerousFilterFn)([
 				createAsyncPromise(squareInPromise)(input1),
-				createSyncPromise(getObjFromInt)(input2)
+				createSyncPromise(getObjectFromInt)(input2)
 			]);
 			expect(true).toBe(false);
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(getObjFromInt, 1, { first: { second: input2 } }, input2);
+			mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
 			mockFnExpectations(squareInPromise, 1, 16, input1);
 			expect(dangerousFilterFn).toHaveBeenCalledTimes(2);
 			mockFnArgumentsExpectations(dangerousFilterFn, 1, 16, 0, [16, { first: { second: input2 } }]);

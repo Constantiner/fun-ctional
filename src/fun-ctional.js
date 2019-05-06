@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/filename-case */
 import acatch from "./acatch";
 import acompose from "./acompose";
 import afilter from "./afilter";
