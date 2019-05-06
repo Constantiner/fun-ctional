@@ -24,5 +24,10 @@
 			}
 		]
 	},
-	"extends": ["eslint:recommended", "plugin:prettier/recommended", "plugin:unicorn/recommended"]
+	"extends": [
+		"eslint:recommended",
+		"plugin:prettier/recommended",
+		"plugin:unicorn/recommended",
+		"plugin:jest/recommended"
+	]
 }

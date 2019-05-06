@@ -225,7 +225,7 @@ describe("Tests for asynchronous pipe utility", () => {
 				expect(e).toBeInstanceOf(Error);
 				expect(e.message).toBe(getErrorMessage(inputValue));
 				expect(increment).not.toHaveBeenCalled();
-				expect(thenHandler).not.toBeCalled();
+				expect(thenHandler).not.toHaveBeenCalled();
 			});
 	});
 	it("should reject properly with rejection in one of the pipe functions traditional way", () => {
@@ -243,7 +243,7 @@ describe("Tests for asynchronous pipe utility", () => {
 				mockFnExpectations(increment, 1, 5, inputValue);
 				mockFnArgumentsExpectations(undefinedErrorFn, 1, 5);
 				expect(incrementInCompose).not.toHaveBeenCalled();
-				expect(thenHandler).not.toBeCalled();
+				expect(thenHandler).not.toHaveBeenCalled();
 			});
 	});
 });

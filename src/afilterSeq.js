@@ -4,13 +4,13 @@ import afilterGeneric from "./util/afilterGeneric";
  * An asynchronous version of filter over an iterable (afilterSeq stays for async-filter).
  *
  * It gets an iterable of values (or promises) as input (or promise to resolve to iterable),
- * resolves them, iterates over them with filter function 
- * (which returns boolean where true means current value will be included in resulting array) 
+ * resolves them, iterates over them with filter function
+ * (which returns boolean where true means current value will be included in resulting array)
  * and returns a promise which resolves to an array of values (filtered input iterable).
  *
  * It allows asynchronous filtering point-free way and can be used with asynchronous compose functions.
  *
- * The difference from regular afilter is if filter function is asynchronous (returns a promise) 
+ * The difference from regular afilter is if filter function is asynchronous (returns a promise)
  * every new invocation of filter function performs sequentially after resolving previous promise.
  * So if any of promises produces error (promise rejection) afilterSeq will not produce new promises and they won't be invoked.
  *

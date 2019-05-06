@@ -57,7 +57,7 @@ describe("A kind of composable Promise.all with single input value for all handl
 			await applyFns()(createAsyncPromise(square, false)(inputValue));
 			expect(true).toBe(false);
 		} catch (e) {
-			expect(square).not.toBeCalled();
+			expect(square).not.toHaveBeenCalled();
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(inputValue));
 		}
@@ -76,11 +76,9 @@ describe("A kind of composable Promise.all with single input value for all handl
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		const result = await applyFns(
-			createSyncPromise(square),
-			increment,
-			createAsyncPromise(concatenateTestString)
-		)(inputValue);
+		const result = await applyFns(createSyncPromise(square), increment, createAsyncPromise(concatenateTestString))(
+			inputValue
+		);
 		expect(result).toEqual([25, 6, "5test"]);
 		mockFnExpectations(square, 1, 25, inputValue);
 		mockFnExpectations(increment, 1, 6, inputValue);
@@ -187,10 +185,10 @@ describe("A kind of composable Promise.all with single input value for all handl
 				createAsyncPromise(square, false)(inputValue)
 			);
 		} catch (e) {
-			expect(squareInAll).not.toBeCalled();
-			expect(increment).not.toBeCalled();
-			expect(concatenateTestString).not.toBeCalled();
-			expect(square).not.toBeCalled();
+			expect(squareInAll).not.toHaveBeenCalled();
+			expect(increment).not.toHaveBeenCalled();
+			expect(concatenateTestString).not.toHaveBeenCalled();
+			expect(square).not.toHaveBeenCalled();
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(inputValue));
 		}
@@ -208,13 +206,13 @@ describe("A kind of composable Promise.all with single input value for all handl
 		)
 			.then(thenHandler)
 			.catch(e => {
-				expect(squareInAll).not.toBeCalled();
-				expect(increment).not.toBeCalled();
-				expect(concatenateTestString).not.toBeCalled();
-				expect(square).not.toBeCalled();
+				expect(squareInAll).not.toHaveBeenCalled();
+				expect(increment).not.toHaveBeenCalled();
+				expect(concatenateTestString).not.toHaveBeenCalled();
+				expect(square).not.toHaveBeenCalled();
 				expect(e).toBeInstanceOf(Error);
 				expect(e.message).toBe(getErrorMessage(inputValue));
-				expect(thenHandler).not.toBeCalled();
+				expect(thenHandler).not.toHaveBeenCalled();
 			});
 	});
 	it("should reject for error function and promise as input value", async () => {
@@ -238,7 +236,7 @@ describe("A kind of composable Promise.all with single input value for all handl
 			mockFnExpectations(square, 1, 25, inputValue);
 			mockFnExpectations(squareInAll, 1, 625, 25);
 			mockFnExpectations(increment, 1, 26, 25);
-			expect(concatenateTestString).not.toBeCalled();
+			expect(concatenateTestString).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject for error function and promise as input value classic way", () => {
@@ -263,8 +261,8 @@ describe("A kind of composable Promise.all with single input value for all handl
 				mockFnExpectations(square, 1, 25, inputValue);
 				mockFnExpectations(squareInAll, 1, 625, 25);
 				mockFnExpectations(increment, 1, 26, 25);
-				expect(concatenateTestString).not.toBeCalled();
-				expect(thenHandler).not.toBeCalled();
+				expect(concatenateTestString).not.toHaveBeenCalled();
+				expect(thenHandler).not.toHaveBeenCalled();
 			});
 	});
 	it("should reject for rejected promise in parameters and promise as input value", async () => {
@@ -284,9 +282,9 @@ describe("A kind of composable Promise.all with single input value for all handl
 			expect(e.message).toBe(getErrorMessage(25));
 			mockFnExpectations(square, 1, 25, inputValue);
 			mockFnExpectations(rejectedPromiseFunc, 1, expect.any(Promise), 25);
-			expect(squareInAll).not.toBeCalled();
+			expect(squareInAll).not.toHaveBeenCalled();
 			mockFnExpectations(increment, 1, 26, 25);
-			expect(concatenateTestString).not.toBeCalled();
+			expect(concatenateTestString).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject for rejected promise in parameters and promise as input value classic way", () => {
@@ -307,10 +305,10 @@ describe("A kind of composable Promise.all with single input value for all handl
 				expect(e.message).toBe(getErrorMessage(25));
 				mockFnExpectations(square, 1, 25, inputValue);
 				mockFnExpectations(rejectedPromiseFunc, 1, expect.any(Promise), 25);
-				expect(squareInAll).not.toBeCalled();
+				expect(squareInAll).not.toHaveBeenCalled();
 				mockFnExpectations(increment, 1, 26, 25);
-				expect(concatenateTestString).not.toBeCalled();
-				expect(thenHandler).not.toBeCalled();
+				expect(concatenateTestString).not.toHaveBeenCalled();
+				expect(thenHandler).not.toHaveBeenCalled();
 			});
 	});
 });

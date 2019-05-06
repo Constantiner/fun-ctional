@@ -58,7 +58,7 @@ describe("amapGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(inputValue));
-			expect(square).not.toBeCalled();
+			expect(square).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject for failed promise as input in sequence", async () => {
@@ -73,7 +73,7 @@ describe("amapGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(inputValue));
-			expect(square).not.toBeCalled();
+			expect(square).not.toHaveBeenCalled();
 		}
 	});
 	it("should work with promise and value as input", async () => {
@@ -123,9 +123,9 @@ describe("amapGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(input1));
-			expect(square).not.toBeCalled();
+			expect(square).not.toHaveBeenCalled();
 			mockFnExpectations(increment, 1, 6, input2);
-			expect(squareInPromise).not.toBeCalled();
+			expect(squareInPromise).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject if function is rejected with promises as input", async () => {
@@ -134,17 +134,17 @@ describe("amapGeneric tests", () => {
 		const input2 = 5;
 		const dangerousFn = getMockFn(jest)(n => n.first.second * n.first.second, "dangerousFn");
 		const squareInPromise = squareMock(jest, "squareInPromise");
-		const getObjFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjFromInt");
+		const getObjectFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjectFromInt");
 		try {
 			await amapGeneric()(dangerousFn)([
 				createAsyncPromise(squareInPromise)(input1),
-				createSyncPromise(getObjFromInt)(input2)
+				createSyncPromise(getObjectFromInt)(input2)
 			]);
 			expect(true).toBe(false);
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(getObjFromInt, 1, { first: { second: input2 } }, input2);
+			mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
 			mockFnExpectations(squareInPromise, 1, 16, input1);
 			expect(dangerousFn).toHaveBeenCalledTimes(1);
 			mockFnArgumentsExpectations(dangerousFn, 1, 16, 0, [16, { first: { second: input2 } }]);
@@ -156,17 +156,17 @@ describe("amapGeneric tests", () => {
 		const input2 = 5;
 		const dangerousFn = getMockFn(jest)(async n => n.first.second * n.first.second, "dangerousFn");
 		const squareInPromise = squareMock(jest, "squareInPromise");
-		const getObjFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjFromInt");
+		const getObjectFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjectFromInt");
 		try {
 			await amapGeneric()(dangerousFn)([
 				createAsyncPromise(squareInPromise)(input1),
-				createSyncPromise(getObjFromInt)(input2)
+				createSyncPromise(getObjectFromInt)(input2)
 			]);
 			expect(true).toBe(false);
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(getObjFromInt, 1, { first: { second: input2 } }, input2);
+			mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
 			mockFnExpectations(squareInPromise, 1, 16, input1);
 			expect(dangerousFn).toHaveBeenCalledTimes(2);
 			mockFnArgumentsExpectations(dangerousFn, 1, 16, 0, [16, { first: { second: input2 } }]);
@@ -182,17 +182,17 @@ describe("amapGeneric tests", () => {
 		const input2 = 5;
 		const dangerousFn = getMockFn(jest)(async n => n.first.second * n.first.second, "dangerousFn");
 		const squareInPromise = squareMock(jest, "squareInPromise");
-		const getObjFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjFromInt");
+		const getObjectFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjectFromInt");
 		try {
 			await amapGeneric(true)(dangerousFn)([
 				createAsyncPromise(squareInPromise)(input1),
-				createSyncPromise(getObjFromInt)(input2)
+				createSyncPromise(getObjectFromInt)(input2)
 			]);
 			expect(true).toBe(false);
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(getObjFromInt, 1, { first: { second: input2 } }, input2);
+			mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
 			mockFnExpectations(squareInPromise, 1, 16, input1);
 			expect(dangerousFn).toHaveBeenCalledTimes(1);
 			mockFnArgumentsExpectations(dangerousFn, 1, 16, 0, [16, { first: { second: input2 } }]);
@@ -234,7 +234,7 @@ describe("amapGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage([input1, 0, inputValue]));
-			expect(square).not.toBeCalled();
+			expect(square).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject with rejected promise traditional way", () => {
@@ -249,8 +249,8 @@ describe("amapGeneric tests", () => {
 			.catch(e => {
 				expect(e).toBeInstanceOf(Error);
 				expect(e.message).toBe(getErrorMessage([input1, 0, inputValue]));
-				expect(square).not.toBeCalled();
-				expect(promiseMapFn).not.toBeCalled();
+				expect(square).not.toHaveBeenCalled();
+				expect(promiseMapFn).not.toHaveBeenCalled();
 			});
 	});
 });

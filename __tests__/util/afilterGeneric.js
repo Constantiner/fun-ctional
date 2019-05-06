@@ -79,7 +79,7 @@ describe("afilterGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(inputValue));
-			expect(filterFn).not.toBeCalled();
+			expect(filterFn).not.toHaveBeenCalled();
 		}
 	});
 	it("should work with promise and value as input", async () => {
@@ -143,11 +143,11 @@ describe("afilterGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(input2));
-			expect(filterFn).not.toBeCalled();
+			expect(filterFn).not.toHaveBeenCalled();
 			expect(increment).toHaveBeenCalledTimes(2);
 			mockFnExpectations(increment, 1, 5, input1);
 			mockFnExpectations(increment, 2, 6, input3);
-			expect(squareInPromise).not.toBeCalled();
+			expect(squareInPromise).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject if function is rejected with promises as input in sequence", async () => {
@@ -156,17 +156,17 @@ describe("afilterGeneric tests", () => {
 		const input2 = 5;
 		const dangerousFilterFn = getMockFn(jest)(n => n.first.second * n.first.second > 10, "dangerousFn");
 		const squareInPromise = squareMock(jest, "squareInPromise");
-		const getObjFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjFromInt");
+		const getObjectFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjectFromInt");
 		try {
 			await afilterGeneric(true)(dangerousFilterFn)([
 				createAsyncPromise(squareInPromise)(input1),
-				createSyncPromise(getObjFromInt)(input2)
+				createSyncPromise(getObjectFromInt)(input2)
 			]);
 			expect(true).toBe(false);
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(getObjFromInt, 1, { first: { second: input2 } }, input2);
+			mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
 			mockFnExpectations(squareInPromise, 1, 16, input1);
 			expect(dangerousFilterFn).toHaveBeenCalledTimes(1);
 			mockFnArgumentsExpectations(dangerousFilterFn, 1, 16, 0, [16, { first: { second: input2 } }]);
@@ -178,17 +178,17 @@ describe("afilterGeneric tests", () => {
 		const input2 = 5;
 		const dangerousFilterFn = getMockFn(jest)(n => n.first.second * n.first.second > 10, "dangerousFn");
 		const squareInPromise = squareMock(jest, "squareInPromise");
-		const getObjFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjFromInt");
+		const getObjectFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjectFromInt");
 		try {
 			await afilterGeneric()(dangerousFilterFn)([
 				createAsyncPromise(squareInPromise)(input1),
-				createSyncPromise(getObjFromInt)(input2)
+				createSyncPromise(getObjectFromInt)(input2)
 			]);
 			expect(true).toBe(false);
 		} catch (e) {
 			expect(e).toBeInstanceOf(TypeError);
 			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(getObjFromInt, 1, { first: { second: input2 } }, input2);
+			mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
 			mockFnExpectations(squareInPromise, 1, 16, input1);
 			expect(dangerousFilterFn).toHaveBeenCalledTimes(2);
 			mockFnArgumentsExpectations(dangerousFilterFn, 1, 16, 0, [16, { first: { second: input2 } }]);
@@ -234,7 +234,7 @@ describe("afilterGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage([input1, 0, inputValue]));
-			expect(filterFn).not.toBeCalled();
+			expect(filterFn).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject with rejected promise in sequence", async () => {
@@ -249,7 +249,7 @@ describe("afilterGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage([input1, 0, inputValue]));
-			expect(filterFn).not.toBeCalled();
+			expect(filterFn).not.toHaveBeenCalled();
 		}
 	});
 });

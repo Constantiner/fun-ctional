@@ -16,8 +16,8 @@ describe("applySafe tests", () => {
 		expect(result).toBe(49);
 		mockFnExpectations(square, 1, 49, input);
 		expect(square).toHaveBeenCalledTimes(1);
-		expect(fallbackFn).not.toBeCalled();
-		expect(catchFn).not.toBeCalled();
+		expect(fallbackFn).not.toHaveBeenCalled();
+		expect(catchFn).not.toHaveBeenCalled();
 	});
 	it("should work for case with promise on input", async () => {
 		expect.assertions(9);
@@ -32,8 +32,8 @@ describe("applySafe tests", () => {
 		expect(square).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment, 1, 8, input);
 		expect(increment).toHaveBeenCalledTimes(1);
-		expect(fallbackFn).not.toBeCalled();
-		expect(catchFn).not.toBeCalled();
+		expect(fallbackFn).not.toHaveBeenCalled();
+		expect(catchFn).not.toHaveBeenCalled();
 	});
 	it("should catch for case with rejected promise on input", async () => {
 		expect.assertions(7);
@@ -44,11 +44,11 @@ describe("applySafe tests", () => {
 		const catchFn = getMockFn(jest)(() => input * 17, "catchFn");
 		const result = await applySafe(square, fallbackFn)(createAsyncPromise(increment, false)(input)).catch(catchFn);
 		expect(result).toBe(28);
-		expect(increment).not.toBeCalled();
-		expect(square).not.toBeCalled();
+		expect(increment).not.toHaveBeenCalled();
+		expect(square).not.toHaveBeenCalled();
 		mockFnExpectations(fallbackFn, 1, 28, getError(input));
 		expect(fallbackFn).toHaveBeenCalledTimes(1);
-		expect(catchFn).not.toBeCalled();
+		expect(catchFn).not.toHaveBeenCalled();
 	});
 	it("should work for promises", async () => {
 		expect.assertions(9);
@@ -65,8 +65,8 @@ describe("applySafe tests", () => {
 		expect(square).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment, 1, 8, input);
 		expect(increment).toHaveBeenCalledTimes(1);
-		expect(fallbackFn).not.toBeCalled();
-		expect(catchFn).not.toBeCalled();
+		expect(fallbackFn).not.toHaveBeenCalled();
+		expect(catchFn).not.toHaveBeenCalled();
 	});
 	it("should work for reject in promise in applySafe param", async () => {
 		expect.assertions(9);
@@ -81,10 +81,10 @@ describe("applySafe tests", () => {
 		expect(result).toBe(28);
 		mockFnExpectations(increment, 1, 8, input);
 		expect(increment).toHaveBeenCalledTimes(1);
-		expect(square).not.toBeCalled();
+		expect(square).not.toHaveBeenCalled();
 		mockFnExpectations(fallbackFn, 1, 28, getError(8));
 		expect(fallbackFn).toHaveBeenCalledTimes(1);
-		expect(catchFn).not.toBeCalled();
+		expect(catchFn).not.toHaveBeenCalled();
 	});
 	it("should work for reject in promise in applySafe param and promise in fallback", async () => {
 		expect.assertions(9);
@@ -99,10 +99,10 @@ describe("applySafe tests", () => {
 		expect(result).toBe(28);
 		mockFnExpectations(increment, 1, 8, input);
 		expect(increment).toHaveBeenCalledTimes(1);
-		expect(square).not.toBeCalled();
+		expect(square).not.toHaveBeenCalled();
 		mockFnExpectations(fallbackFn, 1, 28, getError(8));
 		expect(fallbackFn).toHaveBeenCalledTimes(1);
-		expect(catchFn).not.toBeCalled();
+		expect(catchFn).not.toHaveBeenCalled();
 	});
 	it("should reject for rejection in fallback function", async () => {
 		expect.assertions(9);
@@ -117,8 +117,8 @@ describe("applySafe tests", () => {
 		expect(result).toBe(119);
 		mockFnExpectations(increment, 1, 8, input);
 		expect(increment).toHaveBeenCalledTimes(1);
-		expect(square).not.toBeCalled();
-		expect(fallbackFn).not.toBeCalled();
+		expect(square).not.toHaveBeenCalled();
+		expect(fallbackFn).not.toHaveBeenCalled();
 		mockFnExpectations(catchFn, 1, 119, getError(getError(8)));
 		expect(catchFn).toHaveBeenCalledTimes(1);
 	});
@@ -136,8 +136,8 @@ describe("applySafe in acompose tests", () => {
 			catchInCatchBlockFn
 		);
 		expect(result).toBe(10);
-		expect(catchFn).not.toBeCalled();
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(catchFn).not.toHaveBeenCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 		expect(increment1).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment1, 1, 8, input);
 		expect(increment2).toHaveBeenCalledTimes(1);
@@ -160,13 +160,13 @@ describe("applySafe in acompose tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input + 1));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
-		expect(increment3).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
+		expect(increment3).not.toHaveBeenCalled();
 		expect(increment1).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment1, 1, 8, input);
 	});
-	it("should work for case with reject in acompose chain", async () => {
+	it("should work for case with reject in acompose chain for first argument", async () => {
 		expect.assertions(8);
 		const input = 7;
 		const increment1 = incrementMock(jest, "increment1");
@@ -181,10 +181,10 @@ describe("applySafe in acompose tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment1).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
-		expect(increment3).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment1).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
+		expect(increment3).not.toHaveBeenCalled();
 	});
 	it("should work for case with reject in input", async () => {
 		expect.assertions(8);
@@ -202,10 +202,10 @@ describe("applySafe in acompose tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(increment1).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
-		expect(increment3).not.toBeCalled();
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
+		expect(increment3).not.toHaveBeenCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 	});
 	it("should work for case with reject in acompose chain and applySafe in middle", async () => {
 		expect.assertions(10);
@@ -222,11 +222,11 @@ describe("applySafe in acompose tests", () => {
 		expect(result).toBe(29);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment1).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment1).not.toHaveBeenCalled();
 		expect(increment2).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment2, 1, 29, 28);
-		expect(increment3).not.toBeCalled();
+		expect(increment3).not.toHaveBeenCalled();
 	});
 	it("should work for case with rejection in applySafe", async () => {
 		expect.assertions(12);
@@ -241,12 +241,12 @@ describe("applySafe in acompose tests", () => {
 			catchInCatchBlockFn
 		);
 		expect(result).toBe(28);
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 		expect(increment1).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment1, 1, 8, input);
 		expect(increment2).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment2, 1, 9, 8);
-		expect(increment3).not.toBeCalled();
+		expect(increment3).not.toHaveBeenCalled();
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(9));
 	});
@@ -264,8 +264,8 @@ describe("applySafe in apipe tests", () => {
 			catchInCatchBlockFn
 		);
 		expect(result).toBe(10);
-		expect(catchFn).not.toBeCalled();
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(catchFn).not.toHaveBeenCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 		expect(increment1).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment1, 1, 8, input);
 		expect(increment2).toHaveBeenCalledTimes(1);
@@ -288,13 +288,13 @@ describe("applySafe in apipe tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input + 1));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
-		expect(increment3).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
+		expect(increment3).not.toHaveBeenCalled();
 		expect(increment1).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment1, 1, 8, input);
 	});
-	it("should work for case with reject in apipe chain", async () => {
+	it("should work for case with reject in apipe chain for first argument", async () => {
 		expect.assertions(8);
 		const input = 7;
 		const increment1 = incrementMock(jest, "increment1");
@@ -309,10 +309,10 @@ describe("applySafe in apipe tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment1).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
-		expect(increment3).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment1).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
+		expect(increment3).not.toHaveBeenCalled();
 	});
 	it("should work for case with reject in input", async () => {
 		expect.assertions(8);
@@ -330,10 +330,10 @@ describe("applySafe in apipe tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(increment1).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
-		expect(increment3).not.toBeCalled();
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
+		expect(increment3).not.toHaveBeenCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 	});
 	it("should work for case with reject in apipe chain and applySafe in middle", async () => {
 		expect.assertions(10);
@@ -350,11 +350,11 @@ describe("applySafe in apipe tests", () => {
 		expect(result).toBe(29);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment1).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment1).not.toHaveBeenCalled();
 		expect(increment2).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment2, 1, 29, 28);
-		expect(increment3).not.toBeCalled();
+		expect(increment3).not.toHaveBeenCalled();
 	});
 	it("should work for case with rejection in applySafe", async () => {
 		expect.assertions(12);
@@ -369,12 +369,12 @@ describe("applySafe in apipe tests", () => {
 			catchInCatchBlockFn
 		);
 		expect(result).toBe(28);
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 		expect(increment1).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment1, 1, 8, input);
 		expect(increment2).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment2, 1, 9, 8);
-		expect(increment3).not.toBeCalled();
+		expect(increment3).not.toHaveBeenCalled();
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(9));
 	});
