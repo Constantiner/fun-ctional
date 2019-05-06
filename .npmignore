@@ -1,9 +1,10 @@
 src
 __tests__
 node_modules
-.DS_Store
 package-lock.json
 coverage
 .*
 gulpfile.js
 babel.config.js
+jest.config.json
+jsconfig.json
