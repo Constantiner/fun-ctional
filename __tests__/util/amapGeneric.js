@@ -58,7 +58,7 @@ describe("amapGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(inputValue));
-			expect(square).not.toBeCalled();
+			expect(square).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject for failed promise as input in sequence", async () => {
@@ -73,7 +73,7 @@ describe("amapGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(inputValue));
-			expect(square).not.toBeCalled();
+			expect(square).not.toHaveBeenCalled();
 		}
 	});
 	it("should work with promise and value as input", async () => {
@@ -123,9 +123,9 @@ describe("amapGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(input1));
-			expect(square).not.toBeCalled();
+			expect(square).not.toHaveBeenCalled();
 			mockFnExpectations(increment, 1, 6, input2);
-			expect(squareInPromise).not.toBeCalled();
+			expect(squareInPromise).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject if function is rejected with promises as input", async () => {
@@ -234,7 +234,7 @@ describe("amapGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage([input1, 0, inputValue]));
-			expect(square).not.toBeCalled();
+			expect(square).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject with rejected promise traditional way", () => {
@@ -249,8 +249,8 @@ describe("amapGeneric tests", () => {
 			.catch(e => {
 				expect(e).toBeInstanceOf(Error);
 				expect(e.message).toBe(getErrorMessage([input1, 0, inputValue]));
-				expect(square).not.toBeCalled();
-				expect(promiseMapFn).not.toBeCalled();
+				expect(square).not.toHaveBeenCalled();
+				expect(promiseMapFn).not.toHaveBeenCalled();
 			});
 	});
 });

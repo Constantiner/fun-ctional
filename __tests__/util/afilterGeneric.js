@@ -79,7 +79,7 @@ describe("afilterGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(inputValue));
-			expect(filterFn).not.toBeCalled();
+			expect(filterFn).not.toHaveBeenCalled();
 		}
 	});
 	it("should work with promise and value as input", async () => {
@@ -143,11 +143,11 @@ describe("afilterGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(input2));
-			expect(filterFn).not.toBeCalled();
+			expect(filterFn).not.toHaveBeenCalled();
 			expect(increment).toHaveBeenCalledTimes(2);
 			mockFnExpectations(increment, 1, 5, input1);
 			mockFnExpectations(increment, 2, 6, input3);
-			expect(squareInPromise).not.toBeCalled();
+			expect(squareInPromise).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject if function is rejected with promises as input in sequence", async () => {
@@ -234,7 +234,7 @@ describe("afilterGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage([input1, 0, inputValue]));
-			expect(filterFn).not.toBeCalled();
+			expect(filterFn).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject with rejected promise in sequence", async () => {
@@ -249,7 +249,7 @@ describe("afilterGeneric tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage([input1, 0, inputValue]));
-			expect(filterFn).not.toBeCalled();
+			expect(filterFn).not.toHaveBeenCalled();
 		}
 	});
 });

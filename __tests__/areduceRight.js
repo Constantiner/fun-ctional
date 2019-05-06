@@ -146,7 +146,7 @@ describe("areduceRight tests", () => {
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(input));
-			expect(identity).not.toBeCalled();
+			expect(identity).not.toHaveBeenCalled();
 		}
 	});
 	it("should work for mixed list of promises and not as input and with non symmetrical operation and promised initial value", async () => {
@@ -204,8 +204,8 @@ describe("areduceRight tests", () => {
 			expect(e.message).toBe(getErrorMessage(argument3Value));
 			mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
 			expect(identityAcc).toHaveBeenCalledTimes(1);
-			expect(identityArgument3).not.toBeCalled();
-			expect(concatenationFn).not.toBeCalled();
+			expect(identityArgument3).not.toHaveBeenCalled();
+			expect(concatenationFn).not.toHaveBeenCalled();
 		}
 	});
 	it("should reject for mixed list of promises and not as input and with non symmetrical operation and promised initial value and fail in last input", async () => {
@@ -233,8 +233,8 @@ describe("areduceRight tests", () => {
 			expect(identityArgument3).toHaveBeenCalledTimes(1);
 			mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
 			expect(identityAcc).toHaveBeenCalledTimes(1);
-			expect(concatenationFn).not.toBeCalled();
-			expect(identityArgument1).not.toBeCalled();
+			expect(concatenationFn).not.toHaveBeenCalled();
+			expect(identityArgument1).not.toHaveBeenCalled();
 		}
 	});
 	it("should work for mixed list of promises and not as input and with non symmetrical operation and promised initial value with promise in reduce function", async () => {

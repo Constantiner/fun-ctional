@@ -13,8 +13,8 @@ describe("acatch tests", () => {
 		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
 		const result = await acatch(catchFn)(input).catch(catchInCatchBlockFn);
 		expect(result).toBe(input);
-		expect(catchFn).not.toBeCalled();
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(catchFn).not.toHaveBeenCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 	});
 	it("should work for case with promise on input without reject", async () => {
 		expect.assertions(6);
@@ -26,8 +26,8 @@ describe("acatch tests", () => {
 		expect(result).toBe(8);
 		mockFnExpectations(increment, 1, 8, input);
 		expect(increment).toHaveBeenCalledTimes(1);
-		expect(catchFn).not.toBeCalled();
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(catchFn).not.toHaveBeenCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 	});
 	it("should catch for case with rejected promise on input", async () => {
 		expect.assertions(6);
@@ -37,10 +37,10 @@ describe("acatch tests", () => {
 		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
 		const result = await acatch(catchFn)(createAsyncPromise(increment, false)(input)).catch(catchInCatchBlockFn);
 		expect(result).toBe(28);
-		expect(increment).not.toBeCalled();
+		expect(increment).not.toHaveBeenCalled();
 		mockFnExpectations(catchFn, 1, 28, getError(input));
 		expect(catchFn).toHaveBeenCalledTimes(1);
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 	});
 	it("should work for reject in promise on input and promise in fallback", async () => {
 		expect.assertions(6);
@@ -52,10 +52,10 @@ describe("acatch tests", () => {
 			catchInCatchBlockFn
 		);
 		expect(result).toBe(28);
-		expect(increment).not.toBeCalled();
+		expect(increment).not.toHaveBeenCalled();
 		mockFnExpectations(catchFn, 1, 28, getError(input));
 		expect(catchFn).toHaveBeenCalledTimes(1);
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 	});
 	it("should reject for rejection in fallback function", async () => {
 		expect.assertions(6);
@@ -67,8 +67,8 @@ describe("acatch tests", () => {
 			createSyncPromise(increment, false)(input)
 		).catch(catchInCatchBlockFn);
 		expect(result).toBe(119);
-		expect(increment).not.toBeCalled();
-		expect(catchFn).not.toBeCalled();
+		expect(increment).not.toHaveBeenCalled();
+		expect(catchFn).not.toHaveBeenCalled();
 		mockFnExpectations(catchInCatchBlockFn, 1, 119, getError(getError(input)));
 		expect(catchInCatchBlockFn).toHaveBeenCalledTimes(1);
 	});
@@ -83,8 +83,8 @@ describe("acatch in acompose tests", () => {
 		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
 		const result = await acompose(acatch(catchFn), increment2, increment1)(input).catch(catchInCatchBlockFn);
 		expect(result).toBe(9);
-		expect(catchFn).not.toBeCalled();
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(catchFn).not.toHaveBeenCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 	});
 	it("should work for case with reject in acompose chain", async () => {
 		expect.assertions(9);
@@ -98,12 +98,12 @@ describe("acatch in acompose tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input + 1));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
 		expect(increment1).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment1, 1, 8, input);
 	});
-	it("should work for case with reject in acompose chain", async () => {
+	it("should work for case with reject in acompose chain for first argument", async () => {
 		expect.assertions(7);
 		const input = 7;
 		const increment1 = incrementMock(jest, "increment1");
@@ -115,9 +115,9 @@ describe("acatch in acompose tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment1).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment1).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
 	});
 	it("should work for case with reject in input", async () => {
 		expect.assertions(7);
@@ -134,9 +134,9 @@ describe("acatch in acompose tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(increment1).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 	});
 	it("should work for case with reject in acompose chain and acatch in middle", async () => {
 		expect.assertions(8);
@@ -149,8 +149,8 @@ describe("acatch in acompose tests", () => {
 		const result = await acompose(increment2, acatch(catchFn), increment1Promise)(input).catch(catchInCatchBlockFn);
 		expect(result).toBe(29);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment1).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment1).not.toHaveBeenCalled();
 		expect(increment2).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment2, 1, 29, 28);
 	});
@@ -165,8 +165,8 @@ describe("acatch in apipe tests", () => {
 		const catchInCatchBlockFn = getMockFn(jest)(() => input * 17, "catchInCatchBlockFn");
 		const result = await apipe(increment1, increment2, acatch(catchFn))(input).catch(catchInCatchBlockFn);
 		expect(result).toBe(9);
-		expect(catchFn).not.toBeCalled();
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(catchFn).not.toHaveBeenCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 	});
 	it("should work for case with reject in apipe chain", async () => {
 		expect.assertions(9);
@@ -180,12 +180,12 @@ describe("acatch in apipe tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input + 1));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
 		expect(increment1).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment1, 1, 8, input);
 	});
-	it("should work for case with reject in apipe chain", async () => {
+	it("should work for case with reject in apipe chain for first argument", async () => {
 		expect.assertions(7);
 		const input = 7;
 		const increment1 = incrementMock(jest, "increment1");
@@ -197,9 +197,9 @@ describe("acatch in apipe tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment1).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment1).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
 	});
 	it("should work for case with reject in input", async () => {
 		expect.assertions(7);
@@ -216,9 +216,9 @@ describe("acatch in apipe tests", () => {
 		expect(result).toBe(28);
 		expect(catchFn).toHaveBeenCalledTimes(1);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(increment1).not.toBeCalled();
-		expect(increment2).not.toBeCalled();
-		expect(catchInCatchBlockFn).not.toBeCalled();
+		expect(increment1).not.toHaveBeenCalled();
+		expect(increment2).not.toHaveBeenCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
 	});
 	it("should work for case with reject in apipe chain and acatch in middle", async () => {
 		expect.assertions(8);
@@ -231,8 +231,8 @@ describe("acatch in apipe tests", () => {
 		const result = await apipe(increment1Promise, acatch(catchFn), increment2)(input).catch(catchInCatchBlockFn);
 		expect(result).toBe(29);
 		mockFnExpectations(catchFn, 1, 28, getError(input));
-		expect(catchInCatchBlockFn).not.toBeCalled();
-		expect(increment1).not.toBeCalled();
+		expect(catchInCatchBlockFn).not.toHaveBeenCalled();
+		expect(increment1).not.toHaveBeenCalled();
 		expect(increment2).toHaveBeenCalledTimes(1);
 		mockFnExpectations(increment2, 1, 29, 28);
 	});
