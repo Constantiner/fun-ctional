@@ -12,7 +12,7 @@ const banner = `/**
 * ${pkg.name}
 * ${pkg.description}
 * 
-* @author ${pkg.author}
+* @author ${pkg.author.name} <${pkg.author.email}>
 * @version v${pkg.version}
 * @link ${pkg.homepage}
 * @license ${pkg.license}
