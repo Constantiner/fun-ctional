@@ -37,11 +37,6 @@
 		"url": "https://github.com/Constantiner/fun-ctional/issues"
 	},
 	"homepage": "https://github.com/Constantiner/fun-ctional#readme",
-	"prettier": {
-		"printWidth": 120,
-		"useTabs": true,
-		"tabWidth": 4
-	},
 	"engines": {
 		"node": ">=7.6",
 		"npm": ">=5.2.0"
