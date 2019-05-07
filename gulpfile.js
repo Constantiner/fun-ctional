@@ -10,6 +10,9 @@ const fs = require("fs");
 const BROWSERS = [">0.25%", "not ie 11", "not op_mini all"];
 const SOURCES = "src/*.js";
 
+const { format } = require("date-fns");
+const getBuildDate = () => format(new Date(), "DD MMMM YYYY");
+
 const getActualBanner = () => {
 	const licenseText = fs.readFileSync("./LICENSE", "utf-8");
 	const banner = `/**
@@ -19,6 +22,7 @@ const getActualBanner = () => {
  * @author ${pkg.author.name} <${pkg.author.email}>
  * @version v${pkg.version}
  * @link ${pkg.homepage}
+ * @date ${getBuildDate()}
  * 
 ${licenseText.replace(/^/gm, " * ")}
  */
