@@ -4,7 +4,7 @@
 	"description": "The library brings most of the familiar functional techniques (like functional composition) to asynchronous world with shining Promises",
 	"main": "fun-ctional",
 	"scripts": {
-		"test": "npx jest --config jest.config.json",
+		"test": "node -r esm scripts/unitTest.js",
 		"lint": "npx eslint '**/*.js'",
 		"build": "npx gulp clean && npx gulp es6modules && npx gulp es5modules && npx gulp es5modulesMin",
 		"format": "npx prettier 'src/*.js' --write",
@@ -12,7 +12,9 @@
 		"clean": "npx gulp clean",
 		"clear_jest": "npx jest --clearCache",
 		"lint-staged": "lint-staged",
-		"validate:sourcemaps": "node -r esm scripts/sourcemapsValidator.js"
+		"validate:sourcemaps": "node -r esm scripts/sourcemapsValidator.js",
+		"test:coverage": "npm test -- --coverage",
+		"test:watch": "node -r esm scripts/unitTestWatch.js"
 	},
 	"repository": {
 		"type": "git",
@@ -45,6 +47,7 @@
 	"devDependencies": {
 		"@babel/core": "^7.4.4",
 		"@babel/preset-env": "^7.4.4",
+		"@constantiner/resolve-node-configs-hierarchy": "^0.4.0",
 		"@types/gulp": "^4.0.6",
 		"@types/jest": "^24.0.13",
 		"babel-jest": "^24.8.0",
