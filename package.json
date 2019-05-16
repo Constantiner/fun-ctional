@@ -7,6 +7,7 @@
 		"test": "node -r esm scripts/unitTest.js",
 		"lint": "npx eslint '**/*.js'",
 		"build": "npm run clean && npx gulp es6modules && npx gulp es5modules && npx gulp es5modulesMin",
+		"build:rollup": "npx rollup -c",
 		"format": "npx prettier 'src/*.js' --write",
 		"prepublishOnly": "npm run clean && npm run lint && npm run test && npm run build",
 		"clean": "node -r esm scripts/clean.js",
@@ -71,6 +72,7 @@
 		"prettier": "^1.17.1",
 		"rollup": "^1.11.3",
 		"rollup-plugin-babel": "^4.3.2",
+		"rollup-plugin-sourcemaps": "^0.4.2",
 		"sourcemap-validator": "^1.1.0"
 	},
 	"dependencies": {}
