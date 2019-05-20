@@ -8,3 +8,4 @@
 /*.map
 !/gulpfile.js
 !/babel.config.js
+!/rollup.config.js
