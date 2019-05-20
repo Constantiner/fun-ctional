@@ -1,6 +1,9 @@
 import { format } from "date-fns";
 import { readFileSync } from "fs";
+import { sync as globby } from "globby";
+import babel from "rollup-plugin-babel";
 import sourcemaps from "rollup-plugin-sourcemaps";
+import { uglify } from "rollup-plugin-uglify";
 
 const getBuildDate = () => format(new Date(), "DD MMMM YYYY");
 const pkg = require("./package.json");
@@ -23,17 +26,37 @@ ${licenseText.replace(/^/gm, " * ")}
 	return banner;
 };
 
-const config = extension => ({
-	input: "src/fun-ctional.js",
+const getSourceFilesList = () => globby(["src/*.js"]);
+const getFileName = file =>
+	file
+		.split("/")
+		.pop()
+		.split(".")
+		.slice(0, -1)
+		.join(".");
+const getOutput = (input, extension) => `${getFileName(input)}.${extension}`;
+const getUmdOutput = (input, minified = false) => `${getFileName(input)}-umd${minified ? ".min" : ""}.js`;
+
+const config = (extension, format, minified = false) => input => ({
+	input,
 	output: {
-		file: `fun-ctional${extension}`,
-		format: extension === ".mjs" ? "es" : "cjs",
+		file: format === "umd" ? getUmdOutput(input, minified) : getOutput(input, extension),
+		format,
 		sourcemap: true,
-		sourcemapFile: `fun-ctional${extension}.map`,
+		sourcemapFile: `${getOutput(input, extension)}.map`,
 		strict: true,
-		banner: getActualBanner()
+		banner: getActualBanner(),
+		name: format === "umd" ? "funCtional" : undefined
 	},
-	plugins: [sourcemaps()]
+	plugins:
+		format === "umd" ? (minified ? [sourcemaps(), babel(), uglify()] : [sourcemaps(), babel()]) : [sourcemaps()]
 });
 
-export default [config(".js"), config(".mjs")];
+const sourceFiles = getSourceFilesList();
+
+export default [
+	...sourceFiles.map(config("js", "es")),
+	...sourceFiles.map(config("mjs", "es")),
+	...sourceFiles.map(config("js", "umd")),
+	...sourceFiles.map(config("js", "umd", true))
+];
