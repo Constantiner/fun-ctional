@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { readFileSync } from "fs";
 import { sync as globby } from "globby";
 import babel from "rollup-plugin-babel";
+import prettier from "rollup-plugin-prettier";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import { uglify } from "rollup-plugin-uglify";
 
@@ -49,7 +50,11 @@ const config = (extension, format, minified = false) => input => ({
 		name: format === "umd" ? "funCtional" : undefined
 	},
 	plugins:
-		format === "umd" ? (minified ? [sourcemaps(), babel(), uglify()] : [sourcemaps(), babel()]) : [sourcemaps()]
+		format === "umd"
+			? minified
+				? [babel(), uglify(), sourcemaps()]
+				: [babel(), prettier(), sourcemaps()]
+			: [prettier(), sourcemaps()]
 });
 
 const sourceFiles = getSourceFilesList();
