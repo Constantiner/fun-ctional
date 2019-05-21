@@ -70,5 +70,10 @@
 		"rollup-plugin-uglify": "^6.0.2",
 		"sourcemap-validator": "^1.1.0"
 	},
-	"dependencies": {}
+	"dependencies": {},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not op_mini all"
+	]
 }
