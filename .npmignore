@@ -3,8 +3,10 @@ __tests__
 node_modules
 package-lock.json
 coverage
+.vscode
+scripts
 .*
-gulpfile.js
 babel.config.js
 jest.config.json
 jsconfig.json
+rollup.config.js

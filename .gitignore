@@ -3,9 +3,6 @@
 /coverage/
 
 #distributive files
-/*.js
-/*.mjs
-/*.map
-!/gulpfile.js
-!/babel.config.js
-!/rollup.config.js
+/dist/*.*
+/esm/*.*
+/browser/*.*

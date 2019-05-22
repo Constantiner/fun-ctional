@@ -2,7 +2,8 @@
 	"name": "@constantiner/fun-ctional",
 	"version": "0.6.2",
 	"description": "The library brings most of the familiar functional techniques (like functional composition) to asynchronous world with shining Promises",
-	"main": "fun-ctional",
+	"main": "dist/fun-ctional.js",
+	"module": "esm/fun-ctional.js",
 	"scripts": {
 		"test": "node -r esm scripts/unitTest.js",
 		"lint": "npx eslint '**/*.js'",
