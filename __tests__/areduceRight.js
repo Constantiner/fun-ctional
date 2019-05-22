@@ -220,7 +220,7 @@ describe("areduceRight tests", () => {
 		const argument1 = createAsyncPromise(identityArgument1, false)(argument1Value);
 		const argument2 = 2;
 		const argument3Value = 1;
-		const argument3 = createAsyncPromise(identityArgument3)(argument3Value);
+		const argument3 = createAsyncPromise(identityArgument3, true, 50)(argument3Value);
 		const input = new Set([argument1, argument2, argument3]);
 
 		try {
