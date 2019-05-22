@@ -1,5 +1,5 @@
 {
-	"collectCoverageFrom": ["<rootDir>/src/**/*.js", "!<rootDir>/src/fun-ctional.js"],
+	"collectCoverageFrom": ["<rootDir>/src/**/*.js", "!<rootDir>/src/index.js"],
 	"coverageDirectory": "<rootDir>/coverage/",
 	"testMatch": ["<rootDir>/__tests__/**/*.js"],
 	"testEnvironment": "node",
