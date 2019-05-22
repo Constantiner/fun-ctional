@@ -36,15 +36,15 @@ const getFileName = file =>
 		.slice(0, -1)
 		.join(".");
 const getOutput = (input, extension) => `${getFileName(input)}.${extension}`;
-const getUmdOutput = (input, minified = false) => `${getFileName(input)}-umd${minified ? ".min" : ""}.js`;
+const getUmdOutput = (input, minified = false) => `${getFileName(input)}${minified ? ".min" : ""}.js`;
 
-const config = (extension, format, minified = false) => input => ({
+const config = (format, folder, minified = false) => input => ({
 	input,
 	output: {
-		file: format === "umd" ? getUmdOutput(input, minified) : getOutput(input, extension),
+		file: `${folder}/${format === "umd" ? getUmdOutput(input, minified) : getOutput(input, "js")}`,
 		format,
 		sourcemap: true,
-		sourcemapFile: `${getOutput(input, extension)}.map`,
+		sourcemapFile: `${folder}/${getOutput(input, "js")}.map`,
 		strict: true,
 		banner: getActualBanner(),
 		name: format === "umd" ? "funCtional" : undefined
@@ -60,8 +60,8 @@ const config = (extension, format, minified = false) => input => ({
 const sourceFiles = getSourceFilesList();
 
 export default [
-	...sourceFiles.map(config("js", "es")),
-	...sourceFiles.map(config("mjs", "es")),
-	...sourceFiles.map(config("js", "umd")),
-	...sourceFiles.map(config("js", "umd", true))
+	...sourceFiles.map(config("cjs", "dist")),
+	...sourceFiles.map(config("es", "esm")),
+	...sourceFiles.map(config("umd", "browser")),
+	...sourceFiles.map(config("umd", "browser", true))
 ];
