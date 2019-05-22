@@ -17,9 +17,3 @@ script:
     - npm run build
     - npm run validate:sourcemaps
     - codecov
-
-branches:
-    only:
-        - master
-        - /^feature.*$/
-        - /^bugfix.*$/
