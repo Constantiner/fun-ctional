@@ -1,5 +1,7 @@
 # fun-ctional<!-- omit in toc -->
 
+[![Build Status](https://travis-ci.org/Constantiner/fun-ctional.svg?branch=master)](https://travis-ci.org/Constantiner/fun-ctional) [![codecov](https://codecov.io/gh/Constantiner/fun-ctional/branch/master/graph/badge.svg)](https://codecov.io/gh/Constantiner/fun-ctional)
+
 With `fun-ctional` library it is possible to use most of the familiar functional techniques (like functional composition) in asynchronous world with shining Promises.
 
 It allows to mix synchronous and asynchronous functions to produce reusable composable functions which compatible with all good old utilities from functional libraries like [Lodash](https://lodash.com/) in terms of ability to use any synchronous functions. The only difference is that functions from `fun-ctional` library always return promises.
