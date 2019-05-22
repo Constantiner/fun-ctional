@@ -187,13 +187,13 @@ describe("areduceRight tests", () => {
 		const identityArgument1 = identityMock(jest, "identityArgument1");
 		const identityArgument3 = identityMock(jest, "identityArgument3");
 		const identityAcc = identityMock(jest, "identityAcc");
+		const initialAccValue = 10;
+		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
 		const argument1Value = 3;
 		const argument1 = createSyncPromise(identityArgument1)(argument1Value);
 		const argument2 = 2;
 		const argument3Value = 1;
 		const argument3 = createAsyncPromise(identityArgument3, false)(argument3Value);
-		const initialAccValue = 10;
-		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
 		const input = new Set([argument1, argument2, argument3]);
 
 		try {
@@ -214,13 +214,13 @@ describe("areduceRight tests", () => {
 		const identityArgument1 = identityMock(jest, "identityArgument1");
 		const identityArgument3 = identityMock(jest, "identityArgument3");
 		const identityAcc = identityMock(jest, "identityAcc");
+		const initialAccValue = 10;
+		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
 		const argument1Value = 3;
 		const argument1 = createAsyncPromise(identityArgument1, false)(argument1Value);
 		const argument2 = 2;
 		const argument3Value = 1;
 		const argument3 = createAsyncPromise(identityArgument3)(argument3Value);
-		const initialAccValue = 10;
-		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
 		const input = new Set([argument1, argument2, argument3]);
 
 		try {
