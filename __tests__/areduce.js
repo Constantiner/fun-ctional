@@ -193,7 +193,7 @@ describe("areduce tests", () => {
 		const argument3Value = 3;
 		const argument3 = createSyncPromise(identityArgument3)(argument3Value);
 		const initialAccValue = 10;
-		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
+		const initialAcc = createAsyncPromise(identityAcc, true, 50)(initialAccValue);
 		const inputValue = [argument1, argument2, argument3];
 		const input = new Set(inputValue);
 
@@ -221,7 +221,7 @@ describe("areduce tests", () => {
 		const argument3Value = 3;
 		const argument3 = createAsyncPromise(identityArgument3, false)(argument3Value);
 		const initialAccValue = 10;
-		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
+		const initialAcc = createAsyncPromise(identityAcc, true, 50)(initialAccValue);
 		const input = new Set([argument1, argument2, argument3]);
 
 		try {
