@@ -6,6 +6,7 @@ With `fun-ctional` library it is possible to use most of the familiar functional
 
 It allows to mix synchronous and asynchronous functions to produce reusable composable functions which compatible with all good old utilities from functional libraries like [Lodash](https://lodash.com/) in terms of ability to use any synchronous functions. The only difference is that functions from `fun-ctional` library always return promises.
 
+- [Changelog](#changelog)
 - [Installation](#installation)
 - [Documentation](#documentation)
 	- [acompose](#acompose)
@@ -20,7 +21,12 @@ It allows to mix synchronous and asynchronous functions to produce reusable comp
 	- [acatch](#acatch)
 	- [applySafe](#applysafe)
 
+## Changelog
+
+Versions [changelog](CHANGELOG.md).
+
 ## Installation
+
 Install it with NPM:
 
 `npm install @constantiner/fun-ctional`
@@ -30,9 +36,11 @@ Install it with NPM:
 **Note**. Build includes sourcemaps and minified versions of UMD files as well. You can find them in your `node_modules/@constantiner/fun-ctional/browser` folder.
 
 ## Documentation
+
 At this moment the following utilities are available:
 
 ### acompose
+
 Asynchronous compose function (`acompose` stays for async-compose).
 
 The main purpose is to replace a Promise handling code like this:
@@ -88,6 +96,7 @@ acompose(insertGreetings, upperCase, normalize)(somePromise).catch(e => console.
 ```
 
 ### apipe
+
 Asynchronous pipe function (`apipe` stays for async-pipe).
 
 The main purpose is to replace a Promise handling code like this:
