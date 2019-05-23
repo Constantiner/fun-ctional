@@ -15,7 +15,8 @@
 		"lint-staged": "lint-staged",
 		"validate:sourcemaps": "node -r esm scripts/sourcemapsValidator.js",
 		"test:coverage": "npm test -- --coverage",
-		"test:watch": "node -r esm scripts/unitTestWatch.js"
+		"test:watch": "node -r esm scripts/unitTestWatch.js",
+		"changelog": "node scripts/generateChangelog.js"
 	},
 	"repository": {
 		"type": "git",
