@@ -17,7 +17,7 @@
 		"test:coverage": "npm test -- --coverage",
 		"test:watch": "node -r esm scripts/unitTestWatch.js",
 		"changelog": "node scripts/generateChangelog.js",
-		"version": "npm run changelog && git add CHANGELOG.md && git add package.json",
+		"version": "npm run changelog && git add CHANGELOG.md",
 		"postversion": "git push && git push --tags"
 	},
 	"repository": {
