@@ -1,7 +1,18 @@
 # Change Log
 
-## [0.6.3](https://github.com/Constantiner/fun-ctional/tree/0.6.3) (2019-05-23)
-[Full Changelog](https://github.com/Constantiner/fun-ctional/compare/0.6.2...0.6.3)
+## [v0.6.4](https://github.com/Constantiner/fun-ctional/tree/v0.6.4) (2019-05-23)
+[Full Changelog](https://github.com/Constantiner/fun-ctional/compare/v0.6.3...v0.6.4)
+
+**Implemented enhancements:**
+
+- Generate proper release version in changelog [\#40](https://github.com/Constantiner/fun-ctional/issues/40)
+
+**Merged pull requests:**
+
+- Generate proper release version in changelog [\#41](https://github.com/Constantiner/fun-ctional/pull/41)
+
+## [v0.6.3](https://github.com/Constantiner/fun-ctional/tree/v0.6.3) (2019-05-23)
+[Full Changelog](https://github.com/Constantiner/fun-ctional/compare/0.6.2...v0.6.3)
 
 **Implemented enhancements:**
 
