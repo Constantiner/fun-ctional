@@ -36,7 +36,14 @@ const getFileName = file =>
 		.slice(0, -1)
 		.join(".");
 const getOutput = (input, extension) => `${getFileName(input)}.${extension}`;
-const getUmdOutput = (input, minified = false) => `${getFileName(input)}${minified ? ".min" : ""}.js`;
+const getUmdFileName = file => {
+	const fileName = getFileName(file);
+	if (fileName === "index") {
+		return "fun-ctional";
+	}
+	return fileName;
+};
+const getUmdOutput = (input, minified = false) => `${getUmdFileName(input)}${minified ? ".min" : ""}.js`;
 
 const config = (format, folder, minified = false) => input => ({
 	input,
