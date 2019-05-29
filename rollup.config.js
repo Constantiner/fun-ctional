@@ -48,10 +48,12 @@ const getUmdOutput = (input, minified = false) => `${getUmdFileName(input)}${min
 const config = (format, folder, minified = false) => input => ({
 	input,
 	output: {
-		file: `${folder}/${format === "umd" ? getUmdOutput(input, minified) : getOutput(input, "js")}`,
+		file: `${folder ? folder + "/" : ""}${
+			format === "umd" ? getUmdOutput(input, minified) : getOutput(input, format === "es" ? "mjs" : "js")
+		}`,
 		format,
 		sourcemap: true,
-		sourcemapFile: `${folder}/${getOutput(input, "js")}.map`,
+		sourcemapFile: `${folder ? folder + "/" : ""}${getOutput(input, format === "es" ? "mjs" : "js")}.map`,
 		strict: true,
 		banner: getActualBanner(),
 		name: format === "umd" ? "funCtional" : undefined
@@ -67,8 +69,8 @@ const config = (format, folder, minified = false) => input => ({
 const sourceFiles = getSourceFilesList();
 
 export default [
-	...sourceFiles.map(config("cjs", "dist")),
-	...sourceFiles.map(config("es", "esm")),
+	...sourceFiles.map(config("cjs")),
+	...sourceFiles.map(config("es")),
 	...sourceFiles.map(config("umd", "browser")),
 	...sourceFiles.map(config("umd", "browser", true))
 ];
