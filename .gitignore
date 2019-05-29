@@ -3,6 +3,9 @@
 /coverage/
 
 #distributive files
-/dist/*.*
-/esm/*.*
 /browser/*.*
+*.js
+*.mjs
+*.map
+!rollup.config.js
+!babel.config.js
