@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.6.6](https://github.com/Constantiner/fun-ctional/tree/v0.6.6) (2019-05-30)
+[Full Changelog](https://github.com/Constantiner/fun-ctional/compare/v0.6.5...v0.6.6)
+
+**Implemented enhancements:**
+
+- Optimise distributive for ES6 and CJS modules [\#44](https://github.com/Constantiner/fun-ctional/issues/44)
+
+**Merged pull requests:**
+
+- Optimise distributive for ES6 and CJS modules [\#45](https://github.com/Constantiner/fun-ctional/pull/45)
+
 ## [v0.6.5](https://github.com/Constantiner/fun-ctional/tree/v0.6.5) (2019-05-29)
 [Full Changelog](https://github.com/Constantiner/fun-ctional/compare/v0.6.4...v0.6.5)
 
