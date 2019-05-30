@@ -2,6 +2,7 @@
 node_modules
 coverage
 browser
+esm
 *.js
 *.mjs
 !rollup.config.js

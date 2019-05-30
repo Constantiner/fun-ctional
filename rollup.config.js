@@ -28,6 +28,7 @@ ${licenseText.replace(/^/gm, " * ")}
 };
 
 const getSourceFilesList = () => globby(["src/*.js"]);
+const getMainFileAsList = () => globby(["src/index.js"]);
 const getFileName = file =>
 	file
 		.split("/")
@@ -49,11 +50,11 @@ const config = (format, folder, minified = false) => input => ({
 	input,
 	output: {
 		file: `${folder ? folder + "/" : ""}${
-			format === "umd" ? getUmdOutput(input, minified) : getOutput(input, format === "es" ? "mjs" : "js")
+			format === "umd" ? getUmdOutput(input, minified) : getOutput(input, "js")
 		}`,
 		format,
 		sourcemap: true,
-		sourcemapFile: `${folder ? folder + "/" : ""}${getOutput(input, format === "es" ? "mjs" : "js")}.map`,
+		sourcemapFile: `${folder ? folder + "/" : ""}${getOutput(input, "js")}.map`,
 		strict: true,
 		banner: getActualBanner(),
 		name: format === "umd" ? "funCtional" : undefined
@@ -67,10 +68,11 @@ const config = (format, folder, minified = false) => input => ({
 });
 
 const sourceFiles = getSourceFilesList();
+const mainFileAsList = getMainFileAsList();
 
 export default [
 	...sourceFiles.map(config("cjs")),
-	...sourceFiles.map(config("es")),
+	...mainFileAsList.map(config("es", "esm")),
 	...sourceFiles.map(config("umd", "browser")),
 	...sourceFiles.map(config("umd", "browser", true))
 ];
