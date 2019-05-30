@@ -4,6 +4,7 @@
 
 #distributive files
 /browser/*.*
+/esm/*.*
 *.js
 *.mjs
 *.map
