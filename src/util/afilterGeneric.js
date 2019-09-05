@@ -29,8 +29,10 @@ const getFilteredInSequence = async (filterFn, array) => {
 	return result;
 };
 
-export default (sequence = false) => filterFn => async iterable => {
+const afilterGeneric = filterImpl => filterFn => async iterable => {
 	const sourceArray = await extractArrayFromArgument(iterable);
 	const array = await Promise.all(sourceArray);
-	return sequence ? await getFilteredInSequence(filterFn, array) : await getFilteredInParallel(filterFn, array);
+	return filterImpl(filterFn, array);
 };
+
+export { afilterGeneric, getFilteredInParallel, getFilteredInSequence };

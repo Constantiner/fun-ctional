@@ -1,4 +1,4 @@
-import afilterGeneric from "./util/afilterGeneric";
+import { afilterGeneric, getFilteredInParallel } from "./util/afilterGeneric";
 
 /**
  * An asynchronous version of filter over an iterable (afilter stays for async-filter).
@@ -34,4 +34,4 @@ import afilterGeneric from "./util/afilterGeneric";
  * @returns {(iterable : Promise|Iterable.<*>) => Promise} A function which expects any values as input (resolving to Promise)
  * and returns a Promise.
  */
-export default afilterGeneric();
+export default afilterGeneric(getFilteredInParallel);
