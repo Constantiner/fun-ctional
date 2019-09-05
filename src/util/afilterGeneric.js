@@ -1,4 +1,4 @@
-import extractArrayFromArgument from "./extractArrayFromArgument";
+import { extractArrayFromArgument } from "./extractArrayFromArgument";
 
 const filterMergeMap = filterFn => async (element, index, array) => {
 	const filterResult = !!(await filterFn(element, index, array));

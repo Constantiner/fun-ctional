@@ -1,9 +1,14 @@
 .vscode
-node_modules
-coverage
-browser
-esm
-*.js
+node_modules/
+coverage/
+
+#distributive files
+dist/
+esm/
+types/
+browser/
 *.mjs
+*.map
+/*.js
 !rollup.config.js
 !babel.config.js

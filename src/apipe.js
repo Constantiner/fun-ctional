@@ -1,5 +1,5 @@
 import { supportsCustomPromiseHandling } from "./util/customPromiseHandlingSupport";
-import extractResolvedArguments from "./util/extractResolvedArguments";
+import { extractResolvedArguments } from "./util/extractResolvedArguments";
 
 /**
  * Asynchronous pipe function (apipe stays for async-pipe).

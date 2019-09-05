@@ -1,4 +1,4 @@
-import extractResolvedArguments from "../../src/util/extractResolvedArguments";
+import { extractResolvedArguments } from "../../src/util/extractResolvedArguments";
 
 describe("extractResolvedArguments tests", () => {
 	it("should return the same array for single function", () => {

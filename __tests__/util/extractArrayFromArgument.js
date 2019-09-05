@@ -1,4 +1,4 @@
-import extractArrayFromArgument from "../../src/util/extractArrayFromArgument";
+import { extractArrayFromArgument } from "../../src/util/extractArrayFromArgument";
 import { createSyncPromise } from "../test-utils/promiseUtils";
 
 describe("extractArrayFromArgument tests", () => {
