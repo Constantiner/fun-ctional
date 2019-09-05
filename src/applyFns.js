@@ -1,5 +1,3 @@
-import { extractResolvedArguments } from "./util/extractResolvedArguments";
-
 /**
  * A kind of composable version of Promise.all().
  *
@@ -25,5 +23,5 @@ import { extractResolvedArguments } from "./util/extractResolvedArguments";
  */
 export default (...fns) => async value => {
 	const resolvedValue = await Promise.resolve(value);
-	return Promise.all(extractResolvedArguments(fns).map(fn => fn(resolvedValue)));
+	return Promise.all(fns.map(fn => fn(resolvedValue)));
 };
