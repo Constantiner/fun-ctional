@@ -25,7 +25,7 @@ describe("Tests for asynchronous compose utility", () => {
 	});
 	it("should resolve a string with empty compose", async () => {
 		const aString = "some test string";
-		const result = await acompose([])(aString);
+		const result = await acompose()(aString);
 		expect(result).toBe(aString);
 	});
 	it("should resolve an object with empty compose", async () => {

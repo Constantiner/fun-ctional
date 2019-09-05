@@ -1,5 +1,4 @@
 import { supportsCustomPromiseHandling } from "./util/customPromiseHandlingSupport";
-import { extractResolvedArguments } from "./util/extractResolvedArguments";
 
 /**
  * Asynchronous pipe function (apipe stays for async-pipe).
@@ -26,7 +25,7 @@ import { extractResolvedArguments } from "./util/extractResolvedArguments";
  * @returns {(promise : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
  */
 export default (...fns) => async promise =>
-	extractResolvedArguments(fns).reduce((promise, fn) => {
+	fns.reduce((promise, fn) => {
 		const promiseHandler = supportsCustomPromiseHandling(fn);
 		if (promiseHandler) {
 			return promiseHandler(promise);
