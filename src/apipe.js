@@ -21,7 +21,7 @@ import { supportsCustomPromiseHandling } from "./util/customPromiseHandlingSuppo
  *
  * <pre><code>apipe(normalize, upperCase, insertGreetings)(somePromise).catch(e => console.error(e));</code></pre>
  *
- * @param {...function|Iterable.<*>} fns Are functions to pipe chains of promises.
+ * @param {...function} fns Are functions to pipe chains of promises.
  * @returns {(promise : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
  */
 export default (...fns) => async promise =>

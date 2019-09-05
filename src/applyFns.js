@@ -16,7 +16,7 @@
  *
  * <pre><code>applyFns(squareRoot, getDataFromServer)(somePromise).catch(e => console.error(e));</code></pre>
  *
- * @param {...function|Iterable.<*>} fns Are functions to handle input value in parallel.
+ * @param {...function} fns Are functions to handle input value in parallel.
  * Functions can return promises or may just perform some mapping.
  * So you can use it in synchronous code taking in mind it returns promise so can't be resolved immediately.
  * @returns {(value : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
