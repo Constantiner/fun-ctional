@@ -6,7 +6,7 @@ import prettier from "rollup-plugin-prettier";
 import sourcemaps from "rollup-plugin-sourcemaps";
 import { uglify } from "rollup-plugin-uglify";
 
-const getBuildDate = () => format(new Date(), "DD MMMM YYYY");
+const getBuildDate = () => format(new Date(), "dd MMMM yyyy");
 const pkg = require("./package.json");
 
 const getActualBanner = () => {
