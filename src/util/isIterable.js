@@ -6,4 +6,4 @@
  */
 const isIterable = obj => Array.isArray(obj) || ((obj || obj === "") && typeof obj[Symbol.iterator] === "function");
 
-export default isIterable;
+export { isIterable };

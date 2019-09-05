@@ -1,4 +1,4 @@
-import isIterable from "./isIterable";
+import { isIterable } from "./isIterable";
 
 /**
  * Returns an array of values from arguments of some function.
@@ -10,4 +10,4 @@ import isIterable from "./isIterable";
  */
 const extractResolvedArguments = args => (args ? (args.length === 1 && isIterable(args[0]) ? [...args[0]] : args) : []);
 
-export default extractResolvedArguments;
+export { extractResolvedArguments };

@@ -8,4 +8,4 @@
  */
 const extractArrayFromArgument = async arrayLike => Array.from(await Promise.resolve(arrayLike));
 
-export default extractArrayFromArgument;
+export { extractArrayFromArgument };

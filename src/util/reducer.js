@@ -1,4 +1,4 @@
-import extractArrayFromArgument from "./extractArrayFromArgument";
+import { extractArrayFromArgument } from "./extractArrayFromArgument";
 
 const resolveArrayFromInput = async iterable => Promise.all(await extractArrayFromArgument(iterable));
 

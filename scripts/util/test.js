@@ -56,4 +56,4 @@ const runJest = (jestConfigFile, runInBand = false, watch = true) => {
 	jest.run(argv);
 };
 
-export default runJest;
+export { runJest };

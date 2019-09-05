@@ -1,4 +1,4 @@
-import extractArrayFromArgument from "./extractArrayFromArgument";
+import { extractArrayFromArgument } from "./extractArrayFromArgument";
 
 const getMappedInParallel = (mapFn, array) => Promise.all(array.map(mapFn));
 
