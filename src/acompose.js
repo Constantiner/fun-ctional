@@ -1,5 +1,4 @@
 import { supportsCustomPromiseHandling } from "./util/customPromiseHandlingSupport";
-import { extractResolvedArguments } from "./util/extractResolvedArguments";
 
 /**
  * Asynchronous compose function (acompose stays for async-compose).
@@ -22,11 +21,11 @@ import { extractResolvedArguments } from "./util/extractResolvedArguments";
  *
  * <pre><code>acompose(insertGreetings, upperCase, normalize)(somePromise).catch(e => console.error(e));</code></pre>
  *
- * @param {...function|Iterable.<*>} fns Are functions to compose chains of promises.
+ * @param {...function} fns Are functions to compose chains of promises.
  * @returns {(promise : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
  */
 export default (...fns) => async promise =>
-	extractResolvedArguments(fns).reduceRight((promise, fn) => {
+	fns.reduceRight((promise, fn) => {
 		const promiseHandler = supportsCustomPromiseHandling(fn);
 		if (promiseHandler) {
 			return promiseHandler(promise);
