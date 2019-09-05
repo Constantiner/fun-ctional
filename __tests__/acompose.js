@@ -118,7 +118,7 @@ describe("Tests for asynchronous compose utility", () => {
 		const increment = incrementMock(jest);
 		const square = squareMock(jest);
 		const incrementInCompose = incrementMock(jest);
-		const result = await acompose(new Set([incrementInCompose, square]))(createAsyncPromise(increment)(inputValue));
+		const result = await acompose(incrementInCompose, square)(createAsyncPromise(increment)(inputValue));
 		expect(result).toBe(26);
 		mockFnExpectations(increment, 1, 5, inputValue);
 		mockFnExpectations(square, 1, 25, 5);
@@ -202,9 +202,9 @@ describe("Tests for asynchronous compose utility", () => {
 		const incrementInPromiseInCompose = incrementMock(jest);
 		const square = squareMock(jest);
 		try {
-			await acompose(
-				new Set([incrementInCompose, createAsyncPromise(incrementInPromiseInCompose, false), square])
-			)(createAsyncPromise(increment)(inputValue));
+			await acompose(incrementInCompose, createAsyncPromise(incrementInPromiseInCompose, false), square)(
+				createAsyncPromise(increment)(inputValue)
+			);
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(25));
@@ -235,7 +235,7 @@ describe("Tests for asynchronous compose utility", () => {
 		const incrementInCompose = incrementMock(jest);
 		const undefinedErrorFn = getMockFn(jest)(n => n.first.second * n);
 		const thenHandler = getMockFn(jest)(n => n, "thenHandler");
-		return acompose([incrementInCompose, undefinedErrorFn])(createAsyncPromise(increment)(inputValue))
+		return acompose(incrementInCompose, undefinedErrorFn)(createAsyncPromise(increment)(inputValue))
 			.then(thenHandler)
 			.catch(e => {
 				expect(e).toBeInstanceOf(TypeError);
