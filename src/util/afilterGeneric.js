@@ -7,7 +7,7 @@ const filterMergeMap = filterFn => async (element, index, array) => {
 
 const filterResultsReducer = (filteredArray, { filterResult, element }) => {
 	if (filterResult) {
-		filteredArray.push(element);
+		return [...filteredArray, element];
 	}
 	return filteredArray;
 };
@@ -19,14 +19,17 @@ const getFilteredInParallel = async (filterFn, array) => {
 };
 
 const getFilteredInSequence = async (filterFn, array) => {
-	const result = [];
-	for (let i = 0; i < array.length; i++) {
-		const filterResult = !!(await filterFn(array[i], i, array));
-		if (filterResult) {
-			result.push(array[i]);
-		}
-	}
-	return result;
+	return array.reduce(
+		(promise, element, index, originalArray) =>
+			promise.then(async current => {
+				const filterResult = !!(await filterFn(element, index, originalArray));
+				if (filterResult) {
+					return [...current, element];
+				}
+				return current;
+			}),
+		Promise.resolve([])
+	);
 };
 
 const afilterGeneric = filterImpl => filterFn => async iterable => {

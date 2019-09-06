@@ -1,4 +1,4 @@
-import amapGeneric from "./util/amapGeneric";
+import { amapGeneric, getMappedInSequence } from "./util/amapGeneric";
 
 /**
  * An asynchronous version of map over an iterable (amap stays for async-map).
@@ -29,4 +29,4 @@ import amapGeneric from "./util/amapGeneric";
  * @returns {(iterable : Promise|Iterable.<*>) => Promise} A function which expects any values as input (resolving to Promise)
  * and returns a Promise.
  */
-export default amapGeneric(true);
+export default amapGeneric(getMappedInSequence);

@@ -2,17 +2,17 @@ import { extractArrayFromArgument } from "./extractArrayFromArgument";
 
 const getMappedInParallel = (mapFn, array) => Promise.all(array.map(mapFn));
 
-const getMappedInSequence = async (mapFn, array) => {
-	const result = [];
-	for (let i = 0; i < array.length; i++) {
-		const mapResult = await mapFn(array[i], i, array);
-		result.push(mapResult);
-	}
-	return result;
-};
+const getMappedInSequence = async (mapFn, array) =>
+	array.reduce(
+		(promise, element, index, originalArray) =>
+			promise.then(async current => [...current, await mapFn(element, index, originalArray)]),
+		Promise.resolve([])
+	);
 
-export default (sequence = false) => mapFn => async iterable => {
+const amapGeneric = mapImpl => mapFn => async iterable => {
 	const sourceArray = await extractArrayFromArgument(iterable);
 	const array = await Promise.all(sourceArray);
-	return sequence ? getMappedInSequence(mapFn, array) : getMappedInParallel(mapFn, array);
+	return mapImpl(mapFn, array);
 };
+
+export { amapGeneric, getMappedInParallel, getMappedInSequence };

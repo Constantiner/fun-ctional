@@ -23,9 +23,9 @@ import { getReducerArguments, resolveArrayFromInput } from "./util/reducer";
  *
  * @param {function} callback Function to execute on each element in the array, taking four arguments
  * (accumulator, currentValue, currentIndex, array).
- * @param {any} initialValue (optional) Value to use as the first argument to the first call of the callback.
+ * @param {any?} initialValue (optional) Value to use as the first argument to the first call of the callback.
  * @returns {(iterable : Promise|Iterable.<*>) => Promise} A function which expects an iterable
  * (or promise resolved to iterable) and returns a Promise.
  */
-export default (...args) => async iterable =>
-	Array.prototype.reduce.apply(await resolveArrayFromInput(iterable), getReducerArguments(args));
+export default (callback, initialValue) => async iterable =>
+	Array.prototype.reduce.apply(await resolveArrayFromInput(iterable), getReducerArguments(callback, initialValue));
