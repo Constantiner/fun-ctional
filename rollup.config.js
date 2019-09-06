@@ -63,7 +63,11 @@ const config = (format, folder, minified = false) => input => ({
 		format === "umd"
 			? minified
 				? [babel(), uglify(), sourcemaps()]
+				: process.env.CI
+				? [babel(), sourcemaps()]
 				: [babel(), prettier(), sourcemaps()]
+			: process.env.CI
+			? [sourcemaps()]
 			: [prettier(), sourcemaps()]
 });
 

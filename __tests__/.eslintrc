@@ -1,33 +1,9 @@
 {
-	"parserOptions": {
-		"ecmaVersion": 2017,
-		"sourceType": "module"
-	},
 	"env": {
 		"es6": true,
 		"browser": true,
 		"node": true,
 		"jest": true
 	},
-	"rules": {
-		"semi": ["error", "always"],
-		"unicorn/filename-case": ["error", { "case": "camelCase" }],
-		"unicorn/catch-error-name": ["error", { "caughtErrorsIgnorePattern": "^(e|error)$" }],
-		"unicorn/prevent-abbreviations": [
-			"error",
-			{
-				"whitelist": {
-					"e": true,
-					"args": true,
-					"obj": true
-				}
-			}
-		]
-	},
-	"extends": [
-		"eslint:recommended",
-		"plugin:prettier/recommended",
-		"plugin:unicorn/recommended",
-		"plugin:jest/recommended"
-	]
+	"extends": ["plugin:jest/recommended"]
 }
