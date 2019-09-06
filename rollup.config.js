@@ -53,7 +53,7 @@ const config = (format, folder, minified = false) => input => ({
 			format === "umd" ? getUmdOutput(input, minified) : getOutput(input, "js")
 		}`,
 		format,
-		sourcemap: !process.env.CI,
+		sourcemap: true,
 		sourcemapFile: `${folder ? folder + "/" : ""}${getOutput(input, "js")}.map`,
 		strict: true,
 		banner: getActualBanner(),
@@ -63,7 +63,11 @@ const config = (format, folder, minified = false) => input => ({
 		format === "umd"
 			? minified
 				? [babel(), uglify(), sourcemaps()]
+				: process.env.CI
+				? [babel(), sourcemaps()]
 				: [babel(), prettier(), sourcemaps()]
+			: process.env.CI
+			? [sourcemaps()]
 			: [prettier(), sourcemaps()]
 });
 
