@@ -18,8 +18,8 @@ const getFilteredInParallel = async (filterFn, array) => {
 	return filterValues.reduce(filterResultsReducer, []);
 };
 
-const getFilteredInSequence = async (filterFn, array) => {
-	return array.reduce(
+const getFilteredInSequence = async (filterFn, array) =>
+	array.reduce(
 		(promise, element, index, originalArray) =>
 			promise.then(async current => {
 				const filterResult = !!(await filterFn(element, index, originalArray));
@@ -30,7 +30,6 @@ const getFilteredInSequence = async (filterFn, array) => {
 			}),
 		Promise.resolve([])
 	);
-};
 
 const afilterGeneric = filterImpl => filterFn => async iterable => {
 	const sourceArray = await extractArrayFromArgument(iterable);
