@@ -16,8 +16,8 @@
 		"validate:sourcemaps": "node -r esm scripts/sourcemapsValidator.js",
 		"test:coverage": "npm test -- --coverage",
 		"test:watch": "node -r esm scripts/unitTestWatch.js",
-		"changelog": "node scripts/generateChangelog.js",
-		"version": "npm run changelog && git add CHANGELOG.md",
+		"changelog": "node -r esm scripts/generateChangelog.js",
+		"version": "npm run changelog && git add docs/CHANGELOG.md",
 		"postversion": "git push && git push --tags"
 	},
 	"repository": {

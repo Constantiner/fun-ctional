@@ -23,7 +23,7 @@ It allows to mix synchronous and asynchronous functions to produce reusable comp
 
 ## Changelog
 
-Versions [changelog](CHANGELOG.md).
+Versions [changelog](docs/CHANGELOG.md).
 
 ## Installation
 
