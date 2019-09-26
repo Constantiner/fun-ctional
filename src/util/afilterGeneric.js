@@ -1,6 +1,6 @@
 import { extractArrayFromArgument } from "./extractArrayFromArgument";
 
-const filterMergeMap = filterFn => async (element, index, array) => {
+const getCombineFilterResultsWithElementsFn = filterFn => async (element, index, array) => {
 	const filterResult = !!(await filterFn(element, index, array));
 	return { filterResult, element };
 };
@@ -13,8 +13,8 @@ const filterResultsReducer = (filteredArray, { filterResult, element }) => {
 };
 
 const getFilteredInParallel = async (filterFn, array) => {
-	const filterMergeMapFn = filterMergeMap(filterFn);
-	const filterValues = await Promise.all(array.map(filterMergeMapFn));
+	const combineFilterResultsWithElements = getCombineFilterResultsWithElementsFn(filterFn);
+	const filterValues = await Promise.all(array.map(combineFilterResultsWithElements));
 	return filterValues.reduce(filterResultsReducer, []);
 };
 
