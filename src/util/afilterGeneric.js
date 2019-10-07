@@ -1,35 +1,28 @@
 import { extractArrayFromArgument } from "./extractArrayFromArgument";
 
-const filterMergeMap = filterFn => async (element, index, array) => {
+const getCombineFilterResultsWithElementsFn = filterFn => async (element, index, array) => {
 	const filterResult = !!(await filterFn(element, index, array));
 	return { filterResult, element };
 };
 
-const filterResultsReducer = (filteredArray, { filterResult, element }) => {
-	if (filterResult) {
-		return [...filteredArray, element];
-	}
-	return filteredArray;
-};
-
 const getFilteredInParallel = async (filterFn, array) => {
-	const filterMergeMapFn = filterMergeMap(filterFn);
-	const filterValues = await Promise.all(array.map(filterMergeMapFn));
-	return filterValues.reduce(filterResultsReducer, []);
+	const combineFilterResultsWithElements = getCombineFilterResultsWithElementsFn(filterFn);
+	const filterResultsWithOriginalElements = await Promise.all(array.map(combineFilterResultsWithElements));
+	return filterResultsWithOriginalElements.filter(({ filterResult }) => filterResult).map(({ element }) => element);
 };
 
-const getFilteredInSequence = async (filterFn, array) => {
-	return array.reduce(
-		(promise, element, index, originalArray) =>
-			promise.then(async current => {
-				const filterResult = !!(await filterFn(element, index, originalArray));
-				if (filterResult) {
-					return [...current, element];
-				}
-				return current;
-			}),
-		Promise.resolve([])
-	);
+const getAsynchronousFilterReducer = filterFn => (promise, element, index, originalArray) =>
+	promise.then(async current => {
+		const filterResult = !!(await filterFn(element, index, originalArray));
+		if (filterResult) {
+			return [...current, element];
+		}
+		return current;
+	});
+
+const getFilteredInSequence = (filterFn, array) => {
+	const asynchronousFilterReducer = getAsynchronousFilterReducer(filterFn);
+	return array.reduce(asynchronousFilterReducer, Promise.resolve([]));
 };
 
 const afilterGeneric = filterImpl => filterFn => async iterable => {
