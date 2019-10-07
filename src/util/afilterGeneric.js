@@ -5,22 +5,15 @@ const getCombineFilterResultsWithElementsFn = filterFn => async (element, index,
 	return { filterResult, element };
 };
 
-const filterResultsReducer = (filteredArray, { filterResult, element }) => {
-	if (filterResult) {
-		return [...filteredArray, element];
-	}
-	return filteredArray;
-};
-
 const getFilteredInParallel = async (filterFn, array) => {
 	const combineFilterResultsWithElements = getCombineFilterResultsWithElementsFn(filterFn);
-	const filterValues = await Promise.all(array.map(combineFilterResultsWithElements));
-	return filterValues.reduce(filterResultsReducer, []);
+	const filterResultsWithOriginalElements = await Promise.all(array.map(combineFilterResultsWithElements));
+	return filterResultsWithOriginalElements.filter(({ filterResult }) => filterResult).map(({ element }) => element);
 };
 
 const getFilteredInSequence = async (filterFn, array) =>
 	array.reduce(
-		(promise, element, index, originalArray) =>
+		async (promise, element, index, originalArray) =>
 			promise.then(async current => {
 				const filterResult = !!(await filterFn(element, index, originalArray));
 				if (filterResult) {
