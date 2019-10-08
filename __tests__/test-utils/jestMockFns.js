@@ -3,9 +3,10 @@ const squareMock = (jest, name) => getMockFn(jest)(n => n * n, name);
 const identityMock = (jest, name) => getMockFn(jest)(n => n, name);
 const incrementMock = (jest, name) => getMockFn(jest)(n => n + 1, name);
 const concatenateTestStringMock = (jest, name) => getMockFn(jest)(n => n + "test", name);
-const sumReduceFnMock = (jest, name) => getMockFn(jest)((acc, value) => acc + value, name);
-const deductionReduceFnMock = (jest, name) => getMockFn(jest)((acc, value) => acc - value, name);
-const concatenationReduceFnMock = (jest, name) => getMockFn(jest)((acc, value) => `${acc}${value}`, name);
+const sumReduceFnMock = (jest, name) => getMockFn(jest)((accumulator, value) => accumulator + value, name);
+const deductionReduceFnMock = (jest, name) => getMockFn(jest)((accumulator, value) => accumulator - value, name);
+const concatenationReduceFnMock = (jest, name) =>
+	getMockFn(jest)((accumulator, value) => `${accumulator}${value}`, name);
 const mockFnArgumentsExpectations = (mockFn, nthCall, ...args) =>
 	expect(mockFn).toHaveBeenNthCalledWith(nthCall, ...args);
 const mockFnReturnValueExpectations = (mockFn, nthCall, returnValue) =>

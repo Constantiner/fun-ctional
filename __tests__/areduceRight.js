@@ -52,14 +52,14 @@ describe("areduceRight tests", () => {
 		const argument1 = 3;
 		const argument2 = 2;
 		const argument3 = 1;
-		const initialAcc = 7;
+		const initialAccumulator = 7;
 
 		const inputValue = [argument1, argument2, argument3];
-		const sum = await areduceRight(sumFn, initialAcc)(new Set(inputValue));
+		const sum = await areduceRight(sumFn, initialAccumulator)(new Set(inputValue));
 
 		const expectedResult = 13;
 		expect(sumFn).toHaveBeenCalledTimes(3);
-		mockFnExpectations(sumFn, 1, 8, initialAcc, argument3, 2, inputValue);
+		mockFnExpectations(sumFn, 1, 8, initialAccumulator, argument3, 2, inputValue);
 		mockFnExpectations(sumFn, 2, 10, 8, argument2, 1, inputValue);
 		mockFnExpectations(sumFn, 3, expectedResult, 10, argument1, 0, inputValue);
 		expect(sum).toBe(expectedResult);
@@ -70,14 +70,14 @@ describe("areduceRight tests", () => {
 		const argument1 = 3;
 		const argument2 = 2;
 		const argument3 = 1;
-		const initialAcc = 10;
+		const initialAccumulator = 10;
 
 		const inputValue = [argument1, argument2, argument3];
-		const result = await areduceRight(concatenationFn, initialAcc)(new Set(inputValue));
+		const result = await areduceRight(concatenationFn, initialAccumulator)(new Set(inputValue));
 
 		const expectedResult = "10123";
 		expect(concatenationFn).toHaveBeenCalledTimes(3);
-		mockFnExpectations(concatenationFn, 1, "101", initialAcc, argument3, 2, inputValue);
+		mockFnExpectations(concatenationFn, 1, "101", initialAccumulator, argument3, 2, inputValue);
 		mockFnExpectations(concatenationFn, 2, "1012", "101", argument2, 1, inputValue);
 		mockFnExpectations(concatenationFn, 3, expectedResult, "1012", argument1, 0, inputValue);
 		expect(result).toBe(expectedResult);
@@ -88,19 +88,19 @@ describe("areduceRight tests", () => {
 		const argument1 = 3;
 		const argument2 = 2;
 		const argument3 = 1;
-		const initialAcc = 10;
+		const initialAccumulator = 10;
 		const identity = identityMock(jest, "identity");
 		const inputValue = [argument1, argument2, argument3];
 		const input = new Set(inputValue);
 
-		const result = await areduceRight(concatenationFn, initialAcc)(createAsyncPromise(identity)(input));
+		const result = await areduceRight(concatenationFn, initialAccumulator)(createAsyncPromise(identity)(input));
 
 		const expectedResult = "10123";
 		expect(result).toBe(expectedResult);
 		mockFnExpectations(identity, 1, input, input);
 		expect(identity).toHaveBeenCalledTimes(1);
 		expect(concatenationFn).toHaveBeenCalledTimes(3);
-		mockFnExpectations(concatenationFn, 1, "101", initialAcc, argument3, 2, inputValue);
+		mockFnExpectations(concatenationFn, 1, "101", initialAccumulator, argument3, 2, inputValue);
 		mockFnExpectations(concatenationFn, 2, "1012", "101", argument2, 1, inputValue);
 		mockFnExpectations(concatenationFn, 3, expectedResult, "1012", argument1, 0, inputValue);
 	});
@@ -130,7 +130,9 @@ describe("areduceRight tests", () => {
 		const input = new Set([1, 2, 3, 2]);
 		const identity = identityMock(jest, "identity");
 
-		const sum = await areduceRight((acc, value) => acc + value, 7)(createAsyncPromise(identity)(input));
+		const sum = await areduceRight((accumulator, value) => accumulator + value, 7)(
+			createAsyncPromise(identity)(input)
+		);
 
 		mockFnExpectations(identity, 1, input, input);
 		expect(identity).toHaveBeenCalledTimes(1);
@@ -141,7 +143,9 @@ describe("areduceRight tests", () => {
 		const input = [1, 2, 3, 2];
 		const identity = identityMock(jest, "identity");
 		try {
-			await areduceRight((acc, value) => acc + value, 7)(createAsyncPromise(identity, false)(input));
+			await areduceRight((accumulator, value) => accumulator + value, 7)(
+				createAsyncPromise(identity, false)(input)
+			);
 			expect(false).toBe(true);
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
@@ -154,19 +158,19 @@ describe("areduceRight tests", () => {
 		const concatenationFn = concatenationReduceFnMock(jest, "sumFn");
 		const identityArgument1 = identityMock(jest, "identityArgument1");
 		const identityArgument3 = identityMock(jest, "identityArgument3");
-		const identityAcc = identityMock(jest, "identityAcc");
+		const identityAccumulator = identityMock(jest, "identityAccumulator");
 		const argument1Value = 3;
 		const argument1 = createSyncPromise(identityArgument1)(argument1Value);
 		const argument2 = 2;
 		const argument3Value = 1;
 		const argument3 = createAsyncPromise(identityArgument3)(argument3Value);
-		const initialAccValue = 10;
-		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
+		const initialAccumulatorValue = 10;
+		const initialAccumulator = createAsyncPromise(identityAccumulator)(initialAccumulatorValue);
 		const inputValue = [argument1, argument2, argument3];
 		const input = new Set(inputValue);
 		const inputValueResolved = [argument1Value, argument2, argument3Value];
 
-		const result = await areduceRight(concatenationFn, initialAcc)(input);
+		const result = await areduceRight(concatenationFn, initialAccumulator)(input);
 
 		const expectedResult = "10123";
 		expect(result).toBe(expectedResult);
@@ -174,10 +178,10 @@ describe("areduceRight tests", () => {
 		expect(identityArgument3).toHaveBeenCalledTimes(1);
 		mockFnExpectations(identityArgument1, 1, argument1Value, argument1Value);
 		expect(identityArgument1).toHaveBeenCalledTimes(1);
-		mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
-		expect(identityAcc).toHaveBeenCalledTimes(1);
+		mockFnExpectations(identityAccumulator, 1, initialAccumulatorValue, initialAccumulatorValue);
+		expect(identityAccumulator).toHaveBeenCalledTimes(1);
 		expect(concatenationFn).toHaveBeenCalledTimes(3);
-		mockFnExpectations(concatenationFn, 1, "101", initialAccValue, argument3Value, 2, inputValueResolved);
+		mockFnExpectations(concatenationFn, 1, "101", initialAccumulatorValue, argument3Value, 2, inputValueResolved);
 		mockFnExpectations(concatenationFn, 2, "1012", "101", argument2, 1, inputValueResolved);
 		mockFnExpectations(concatenationFn, 3, expectedResult, "1012", argument1Value, 0, inputValueResolved);
 	});
@@ -186,9 +190,9 @@ describe("areduceRight tests", () => {
 		const concatenationFn = concatenationReduceFnMock(jest, "sumFn");
 		const identityArgument1 = identityMock(jest, "identityArgument1");
 		const identityArgument3 = identityMock(jest, "identityArgument3");
-		const identityAcc = identityMock(jest, "identityAcc");
-		const initialAccValue = 10;
-		const initialAcc = createAsyncPromise(identityAcc, true, 50)(initialAccValue);
+		const identityAccumulator = identityMock(jest, "identityAccumulator");
+		const initialAccumulatorValue = 10;
+		const initialAccumulator = createAsyncPromise(identityAccumulator, true, 50)(initialAccumulatorValue);
 		const argument1Value = 3;
 		const argument1 = createSyncPromise(identityArgument1)(argument1Value);
 		const argument2 = 2;
@@ -197,13 +201,13 @@ describe("areduceRight tests", () => {
 		const input = new Set([argument1, argument2, argument3]);
 
 		try {
-			await areduceRight(concatenationFn, initialAcc)(input);
+			await areduceRight(concatenationFn, initialAccumulator)(input);
 			expect(false).toBe(true);
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(argument3Value));
-			mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
-			expect(identityAcc).toHaveBeenCalledTimes(1);
+			mockFnExpectations(identityAccumulator, 1, initialAccumulatorValue, initialAccumulatorValue);
+			expect(identityAccumulator).toHaveBeenCalledTimes(1);
 			expect(identityArgument3).not.toHaveBeenCalled();
 			expect(concatenationFn).not.toHaveBeenCalled();
 		}
@@ -213,9 +217,9 @@ describe("areduceRight tests", () => {
 		const concatenationFn = concatenationReduceFnMock(jest, "sumFn");
 		const identityArgument1 = identityMock(jest, "identityArgument1");
 		const identityArgument3 = identityMock(jest, "identityArgument3");
-		const identityAcc = identityMock(jest, "identityAcc");
-		const initialAccValue = 10;
-		const initialAcc = createAsyncPromise(identityAcc, true, 50)(initialAccValue);
+		const identityAccumulator = identityMock(jest, "identityAccumulator");
+		const initialAccumulatorValue = 10;
+		const initialAccumulator = createAsyncPromise(identityAccumulator, true, 50)(initialAccumulatorValue);
 		const argument1Value = 3;
 		const argument1 = createAsyncPromise(identityArgument1, false)(argument1Value);
 		const argument2 = 2;
@@ -224,15 +228,15 @@ describe("areduceRight tests", () => {
 		const input = new Set([argument1, argument2, argument3]);
 
 		try {
-			await areduceRight(concatenationFn, initialAcc)(input);
+			await areduceRight(concatenationFn, initialAccumulator)(input);
 			expect(false).toBe(true);
 		} catch (e) {
 			expect(e).toBeInstanceOf(Error);
 			expect(e.message).toBe(getErrorMessage(argument1Value));
 			mockFnExpectations(identityArgument3, 1, argument3Value, argument3Value);
 			expect(identityArgument3).toHaveBeenCalledTimes(1);
-			mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
-			expect(identityAcc).toHaveBeenCalledTimes(1);
+			mockFnExpectations(identityAccumulator, 1, initialAccumulatorValue, initialAccumulatorValue);
+			expect(identityAccumulator).toHaveBeenCalledTimes(1);
 			expect(concatenationFn).not.toHaveBeenCalled();
 			expect(identityArgument1).not.toHaveBeenCalled();
 		}
@@ -243,19 +247,19 @@ describe("areduceRight tests", () => {
 		const asyncConcatenationFn = createAsyncPromise(concatenationFn);
 		const identityArgument1 = identityMock(jest, "identityArgument1");
 		const identityArgument3 = identityMock(jest, "identityArgument3");
-		const identityAcc = identityMock(jest, "identityAcc");
+		const identityAccumulator = identityMock(jest, "identityAccumulator");
 		const argument1Value = 3;
 		const argument1 = createSyncPromise(identityArgument1)(argument1Value);
 		const argument2 = 2;
 		const argument3Value = 1;
 		const argument3 = createAsyncPromise(identityArgument3)(argument3Value);
-		const initialAccValue = 10;
-		const initialAcc = createAsyncPromise(identityAcc)(initialAccValue);
+		const initialAccumulatorValue = 10;
+		const initialAccumulator = createAsyncPromise(identityAccumulator)(initialAccumulatorValue);
 		const inputValue = [argument1, argument2, argument3];
 		const input = new Set(inputValue);
 		const inputValueResolved = [argument1Value, argument2, argument3Value];
 
-		const result = await areduceRight(asyncConcatenationFn, initialAcc)(input);
+		const result = await areduceRight(asyncConcatenationFn, initialAccumulator)(input);
 
 		const expectedResult = "10123";
 		expect(result).toBe(expectedResult);
@@ -263,10 +267,10 @@ describe("areduceRight tests", () => {
 		expect(identityArgument3).toHaveBeenCalledTimes(1);
 		mockFnExpectations(identityArgument1, 1, argument1Value, argument1Value);
 		expect(identityArgument1).toHaveBeenCalledTimes(1);
-		mockFnExpectations(identityAcc, 1, initialAccValue, initialAccValue);
-		expect(identityAcc).toHaveBeenCalledTimes(1);
+		mockFnExpectations(identityAccumulator, 1, initialAccumulatorValue, initialAccumulatorValue);
+		expect(identityAccumulator).toHaveBeenCalledTimes(1);
 		expect(concatenationFn).toHaveBeenCalledTimes(3);
-		mockFnExpectations(concatenationFn, 1, "101", initialAccValue, argument3Value, 2, inputValueResolved);
+		mockFnExpectations(concatenationFn, 1, "101", initialAccumulatorValue, argument3Value, 2, inputValueResolved);
 		mockFnExpectations(concatenationFn, 2, "1012", "101", argument2, 1, inputValueResolved);
 		mockFnExpectations(concatenationFn, 3, expectedResult, "1012", argument1Value, 0, inputValueResolved);
 	});
