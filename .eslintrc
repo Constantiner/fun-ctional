@@ -22,7 +22,8 @@
 					"obj": true
 				}
 			}
-		]
+		],
+		"unicorn/consistent-function-scoping": "off"
 	},
 	"extends": ["eslint:recommended", "plugin:prettier/recommended", "plugin:unicorn/recommended"]
 }

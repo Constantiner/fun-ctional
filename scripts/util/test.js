@@ -6,28 +6,26 @@ const getJestConfigFile = jestConfigFile => {
 	const configPath = jestConfigFile;
 	return getConfigFileSync(configPath, true);
 };
+const execSync = childProcess.execSync;
+const isInGitRepository = () => {
+	try {
+		execSync("git rev-parse --is-inside-work-tree", { stdio: "ignore" });
+		return true;
+	} catch (e) {
+		return false;
+	}
+};
 
+const isInMercurialRepository = () => {
+	try {
+		execSync("hg --cwd . root", { stdio: "ignore" });
+		return true;
+	} catch (e) {
+		return false;
+	}
+};
 const getArgv = (jestConfigFile, runInBand, watch) => {
-	const execSync = childProcess.execSync;
 	let argv = process.argv.slice(2);
-
-	function isInGitRepository() {
-		try {
-			execSync("git rev-parse --is-inside-work-tree", { stdio: "ignore" });
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-
-	function isInMercurialRepository() {
-		try {
-			execSync("hg --cwd . root", { stdio: "ignore" });
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
 
 	// Watch unless on CI, in coverage mode, or explicitly running all tests
 	if (watch && !process.env.CI && !argv.includes("--coverage") && !argv.includes("--watchAll")) {

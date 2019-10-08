@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-nested-ternary */
 import { format } from "date-fns";
 import { readFileSync } from "fs";
 import { sync as globby } from "globby";
