@@ -15,7 +15,7 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
-coverage/
+/coverage/
 
 # Folder with files for integration tests
 test-files/
@@ -70,12 +70,13 @@ typings/
 website/build
 
 #distributive files
-dist/
-esm/
-types/
-browser/
+/dist/
+/esm/
+/types/
+/browser/
 *.mjs
 *.map
 /*.js
+/*.ts
 !rollup.config.js
 !babel.config.js

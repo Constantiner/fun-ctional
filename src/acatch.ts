@@ -19,10 +19,12 @@ import { addCustomPromiseHandlingSupport } from "./util/customPromiseHandlingSup
  *
  * <pre><code>requestDataAndReturnPromise().catch(handleAndRecoverFn).then(resultOrFallback => console.log(resultOrFallback));</code></pre>
  *
- * @param {function} catchFn Is function to handle Promise's rejection.
- * @returns {any => Promise} A function which expects any value as input (Promise or not) and returns a Promise.
+ * @param catchFn Is function to handle Promise's rejection.
+ * @returns A function which expects any value as input (Promise or not) and returns a Promise.
  */
-export default catchFn => {
-	const handler = value => Promise.resolve(value).catch(catchFn);
-	return addCustomPromiseHandlingSupport(handler, promise => promise.catch(catchFn));
+export default (catchFn: Function) => {
+	const handler = (value: any) => Promise.resolve(value).catch(e => catchFn(e));
+	return <Function>(
+		addCustomPromiseHandlingSupport(handler, (promise: Promise<any>) => promise.catch(e => catchFn(e)))
+	);
 };

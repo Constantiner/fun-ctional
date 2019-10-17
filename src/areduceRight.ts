@@ -1,4 +1,4 @@
-import { getReducerArguments, resolveArrayFromInput } from "./util/reducer";
+import { areduceGeneric } from "./util/reducer";
 
 /**
  * Asynchronous composable version of reduceRight method for iterables ("a" stays for "asynchronous").
@@ -27,8 +27,4 @@ import { getReducerArguments, resolveArrayFromInput } from "./util/reducer";
  * @returns {(iterable : Promise|Iterable.<*>) => Promise} A function which expects an iterable
  * (or promise resolved to iterable) and returns a Promise.
  */
-export default (callback, initialValue) => async iterable =>
-	Array.prototype.reduceRight.apply(
-		await resolveArrayFromInput(iterable),
-		getReducerArguments(callback, initialValue)
-	);
+export default areduceGeneric(Array.prototype.reduceRight);

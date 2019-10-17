@@ -1,10 +1,12 @@
 /* eslint-disable unicorn/no-nested-ternary */
+import { DEFAULT_EXTENSIONS } from "@babel/core";
 import { format } from "date-fns";
 import { readFileSync } from "fs";
 import { sync as globby } from "globby";
-import babel from "rollup-plugin-babel";
+// import babel from "rollup-plugin-babel";
 import prettier from "rollup-plugin-prettier";
 import sourcemaps from "rollup-plugin-sourcemaps";
+import typescript from "rollup-plugin-typescript2";
 import { uglify } from "rollup-plugin-uglify";
 
 const getBuildDate = () => format(new Date(), "dd MMMM yyyy");
@@ -28,8 +30,8 @@ ${licenseText.replace(/^/gm, " * ")}
 	return banner;
 };
 
-const getSourceFilesList = () => globby(["src/*.js"]);
-const getMainFileAsList = () => globby(["src/index.js"]);
+const getSourceFilesList = () => globby(["src/*.(t|j)s"]);
+const getMainFileAsList = () => globby(["src/index.ts"]);
 const getFileName = file =>
 	file
 		.split("/")
@@ -63,21 +65,60 @@ const config = (format, folder, minified = false) => input => ({
 	plugins:
 		format === "umd"
 			? minified
-				? [babel(), uglify(), sourcemaps()]
+				? [
+						typescript({
+							typescript: require("typescript")
+						}),
+						// babel({
+						// 	extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
+						// }),
+						uglify({
+							extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
+						}),
+						sourcemaps()
+				  ]
 				: process.env.CI
-				? [babel(), sourcemaps()]
-				: [babel(), prettier(), sourcemaps()]
+				? [
+						typescript({
+							typescript: require("typescript")
+						}),
+						// babel({
+						// 	extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
+						// }),
+						sourcemaps()
+				  ]
+				: [
+						typescript({
+							typescript: require("typescript")
+						}),
+						// babel({
+						// 	extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
+						// }),
+						prettier(),
+						sourcemaps()
+				  ]
 			: process.env.CI
-			? [sourcemaps()]
-			: [prettier(), sourcemaps()]
+			? [
+					typescript({
+						typescript: require("typescript")
+					}),
+					sourcemaps()
+			  ]
+			: [
+					typescript({
+						typescript: require("typescript")
+					}),
+					prettier(),
+					sourcemaps()
+			  ]
 });
 
 const sourceFiles = getSourceFilesList();
 const mainFileAsList = getMainFileAsList();
 
 export default [
-	...sourceFiles.map(config("cjs")),
 	...mainFileAsList.map(config("es", "esm")),
+	...sourceFiles.map(config("cjs")),
 	...sourceFiles.map(config("umd", "browser")),
 	...sourceFiles.map(config("umd", "browser", true))
 ];

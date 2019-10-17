@@ -1,9 +1,8 @@
 {
+	"parser": "@typescript-eslint/parser",
 	"rules": {
 		"fp/no-rest-parameters": "off"
 	},
 	"plugins": ["fp"],
-	"extends": [
-		"plugin:fp/recommended"
-	]
+	"extends": ["plugin:fp/recommended", "plugin:@typescript-eslint/recommended"]
 }

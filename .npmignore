@@ -3,6 +3,7 @@ __tests__
 node_modules
 package-lock.json
 coverage
+dist
 .vscode
 scripts
 .*

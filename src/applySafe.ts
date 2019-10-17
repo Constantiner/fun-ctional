@@ -23,14 +23,18 @@ import { addCustomPromiseHandlingSupport } from "./util/customPromiseHandlingSup
  *
  * <pre><code>requestDataAndReturnPromise().then(canFailFn).catch(handleAndRecoverFn).then(resultOrFallback => console.log(resultOrFallback));</code></pre>
  *
- * @param {function} mapFn Is function to handle Promise's resolution (then).
+ * @param {function} thenFn Is function to handle Promise's resolution (then).
  * @param {function} catchFn Is function to handle Promise's rejection (catch).
  * @returns {any => Promise} A function which expects any value as input (Promise or not) and returns a Promise.
  */
-export default (mapFn, catchFn) => {
-	const handler = value =>
+export default (thenFn: Function, catchFn: Function) => {
+	const handler = (value: any) =>
 		Promise.resolve(value)
-			.then(mapFn)
-			.catch(catchFn);
-	return addCustomPromiseHandlingSupport(handler, promise => promise.then(mapFn).catch(catchFn));
+			.then(value => thenFn(value))
+			.catch(e => catchFn(e));
+	return <Function>(
+		addCustomPromiseHandlingSupport(handler, (promise: Promise<any>) =>
+			promise.then(value => thenFn(value)).catch(e => catchFn(e))
+		)
+	);
 };

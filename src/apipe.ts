@@ -1,4 +1,4 @@
-import { supportsCustomPromiseHandling } from "./util/customPromiseHandlingSupport";
+import { supportsCustomPromiseHandling, getCustomPromiseHandling } from "./util/customPromiseHandlingSupport";
 
 /**
  * Asynchronous pipe function (apipe stays for async-pipe).
@@ -24,11 +24,10 @@ import { supportsCustomPromiseHandling } from "./util/customPromiseHandlingSuppo
  * @param {...function} fns Are functions to pipe chains of promises.
  * @returns {(promise : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
  */
-export default (...fns) => async promise =>
+export default (...fns: Function[]) => async (promise: Promise<any>) =>
 	fns.reduce((promise, fn) => {
-		const promiseHandler = supportsCustomPromiseHandling(fn);
-		if (promiseHandler) {
-			return promiseHandler(promise);
+		if (supportsCustomPromiseHandling(fn)) {
+			return getCustomPromiseHandling(fn)(promise);
 		}
-		return promise.then(fn);
+		return promise.then(value => fn(value));
 	}, Promise.resolve(promise));

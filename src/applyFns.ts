@@ -1,3 +1,7 @@
+interface MapFns<T, U> {
+	(value: T | Promise<T>): U | Promise<U>;
+}
+
 /**
  * A kind of composable version of Promise.all().
  *
@@ -21,7 +25,7 @@
  * So you can use it in synchronous code taking in mind it returns promise so can't be resolved immediately.
  * @returns {(value : Promise|any) => Promise} A function which expects any value as input (resolving to Promise) and returns a Promise.
  */
-export default (...fns) => async value => {
+export default <T, U>(...fns: MapFns<T, U>[]) => async (value: T | Promise<T>): Promise<U[]> => {
 	const resolvedValue = await Promise.resolve(value);
 	return Promise.all(fns.map(fn => fn(resolvedValue)));
 };
