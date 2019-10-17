@@ -67,7 +67,12 @@ const config = (format, folder, minified = false) => input => ({
 			? minified
 				? [
 						typescript({
-							typescript: require("typescript")
+							typescript: require("typescript"),
+							tsconfigOverride: {
+								compilerOptions: {
+									target: "ES5"
+								}
+							}
 						}),
 						// babel({
 						// 	extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
@@ -78,7 +83,12 @@ const config = (format, folder, minified = false) => input => ({
 				: process.env.CI
 				? [
 						typescript({
-							typescript: require("typescript")
+							typescript: require("typescript"),
+							tsconfigOverride: {
+								compilerOptions: {
+									target: "ES5"
+								}
+							}
 						}),
 						// babel({
 						// 	extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
@@ -87,7 +97,12 @@ const config = (format, folder, minified = false) => input => ({
 				  ]
 				: [
 						typescript({
-							typescript: require("typescript")
+							typescript: require("typescript"),
+							tsconfigOverride: {
+								compilerOptions: {
+									target: "ES5"
+								}
+							}
 						}),
 						// babel({
 						// 	extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
