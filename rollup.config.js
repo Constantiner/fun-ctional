@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/no-nested-ternary */
-import { DEFAULT_EXTENSIONS } from "@babel/core";
+// import { DEFAULT_EXTENSIONS } from "@babel/core";
 import { format } from "date-fns";
 import { readFileSync } from "fs";
 import { sync as globby } from "globby";
@@ -72,9 +72,7 @@ const config = (format, folder, minified = false) => input => ({
 						// babel({
 						// 	extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
 						// }),
-						uglify({
-							extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
-						}),
+						uglify(),
 						sourcemaps()
 				  ]
 				: process.env.CI
