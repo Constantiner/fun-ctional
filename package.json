@@ -21,7 +21,8 @@
 		"changelog": "node -r esm scripts/generateChangelog.js",
 		"version": "npm run changelog && git add docs/CHANGELOG.md",
 		"postversion": "git push && git push --tags",
-		"tsc": "tsc"
+		"tsc": "tsc",
+		"validate:types": "tsc"
 	},
 	"repository": {
 		"type": "git",
