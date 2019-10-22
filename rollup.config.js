@@ -1,16 +1,43 @@
 /* eslint-disable unicorn/no-nested-ternary */
-// import { DEFAULT_EXTENSIONS } from "@babel/core";
 import { format } from "date-fns";
 import { readFileSync } from "fs";
 import { sync as globby } from "globby";
-// import babel from "rollup-plugin-babel";
+import babel from "rollup-plugin-babel";
+import resolve from "rollup-plugin-node-resolve";
 import prettier from "rollup-plugin-prettier";
 import sourcemaps from "rollup-plugin-sourcemaps";
-import typescript from "rollup-plugin-typescript2";
 import { uglify } from "rollup-plugin-uglify";
 
 const getBuildDate = () => format(new Date(), "dd MMMM yyyy");
 const pkg = require("./package.json");
+const extensions = [".ts", ".js"];
+
+const getBabelConfig = () => ({
+	exclude: "node_modules/**",
+	extensions: [".js", ".jsx", ".ts", ".tsx"]
+});
+
+const getES6BabelConfig = () =>
+	Object.assign(getBabelConfig(), {
+		babelrc: false,
+		presets: [
+			[
+				"@babel/preset-env",
+				{
+					targets: {
+						node: "current"
+					},
+					modules: false
+				}
+			],
+			["@babel/preset-typescript"]
+		],
+		plugins: []
+	});
+
+const getNodeResolveConfig = () => ({
+	extensions
+});
 
 const getActualBanner = () => {
 	const licenseText = readFileSync("./LICENSE", "utf-8");
@@ -65,65 +92,13 @@ const config = (format, folder, minified = false) => input => ({
 	plugins:
 		format === "umd"
 			? minified
-				? [
-						typescript({
-							typescript: require("typescript"),
-							tsconfigOverride: {
-								compilerOptions: {
-									target: "ES5"
-								}
-							}
-						}),
-						// babel({
-						// 	extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
-						// }),
-						uglify(),
-						sourcemaps()
-				  ]
+				? [resolve(getNodeResolveConfig()), babel(getBabelConfig()), uglify(), sourcemaps()]
 				: process.env.CI
-				? [
-						typescript({
-							typescript: require("typescript"),
-							tsconfigOverride: {
-								compilerOptions: {
-									target: "ES5"
-								}
-							}
-						}),
-						// babel({
-						// 	extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
-						// }),
-						sourcemaps()
-				  ]
-				: [
-						typescript({
-							typescript: require("typescript"),
-							tsconfigOverride: {
-								compilerOptions: {
-									target: "ES5"
-								}
-							}
-						}),
-						// babel({
-						// 	extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"]
-						// }),
-						prettier(),
-						sourcemaps()
-				  ]
+				? [resolve(getNodeResolveConfig()), babel(getBabelConfig()), sourcemaps()]
+				: [resolve(getNodeResolveConfig()), babel(getBabelConfig()), prettier(), sourcemaps()]
 			: process.env.CI
-			? [
-					typescript({
-						typescript: require("typescript")
-					}),
-					sourcemaps()
-			  ]
-			: [
-					typescript({
-						typescript: require("typescript")
-					}),
-					prettier(),
-					sourcemaps()
-			  ]
+			? [resolve(getNodeResolveConfig()), babel(getES6BabelConfig()), sourcemaps()]
+			: [resolve(getNodeResolveConfig()), babel(getES6BabelConfig()), prettier(), sourcemaps()]
 });
 
 const sourceFiles = getSourceFilesList();
