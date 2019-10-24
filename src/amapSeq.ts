@@ -1,4 +1,4 @@
-import { amapGeneric, getMappedInSequence } from "./util/amapGeneric";
+import { amapGeneric, getMappedInSequence } from "util/amapGeneric";
 
 /**
  * An asynchronous version of map over an iterable (amap stays for async-map).

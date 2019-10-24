@@ -1,4 +1,6 @@
-import { supportsCustomPromiseHandling, getCustomPromiseHandling } from "./util/customPromiseHandlingSupport";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { supportsCustomPromiseHandling, getCustomPromiseHandling } from "util/customPromiseHandlingSupport";
 
 /**
  * Asynchronous compose function (acompose stays for async-compose).

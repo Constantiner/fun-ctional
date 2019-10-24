@@ -10,9 +10,8 @@ const addCustomPromiseHandlingSupport = (
 	fn: Function,
 	customVersion: Function
 ): CustomPromiseHandlingSupportedFunction => {
-	const customPromiseHandlingSupportedFunction: CustomPromiseHandlingSupportedFunction = <
-		CustomPromiseHandlingSupportedFunction
-	>fn;
+	const customPromiseHandlingSupportedFunction: CustomPromiseHandlingSupportedFunction = fn as CustomPromiseHandlingSupportedFunction;
+	// eslint-disable-next-line fp/no-mutation
 	customPromiseHandlingSupportedFunction[CustomPromiseHandlingSupport] = customVersion;
 	return customPromiseHandlingSupportedFunction;
 };

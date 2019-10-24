@@ -1,4 +1,6 @@
-import { addCustomPromiseHandlingSupport } from "./util/customPromiseHandlingSupport";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { addCustomPromiseHandlingSupport } from "util/customPromiseHandlingSupport";
 
 /**
  * Composable version of promise.then(mapFn).catch(catchFn).
@@ -32,9 +34,7 @@ export default (thenFn: Function, catchFn: Function) => {
 		Promise.resolve(value)
 			.then(value => thenFn(value))
 			.catch(e => catchFn(e));
-	return <Function>(
-		addCustomPromiseHandlingSupport(handler, (promise: Promise<any>) =>
-			promise.then(value => thenFn(value)).catch(e => catchFn(e))
-		)
-	);
+	return addCustomPromiseHandlingSupport(handler, (promise: Promise<any>) =>
+		promise.then(value => thenFn(value)).catch(e => catchFn(e))
+	) as Function;
 };

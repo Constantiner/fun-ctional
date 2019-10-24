@@ -1,6 +1,6 @@
-import { AsyncData, PromiseEnabledIterableOrArrayLike } from "./../types/iterables";
-import { Reducer, Reducer1, Reducer2, ReducerCallback1, ReducerCallback2 } from "./../types/reduceTypes";
-import { resolveIterablesToArray } from "./extractArrayFromArgument";
+import { AsyncData, PromiseEnabledIterableOrArrayLike } from "types/iterables";
+import { Reducer, Reducer1, Reducer2, ReducerCallback1, ReducerCallback2 } from "types/reduceTypes";
+import { resolveIterablesToArray } from "util/extractArrayFromArgument";
 
 const isReducerCallback1 = <T, U>(
 	callback: ReducerCallback1<T> | ReducerCallback2<T, U>,
@@ -20,13 +20,13 @@ const areduceGeneric = <T, U>(reduceFunc: Reducer<T, U>) => (
 	const arrayOfPromises: Promise<T>[] = resolvedArray.map(value => Promise.resolve(value));
 	const originalArray: T[] = await Promise.all(resolvedArray);
 	if (isReducerCallback1(callback, initialValue)) {
-		return (<Reducer1<T>>reduceFunc).call(
+		return (reduceFunc as Reducer1<T>).call(
 			arrayOfPromises,
 			async (previousValue: Promise<T>, currentValue: Promise<T>, currentIndex: number): Promise<T> =>
 				callback(await previousValue, await currentValue, currentIndex, originalArray)
 		);
 	}
-	return (<Reducer2<T, U>>reduceFunc).call(
+	return (reduceFunc as Reducer2<T, U>).call(
 		arrayOfPromises,
 		async (previousValue: Promise<U>, currentValue: Promise<T>, currentIndex: number): Promise<U> =>
 			callback(await previousValue, await currentValue, currentIndex, originalArray),

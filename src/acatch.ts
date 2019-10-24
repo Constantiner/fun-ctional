@@ -1,4 +1,6 @@
-import { addCustomPromiseHandlingSupport } from "./util/customPromiseHandlingSupport";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { addCustomPromiseHandlingSupport } from "util/customPromiseHandlingSupport";
 
 /**
  * Composable version of catch method for promises.
@@ -24,7 +26,7 @@ import { addCustomPromiseHandlingSupport } from "./util/customPromiseHandlingSup
  */
 export default (catchFn: Function) => {
 	const handler = (value: any) => Promise.resolve(value).catch(e => catchFn(e));
-	return <Function>(
-		addCustomPromiseHandlingSupport(handler, (promise: Promise<any>) => promise.catch(e => catchFn(e)))
-	);
+	return addCustomPromiseHandlingSupport(handler, (promise: Promise<any>) =>
+		promise.catch(e => catchFn(e))
+	) as Function;
 };

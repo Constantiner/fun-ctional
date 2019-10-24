@@ -1,4 +1,4 @@
-import { areduceGeneric } from "./util/reducer";
+import { areduceGeneric } from "util/reducer";
 
 /**
  * Asynchronous composable version of reduceRight method for iterables ("a" stays for "asynchronous").

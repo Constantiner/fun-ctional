@@ -1,4 +1,4 @@
-import { afilterGeneric, getFilteredInParallel } from "./util/afilterGeneric";
+import { afilterGeneric, getFilteredInParallel } from "util/afilterGeneric";
 
 /**
  * An asynchronous version of filter over an iterable (afilter stays for async-filter).

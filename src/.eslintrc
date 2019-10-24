@@ -4,5 +4,5 @@
 		"fp/no-rest-parameters": "off"
 	},
 	"plugins": ["fp"],
-	"extends": ["plugin:fp/recommended", "plugin:@typescript-eslint/recommended"]
+	"extends": ["plugin:fp/recommended", "plugin:@typescript-eslint/recommended", "prettier/@typescript-eslint"]
 }

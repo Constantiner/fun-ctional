@@ -15,7 +15,6 @@ script:
     - npm run lint
     - npm run test:coverage
     - npm run build
-    - npm run validate:types
     - npm run validate:sourcemaps
     - codecov
 

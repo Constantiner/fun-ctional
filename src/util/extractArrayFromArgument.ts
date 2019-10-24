@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/prefer-spread */
-import { PromiseEnabledIterableOrArrayLike, IterableOrArrayLike, AsyncData } from "./../types/iterables";
+import { PromiseEnabledIterableOrArrayLike, IterableOrArrayLike, AsyncData } from "types/iterables";
 
 const resolveIterablesToArray = async <T>(
 	iterableOrArrayLike: PromiseEnabledIterableOrArrayLike<T>

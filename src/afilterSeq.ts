@@ -1,4 +1,4 @@
-import { afilterGeneric, getFilteredInSequence } from "./util/afilterGeneric";
+import { afilterGeneric, getFilteredInSequence } from "util/afilterGeneric";
 
 /**
  * An asynchronous version of filter over an iterable (afilterSeq stays for async-filter).

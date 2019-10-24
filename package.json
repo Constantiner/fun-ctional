@@ -7,10 +7,10 @@
 	"types": "types/index.d.ts",
 	"scripts": {
 		"test": "node -r esm scripts/unitTest.js",
-		"lint": "npx eslint '**/*.js'",
+		"lint": "tsc --noEmit && npx eslint '**/*.{js,ts}'",
 		"build": "npm run clean && NODE_OPTIONS=--max_old_space_size=4096 npx rollup -c",
 		"build:fast": "npm run clean && NODE_OPTIONS=--max_old_space_size=4096 CI=true npx rollup -c",
-		"format": "npx prettier 'src/*.js' --write",
+		"format": "npx prettier '{src,__tests__,scripts}/*.{js,ts}' --write",
 		"prepublishOnly": "npm run clean && npm run lint && npm run test && npm run build",
 		"clean": "node -r esm scripts/clean.js",
 		"clear_jest": "npx jest --clearCache",
@@ -22,7 +22,7 @@
 		"version": "npm run changelog && git add docs/CHANGELOG.md",
 		"postversion": "git push && git push --tags",
 		"tsc": "tsc",
-		"validate:types": "tsc"
+		"validate:types": "tsc --noEmit"
 	},
 	"repository": {
 		"type": "git",
@@ -75,7 +75,7 @@
 		"jest": "^24.9.0",
 		"lint-staged": "^9.4.2",
 		"prettier": "^1.18.2",
-		"rollup": "^1.25.1",
+		"rollup": "^1.25.2",
 		"rollup-plugin-babel": "^4.3.3",
 		"rollup-plugin-node-resolve": "^5.2.0",
 		"rollup-plugin-prettier": "^0.6.0",

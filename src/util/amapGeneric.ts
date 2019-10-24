@@ -1,6 +1,6 @@
-import { PromiseEnabledIterableOrArrayLike } from "./../types/iterables";
-import { MapCallback, MapStrategy } from "./../types/mapTypes";
-import { extractArrayFromArgument } from "./extractArrayFromArgument";
+import { PromiseEnabledIterableOrArrayLike } from "types/iterables";
+import { MapCallback, MapStrategy } from "types/mapTypes";
+import { extractArrayFromArgument } from "util/extractArrayFromArgument";
 
 const getMappedInParallel = <T, U>(mapFn: MapCallback<T, U>, array: T[]): Promise<U[]> => Promise.all(array.map(mapFn));
 

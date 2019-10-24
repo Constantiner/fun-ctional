@@ -1,6 +1,6 @@
-import { FilterFn, FilterStrategy } from "./../types/filterTypes";
-import { PromiseEnabledIterableOrArrayLike } from "./../types/iterables";
-import { extractArrayFromArgument } from "./extractArrayFromArgument";
+import { FilterFn, FilterStrategy } from "types/filterTypes";
+import { PromiseEnabledIterableOrArrayLike } from "types/iterables";
+import { extractArrayFromArgument } from "util/extractArrayFromArgument";
 
 interface CombinedFilterResultWithElement<T> {
 	filterResult: boolean;

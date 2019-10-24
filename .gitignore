@@ -80,3 +80,4 @@ website/build
 /*.ts
 !rollup.config.js
 !babel.config.js
+!jest.config.js
