@@ -36,7 +36,10 @@ const getES6BabelConfig = () =>
 	});
 
 const getNodeResolveConfig = () => ({
-	extensions
+	extensions,
+	customResolveOptions: {
+		moduleDirectory: "src"
+	}
 });
 
 const getActualBanner = () => {
