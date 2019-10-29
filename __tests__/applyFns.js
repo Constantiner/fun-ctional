@@ -38,17 +38,13 @@ describe("A kind of composable Promise.all with single input value for all handl
 		});
 	});
 	it("should reject without arguments", async () => {
-		expect.assertions(3);
+		expect.assertions(2);
 		const inputValue = 5;
 		const square = squareMock(jest);
-		try {
-			await applyFns()(createAsyncPromise(square, false)(inputValue));
-			expect(true).toBe(false);
-		} catch (e) {
-			expect(square).not.toHaveBeenCalled();
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(inputValue));
-		}
+		await expect(applyFns()(createAsyncPromise(square, false)(inputValue))).rejects.toThrow(
+			new Error(getErrorMessage(inputValue))
+		);
+		expect(square).not.toHaveBeenCalled();
 	});
 	it("should work without arguments and promise as input", async () => {
 		expect.assertions(3);
@@ -112,24 +108,21 @@ describe("A kind of composable Promise.all with single input value for all handl
 		});
 	});
 	it("should reject for functions with promises as array and rejected promise as input value", async () => {
-		expect.assertions(6);
+		expect.assertions(5);
 		const square = squareMock(jest);
 		const squareInAll = squareMock(jest);
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const inputValue = 5;
-		try {
-			await applyFns(createSyncPromise(squareInAll), increment, createAsyncPromise(concatenateTestString))(
+		await expect(
+			applyFns(createSyncPromise(squareInAll), increment, createAsyncPromise(concatenateTestString))(
 				createAsyncPromise(square, false)(inputValue)
-			);
-		} catch (e) {
-			expect(squareInAll).not.toHaveBeenCalled();
-			expect(increment).not.toHaveBeenCalled();
-			expect(concatenateTestString).not.toHaveBeenCalled();
-			expect(square).not.toHaveBeenCalled();
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(inputValue));
-		}
+			)
+		).rejects.toThrow(new Error(getErrorMessage(inputValue)));
+		expect(squareInAll).not.toHaveBeenCalled();
+		expect(increment).not.toHaveBeenCalled();
+		expect(concatenateTestString).not.toHaveBeenCalled();
+		expect(square).not.toHaveBeenCalled();
 	});
 	it("should reject with rejected promise as input value classic way", () => {
 		expect.assertions(7);
@@ -154,28 +147,25 @@ describe("A kind of composable Promise.all with single input value for all handl
 			});
 	});
 	it("should reject for error function and promise as input value", async () => {
-		expect.assertions(9);
+		expect.assertions(8);
 		const square = squareMock(jest);
 		const squareInAll = squareMock(jest);
 		const increment = incrementMock(jest);
 		const concatenateTestString = concatenateTestStringMock(jest);
 		const undefinedErrorFn = getMockFn(jest)(n => n.first.second * n);
 		const inputValue = 5;
-		try {
-			await applyFns(
+		await expect(
+			applyFns(
 				createSyncPromise(squareInAll),
 				increment,
 				undefinedErrorFn,
 				createAsyncPromise(concatenateTestString)
-			)(createAsyncPromise(square)(inputValue));
-		} catch (e) {
-			expect(e).toBeInstanceOf(TypeError);
-			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(square, 1, 25, inputValue);
-			mockFnExpectations(squareInAll, 1, 625, 25);
-			mockFnExpectations(increment, 1, 26, 25);
-			expect(concatenateTestString).not.toHaveBeenCalled();
-		}
+			)(createAsyncPromise(square)(inputValue))
+		).rejects.toThrow(new TypeError("Cannot read property 'second' of undefined"));
+		mockFnExpectations(square, 1, 25, inputValue);
+		mockFnExpectations(squareInAll, 1, 625, 25);
+		mockFnExpectations(increment, 1, 26, 25);
+		expect(concatenateTestString).not.toHaveBeenCalled();
 	});
 	it("should reject for error function and promise as input value classic way", () => {
 		expect.assertions(10);

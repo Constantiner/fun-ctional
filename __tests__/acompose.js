@@ -153,66 +153,54 @@ describe("Tests for asynchronous compose utility", () => {
 		mockFnExpectations(incrementInCompose, 1, 26, 25);
 	});
 	it("should reject properly with async promise and compose functions", async () => {
-		expect.assertions(5);
+		expect.assertions(4);
 		const increment = incrementMock(jest);
 		const squareInCompose = squareMock(jest);
 		const square = squareMock(jest);
-		try {
-			await acompose([increment, squareInCompose])(createAsyncPromise(square, false)(4));
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(4));
-			expect(square).not.toHaveBeenCalled();
-			expect(squareInCompose).not.toHaveBeenCalled();
-			expect(increment).not.toHaveBeenCalled();
-		}
+		await expect(acompose([increment, squareInCompose])(createAsyncPromise(square, false)(4))).rejects.toThrow(
+			new Error(getErrorMessage(4))
+		);
+		expect(square).not.toHaveBeenCalled();
+		expect(squareInCompose).not.toHaveBeenCalled();
+		expect(increment).not.toHaveBeenCalled();
 	});
 	it("should reject properly with async promise and empty compose", async () => {
-		expect.assertions(3);
+		expect.assertions(2);
 		const increment = incrementMock(jest);
-		try {
-			await acompose()(createAsyncPromise(increment, false)(4));
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(4));
-			expect(increment).not.toHaveBeenCalled();
-		}
+		await expect(acompose()(createAsyncPromise(increment, false)(4))).rejects.toThrow(
+			new Error(getErrorMessage(4))
+		);
+		expect(increment).not.toHaveBeenCalled();
 	});
 	it("should reject properly with rejection in one of the compose functions", async () => {
-		expect.assertions(6);
+		expect.assertions(5);
 		const inputValue = 4;
 		const increment = incrementMock(jest);
 		const incrementInCompose = incrementMock(jest);
 		const undefinedErrorFn = getMockFn(jest)(n => n.first.second * n);
-		try {
-			await acompose(incrementInCompose, undefinedErrorFn)(createAsyncPromise(increment)(inputValue));
-		} catch (e) {
-			expect(e).toBeInstanceOf(TypeError);
-			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(increment, 1, 5, inputValue);
-			mockFnArgumentsExpectations(undefinedErrorFn, 1, 5);
-			expect(incrementInCompose).not.toHaveBeenCalled();
-		}
+		await expect(
+			acompose(incrementInCompose, undefinedErrorFn)(createAsyncPromise(increment)(inputValue))
+		).rejects.toThrow(new TypeError("Cannot read property 'second' of undefined"));
+		mockFnExpectations(increment, 1, 5, inputValue);
+		mockFnArgumentsExpectations(undefinedErrorFn, 1, 5);
+		expect(incrementInCompose).not.toHaveBeenCalled();
 	});
 	it("should reject properly with rejection in one of the promise generating compose functions", async () => {
-		expect.assertions(8);
+		expect.assertions(7);
 		const inputValue = 4;
 		const increment = incrementMock(jest);
 		const incrementInCompose = incrementMock(jest);
 		const incrementInPromiseInCompose = incrementMock(jest);
 		const square = squareMock(jest);
-		try {
-			await acompose(incrementInCompose, createAsyncPromise(incrementInPromiseInCompose, false), square)(
+		await expect(
+			acompose(incrementInCompose, createAsyncPromise(incrementInPromiseInCompose, false), square)(
 				createAsyncPromise(increment)(inputValue)
-			);
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(25));
-			mockFnExpectations(increment, 1, 5, inputValue);
-			mockFnExpectations(square, 1, 25, 5);
-			expect(incrementInPromiseInCompose).not.toHaveBeenCalled();
-			expect(incrementInCompose).not.toHaveBeenCalled();
-		}
+			)
+		).rejects.toThrow(new Error(getErrorMessage(25)));
+		mockFnExpectations(increment, 1, 5, inputValue);
+		mockFnExpectations(square, 1, 25, 5);
+		expect(incrementInPromiseInCompose).not.toHaveBeenCalled();
+		expect(incrementInCompose).not.toHaveBeenCalled();
 	});
 	it("should reject properly with async promise and empty compose traditional way", () => {
 		expect.assertions(4);

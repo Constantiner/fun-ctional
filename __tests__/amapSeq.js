@@ -17,41 +17,33 @@ describe("amapSeq tests", () => {
 		mockFnExpectations(square, 2, 25, input2, 1, inputValue);
 	});
 	it("should reject for failed promise as input in sequence", async () => {
-		expect.assertions(3);
+		expect.assertions(2);
 		const input1 = 4;
 		const input2 = 5;
 		const inputValue = [input1, input2];
 		const square = squareMock(jest, "square");
-		try {
-			await amapSeq(square)(createAsyncPromise(n => new Set(n), false)(inputValue));
-			expect(true).toBe(false);
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(inputValue));
-			expect(square).not.toHaveBeenCalled();
-		}
+		await expect(amapSeq(square)(createAsyncPromise(n => new Set(n), false)(inputValue))).rejects.toThrow(
+			new Error(getErrorMessage(inputValue))
+		);
+		expect(square).not.toHaveBeenCalled();
 	});
 	it("should reject if function is rejected promise with promises as input in sequence", async () => {
-		expect.assertions(8);
+		expect.assertions(7);
 		const input1 = 4;
 		const input2 = 5;
 		const dangerousFn = getMockFn(jest)(async n => n.first.second * n.first.second, "dangerousFn");
 		const squareInPromise = squareMock(jest, "squareInPromise");
 		const getObjectFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjectFromInt");
-		try {
-			await amapSeq(dangerousFn)([
+		await expect(
+			amapSeq(dangerousFn)([
 				createAsyncPromise(squareInPromise)(input1),
 				createSyncPromise(getObjectFromInt)(input2)
-			]);
-			expect(true).toBe(false);
-		} catch (e) {
-			expect(e).toBeInstanceOf(TypeError);
-			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
-			mockFnExpectations(squareInPromise, 1, 16, input1);
-			expect(dangerousFn).toHaveBeenCalledTimes(1);
-			mockFnArgumentsExpectations(dangerousFn, 1, 16, 0, [16, { first: { second: input2 } }]);
-		}
+			])
+		).rejects.toThrow(new TypeError("Cannot read property 'second' of undefined"));
+		mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
+		mockFnExpectations(squareInPromise, 1, 16, input1);
+		expect(dangerousFn).toHaveBeenCalledTimes(1);
+		mockFnArgumentsExpectations(dangerousFn, 1, 16, 0, [16, { first: { second: input2 } }]);
 	});
 	it("should work with promise in sequence", async () => {
 		expect.assertions(6);

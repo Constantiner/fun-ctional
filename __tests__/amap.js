@@ -47,19 +47,15 @@ describe("amap tests", () => {
 		mockFnExpectations(square, 2, 25, input2, 1, inputValue);
 	});
 	it("should reject for failed promise as input in parallel", async () => {
-		expect.assertions(3);
+		expect.assertions(2);
 		const input1 = 4;
 		const input2 = 5;
 		const inputValue = [input1, input2];
 		const square = squareMock(jest, "square");
-		try {
-			await amap(square)(createAsyncPromise(n => new Set(n), false)(inputValue));
-			expect(true).toBe(false);
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(inputValue));
-			expect(square).not.toHaveBeenCalled();
-		}
+		await expect(amap(square)(createAsyncPromise(n => new Set(n), false)(inputValue))).rejects.toThrow(
+			new Error(getErrorMessage(inputValue))
+		);
+		expect(square).not.toHaveBeenCalled();
 	});
 	it("should work with promise and value as input", async () => {
 		expect.assertions(8);
@@ -93,73 +89,58 @@ describe("amap tests", () => {
 		mockFnExpectations(square, 2, 36, 6, 1, [16, 6]);
 	});
 	it("should reject with rejected promise as input", async () => {
-		expect.assertions(6);
+		expect.assertions(5);
 		const input1 = 4;
 		const input2 = 5;
 		const square = squareMock(jest, "square");
 		const squareInPromise = squareMock(jest, "squareInPromise");
 		const increment = incrementMock(jest, "increment");
-		try {
-			await amap(square)([
-				createAsyncPromise(squareInPromise, false)(input1),
-				createSyncPromise(increment)(input2)
-			]);
-			expect(true).toBe(false);
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(input1));
-			expect(square).not.toHaveBeenCalled();
-			mockFnExpectations(increment, 1, 6, input2);
-			expect(squareInPromise).not.toHaveBeenCalled();
-		}
+		await expect(
+			amap(square)([createAsyncPromise(squareInPromise, false)(input1), createSyncPromise(increment)(input2)])
+		).rejects.toThrow(new Error(getErrorMessage(input1)));
+		expect(square).not.toHaveBeenCalled();
+		mockFnExpectations(increment, 1, 6, input2);
+		expect(squareInPromise).not.toHaveBeenCalled();
 	});
 	it("should reject if function is rejected with promises as input", async () => {
-		expect.assertions(8);
+		expect.assertions(7);
 		const input1 = 4;
 		const input2 = 5;
 		const dangerousFn = getMockFn(jest)(n => n.first.second * n.first.second, "dangerousFn");
 		const squareInPromise = squareMock(jest, "squareInPromise");
 		const getObjectFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjectFromInt");
-		try {
-			await amap(dangerousFn)([
+		await expect(
+			amap(dangerousFn)([
 				createAsyncPromise(squareInPromise)(input1),
 				createSyncPromise(getObjectFromInt)(input2)
-			]);
-			expect(true).toBe(false);
-		} catch (e) {
-			expect(e).toBeInstanceOf(TypeError);
-			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
-			mockFnExpectations(squareInPromise, 1, 16, input1);
-			expect(dangerousFn).toHaveBeenCalledTimes(1);
-			mockFnArgumentsExpectations(dangerousFn, 1, 16, 0, [16, { first: { second: input2 } }]);
-		}
+			])
+		).rejects.toThrow(new TypeError("Cannot read property 'second' of undefined"));
+		mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
+		mockFnExpectations(squareInPromise, 1, 16, input1);
+		expect(dangerousFn).toHaveBeenCalledTimes(1);
+		mockFnArgumentsExpectations(dangerousFn, 1, 16, 0, [16, { first: { second: input2 } }]);
 	});
 	it("should reject if function is rejected promise with promises as input in parallel", async () => {
-		expect.assertions(9);
+		expect.assertions(8);
 		const input1 = 4;
 		const input2 = 5;
 		const dangerousFn = getMockFn(jest)(async n => n.first.second * n.first.second, "dangerousFn");
 		const squareInPromise = squareMock(jest, "squareInPromise");
 		const getObjectFromInt = getMockFn(jest)(n => ({ first: { second: n } }), "getObjectFromInt");
-		try {
-			await amap(dangerousFn)([
+		await expect(
+			amap(dangerousFn)([
 				createAsyncPromise(squareInPromise)(input1),
 				createSyncPromise(getObjectFromInt)(input2)
-			]);
-			expect(true).toBe(false);
-		} catch (e) {
-			expect(e).toBeInstanceOf(TypeError);
-			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
-			mockFnExpectations(squareInPromise, 1, 16, input1);
-			expect(dangerousFn).toHaveBeenCalledTimes(2);
-			mockFnArgumentsExpectations(dangerousFn, 1, 16, 0, [16, { first: { second: input2 } }]);
-			mockFnArgumentsExpectations(dangerousFn, 2, { first: { second: input2 } }, 1, [
-				16,
-				{ first: { second: input2 } }
-			]);
-		}
+			])
+		).rejects.toThrow(new TypeError("Cannot read property 'second' of undefined"));
+		mockFnExpectations(getObjectFromInt, 1, { first: { second: input2 } }, input2);
+		mockFnExpectations(squareInPromise, 1, 16, input1);
+		expect(dangerousFn).toHaveBeenCalledTimes(2);
+		mockFnArgumentsExpectations(dangerousFn, 1, 16, 0, [16, { first: { second: input2 } }]);
+		mockFnArgumentsExpectations(dangerousFn, 2, { first: { second: input2 } }, 1, [
+			16,
+			{ first: { second: input2 } }
+		]);
 	});
 	it("should work with promise in parallel", async () => {
 		expect.assertions(6);
@@ -174,19 +155,15 @@ describe("amap tests", () => {
 		mockFnExpectations(square, 2, 25, input2, 1, inputValue);
 	});
 	it("should reject with rejected promise", async () => {
-		expect.assertions(3);
+		expect.assertions(2);
 		const input1 = 4;
 		const input2 = 5;
 		const inputValue = [input1, input2];
 		const square = squareMock(jest, "square");
-		try {
-			await amap(createAsyncPromise(square, false))(new Set(inputValue));
-			expect(true).toBe(false);
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage([input1, 0, inputValue]));
-			expect(square).not.toHaveBeenCalled();
-		}
+		await expect(amap(createAsyncPromise(square, false))(new Set(inputValue))).rejects.toThrow(
+			new Error(getErrorMessage([input1, 0, inputValue]))
+		);
+		expect(square).not.toHaveBeenCalled();
 	});
 	it("should reject with rejected promise traditional way", () => {
 		expect.assertions(4);

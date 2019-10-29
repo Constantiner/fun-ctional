@@ -139,19 +139,13 @@ describe("areduceRight tests", () => {
 		expect(sum).toBe(13);
 	});
 	it("should reject with rejected promise as input", async () => {
-		expect.assertions(3);
+		expect.assertions(2);
 		const input = [1, 2, 3, 2];
 		const identity = identityMock(jest, "identity");
-		try {
-			await areduceRight((accumulator, value) => accumulator + value, 7)(
-				createAsyncPromise(identity, false)(input)
-			);
-			expect(false).toBe(true);
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(input));
-			expect(identity).not.toHaveBeenCalled();
-		}
+		await expect(
+			areduceRight((accumulator, value) => accumulator + value, 7)(createAsyncPromise(identity, false)(input))
+		).rejects.toThrow(new Error(getErrorMessage(input)));
+		expect(identity).not.toHaveBeenCalled();
 	});
 	it("should work for mixed list of promises and not as input and with non symmetrical operation and promised initial value", async () => {
 		expect.assertions(17);
@@ -186,7 +180,7 @@ describe("areduceRight tests", () => {
 		mockFnExpectations(concatenationFn, 3, expectedResult, "1012", argument1Value, 0, inputValueResolved);
 	});
 	it("should reject for mixed list of promises and not as input and with non symmetrical operation and promised initial value and fail in first input", async () => {
-		expect.assertions(7);
+		expect.assertions(6);
 		const concatenationFn = concatenationReduceFnMock(jest, "sumFn");
 		const identityArgument1 = identityMock(jest, "identityArgument1");
 		const identityArgument3 = identityMock(jest, "identityArgument3");
@@ -200,20 +194,16 @@ describe("areduceRight tests", () => {
 		const argument3 = createAsyncPromise(identityArgument3, false)(argument3Value);
 		const input = new Set([argument1, argument2, argument3]);
 
-		try {
-			await areduceRight(concatenationFn, initialAccumulator)(input);
-			expect(false).toBe(true);
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(argument3Value));
-			mockFnExpectations(identityAccumulator, 1, initialAccumulatorValue, initialAccumulatorValue);
-			expect(identityAccumulator).toHaveBeenCalledTimes(1);
-			expect(identityArgument3).not.toHaveBeenCalled();
-			expect(concatenationFn).not.toHaveBeenCalled();
-		}
+		await expect(areduceRight(concatenationFn, initialAccumulator)(input)).rejects.toThrow(
+			new Error(getErrorMessage(argument3Value))
+		);
+		mockFnExpectations(identityAccumulator, 1, initialAccumulatorValue, initialAccumulatorValue);
+		expect(identityAccumulator).toHaveBeenCalledTimes(1);
+		expect(identityArgument3).not.toHaveBeenCalled();
+		expect(concatenationFn).not.toHaveBeenCalled();
 	});
 	it("should reject for mixed list of promises and not as input and with non symmetrical operation and promised initial value and fail in last input", async () => {
-		expect.assertions(10);
+		expect.assertions(9);
 		const concatenationFn = concatenationReduceFnMock(jest, "sumFn");
 		const identityArgument1 = identityMock(jest, "identityArgument1");
 		const identityArgument3 = identityMock(jest, "identityArgument3");
@@ -227,19 +217,15 @@ describe("areduceRight tests", () => {
 		const argument3 = createAsyncPromise(identityArgument3, true, 50)(argument3Value);
 		const input = new Set([argument1, argument2, argument3]);
 
-		try {
-			await areduceRight(concatenationFn, initialAccumulator)(input);
-			expect(false).toBe(true);
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(argument1Value));
-			mockFnExpectations(identityArgument3, 1, argument3Value, argument3Value);
-			expect(identityArgument3).toHaveBeenCalledTimes(1);
-			mockFnExpectations(identityAccumulator, 1, initialAccumulatorValue, initialAccumulatorValue);
-			expect(identityAccumulator).toHaveBeenCalledTimes(1);
-			expect(concatenationFn).not.toHaveBeenCalled();
-			expect(identityArgument1).not.toHaveBeenCalled();
-		}
+		await expect(areduceRight(concatenationFn, initialAccumulator)(input)).rejects.toThrow(
+			new Error(getErrorMessage(argument1Value))
+		);
+		mockFnExpectations(identityArgument3, 1, argument3Value, argument3Value);
+		expect(identityArgument3).toHaveBeenCalledTimes(1);
+		mockFnExpectations(identityAccumulator, 1, initialAccumulatorValue, initialAccumulatorValue);
+		expect(identityAccumulator).toHaveBeenCalledTimes(1);
+		expect(concatenationFn).not.toHaveBeenCalled();
+		expect(identityArgument1).not.toHaveBeenCalled();
 	});
 	it("should work for mixed list of promises and not as input and with non symmetrical operation and promised initial value with promise in reduce function", async () => {
 		expect.assertions(17);

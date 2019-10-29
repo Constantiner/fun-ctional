@@ -153,66 +153,52 @@ describe("Tests for asynchronous pipe utility", () => {
 		mockFnExpectations(incrementInCompose, 1, 26, 25);
 	});
 	it("should reject properly with async promise and pipe functions", async () => {
-		expect.assertions(5);
+		expect.assertions(4);
 		const increment = incrementMock(jest);
 		const squareInCompose = squareMock(jest);
 		const square = squareMock(jest);
-		try {
-			await apipe(squareInCompose, increment)(createAsyncPromise(square, false)(4));
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(4));
-			expect(square).not.toHaveBeenCalled();
-			expect(squareInCompose).not.toHaveBeenCalled();
-			expect(increment).not.toHaveBeenCalled();
-		}
+		await expect(apipe(squareInCompose, increment)(createAsyncPromise(square, false)(4))).rejects.toThrow(
+			new Error(getErrorMessage(4))
+		);
+		expect(square).not.toHaveBeenCalled();
+		expect(squareInCompose).not.toHaveBeenCalled();
+		expect(increment).not.toHaveBeenCalled();
 	});
 	it("should reject properly with async promise and empty pipe", async () => {
-		expect.assertions(3);
+		expect.assertions(2);
 		const increment = incrementMock(jest);
-		try {
-			await apipe()(createAsyncPromise(increment, false)(4));
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(4));
-			expect(increment).not.toHaveBeenCalled();
-		}
+		await expect(apipe()(createAsyncPromise(increment, false)(4))).rejects.toThrow(new Error(getErrorMessage(4)));
+		expect(increment).not.toHaveBeenCalled();
 	});
 	it("should reject properly with rejection in one of the pipe functions", async () => {
-		expect.assertions(6);
+		expect.assertions(5);
 		const inputValue = 4;
 		const increment = incrementMock(jest);
 		const incrementInCompose = incrementMock(jest);
 		const undefinedErrorFn = getMockFn(jest)(n => n.first.second * n);
-		try {
-			await apipe(undefinedErrorFn, incrementInCompose)(createAsyncPromise(increment)(inputValue));
-		} catch (e) {
-			expect(e).toBeInstanceOf(TypeError);
-			expect(e.message).toBe("Cannot read property 'second' of undefined");
-			mockFnExpectations(increment, 1, 5, inputValue);
-			mockFnArgumentsExpectations(undefinedErrorFn, 1, 5);
-			expect(incrementInCompose).not.toHaveBeenCalled();
-		}
+		await expect(
+			apipe(undefinedErrorFn, incrementInCompose)(createAsyncPromise(increment)(inputValue))
+		).rejects.toThrow(new TypeError("Cannot read property 'second' of undefined"));
+		mockFnExpectations(increment, 1, 5, inputValue);
+		mockFnArgumentsExpectations(undefinedErrorFn, 1, 5);
+		expect(incrementInCompose).not.toHaveBeenCalled();
 	});
 	it("should reject properly with rejection in one of the promise generating pipe functions", async () => {
-		expect.assertions(8);
+		expect.assertions(7);
 		const inputValue = 4;
 		const increment = incrementMock(jest);
 		const incrementInCompose = incrementMock(jest);
 		const incrementInPromiseInCompose = incrementMock(jest);
 		const square = squareMock(jest);
-		try {
-			await apipe(square, createAsyncPromise(incrementInPromiseInCompose, false), incrementInCompose)(
+		await expect(
+			apipe(square, createAsyncPromise(incrementInPromiseInCompose, false), incrementInCompose)(
 				createAsyncPromise(increment)(inputValue)
-			);
-		} catch (e) {
-			expect(e).toBeInstanceOf(Error);
-			expect(e.message).toBe(getErrorMessage(25));
-			mockFnExpectations(increment, 1, 5, inputValue);
-			mockFnExpectations(square, 1, 25, 5);
-			expect(incrementInPromiseInCompose).not.toHaveBeenCalled();
-			expect(incrementInCompose).not.toHaveBeenCalled();
-		}
+			)
+		).rejects.toThrow(new Error(getErrorMessage(25)));
+		mockFnExpectations(increment, 1, 5, inputValue);
+		mockFnExpectations(square, 1, 25, 5);
+		expect(incrementInPromiseInCompose).not.toHaveBeenCalled();
+		expect(incrementInCompose).not.toHaveBeenCalled();
 	});
 	it("should reject properly with async promise and empty pipe traditional way", () => {
 		expect.assertions(4);
